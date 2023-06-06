@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="employee_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="employee_phone_number" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="employee_address" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="employee_description" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="hutang">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="nota_id" Type="int" Nullable="false" />
+          <Property Name="debtor_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="debtor_email" Type="varchar" MaxLength="50" />
+          <Property Name="debtor_phone_number" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="debtor_address" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="debtor_deadline" Type="datetime" Nullable="false" />
+          <Property Name="debt_reminder_frequency" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="nota">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="buyer_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="buyer_phone_number" Type="varchar" MaxLength="50" />
+          <Property Name="buy_date" Type="datetime" Nullable="false" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="total_price" Type="int" Nullable="false" />
+          <Property Name="total_payment" Type="int" Nullable="false" />
+          <Property Name="payment_method" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="nota_detail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="nota_id" Type="int" Nullable="false" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="product_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="product_price" Type="int" Nullable="false" />
+          <Property Name="product_quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="product_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="product_price" Type="int" Nullable="false" />
+          <Property Name="product_stock" Type="int" />
+          <Property Name="product_description" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="phone_number" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Hutang_Nota">
+          <End Role="nota" Type="Self.nota" Multiplicity="1" />
+          <End Role="hutang" Type="Self.hutang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="nota">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="hutang">
+              <PropertyRef Name="nota_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nota_Detail_Nota">
+          <End Role="nota" Type="Self.nota" Multiplicity="1" />
+          <End Role="nota_detail" Type="Self.nota_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="nota">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="nota_detail">
+              <PropertyRef Name="nota_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nota_Detail_Product">
+          <End Role="product" Type="Self.product" Multiplicity="0..1" />
+          <End Role="nota_detail" Type="Self.nota_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="nota_detail">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nota_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="nota" Type="Self.nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseModelStoreContainer">
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="hutang" EntityType="Self.hutang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="nota" EntityType="Self.nota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="nota_detail" EntityType="Self.nota_detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Hutang_Nota" Association="Self.FK_Hutang_Nota">
+            <End Role="nota" EntitySet="nota" />
+            <End Role="hutang" EntitySet="hutang" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Detail_Nota" Association="Self.FK_Nota_Detail_Nota">
+            <End Role="nota" EntitySet="nota" />
+            <End Role="nota_detail" EntitySet="nota_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Detail_Product" Association="Self.FK_Nota_Detail_Product">
+            <End Role="product" EntitySet="product" />
+            <End Role="nota_detail" EntitySet="nota_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Employee" Association="Self.FK_Nota_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="employee_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="nota" Relationship="Self.FK_Nota_Employee" FromRole="employee" ToRole="nota" />
+        </EntityType>
+        <EntityType Name="nota">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="buyer_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="buyer_phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="buy_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="total_price" Type="Int32" Nullable="false" />
+          <Property Name="total_payment" Type="Int32" Nullable="false" />
+          <Property Name="payment_method" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_Nota_Employee" FromRole="nota" ToRole="employee" />
+          <NavigationProperty Name="nota_detail" Relationship="Self.FK_Nota_Detail_Nota" FromRole="nota" ToRole="nota_detail" />
+          <NavigationProperty Name="hutang" Relationship="DatabaseModel.FK_Hutang_Nota1" FromRole="nota" ToRole="hutang1" />
+        </EntityType>
+        <EntityType Name="nota_detail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="nota_id" Type="Int32" Nullable="false" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="product_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="product_price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="nota" Relationship="Self.FK_Nota_Detail_Nota" FromRole="nota_detail" ToRole="nota" />
+          <Property Name="product_quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="product" Relationship="DatabaseModel.FK_Nota_Detail_Product" FromRole="nota_detail" ToRole="product" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="product_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="product_price" Type="Int32" Nullable="false" />
+          <Property Name="product_stock" Type="Int32" />
+          <Property Name="product_description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="nota_detail" Relationship="DatabaseModel.FK_Nota_Detail_Product" FromRole="product" ToRole="nota_detail" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Nota_Employee">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="nota" Type="Self.nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="nota">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nota_Detail_Nota">
+          <End Role="nota" Type="Self.nota" Multiplicity="1" />
+          <End Role="nota_detail" Type="Self.nota_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="nota">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="nota_detail">
+              <PropertyRef Name="nota_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="employee" EntityType="Self.employee" />
+          <EntitySet Name="nota" EntityType="Self.nota" />
+          <EntitySet Name="nota_detail" EntityType="Self.nota_detail" />
+          <EntitySet Name="product" EntityType="Self.product" />
+          <EntitySet Name="user" EntityType="Self.user" />
+          <AssociationSet Name="FK_Nota_Employee" Association="Self.FK_Nota_Employee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="nota" EntitySet="nota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Detail_Nota" Association="Self.FK_Nota_Detail_Nota">
+            <End Role="nota" EntitySet="nota" />
+            <End Role="nota_detail" EntitySet="nota_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nota_Detail_Product" Association="DatabaseModel.FK_Nota_Detail_Product">
+            <End Role="product" EntitySet="product" />
+            <End Role="nota_detail" EntitySet="nota_detail" />
+          </AssociationSet>
+          <EntitySet Name="hutangSet" EntityType="DatabaseModel.hutang" />
+          <AssociationSet Name="FK_Hutang_Nota1" Association="DatabaseModel.FK_Hutang_Nota1">
+            <End Role="nota" EntitySet="nota" />
+            <End Role="hutang1" EntitySet="hutangSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Nota_Detail_Product">
+          <End Type="DatabaseModel.product" Role="product" Multiplicity="0..1" />
+          <End Type="DatabaseModel.nota_detail" Role="nota_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="nota_detail">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="hutang">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="nota_id" Type="Int32" Nullable="false" />
+          <Property Name="debtor_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="debtor_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="debtor_phone_number" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="debtor_address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="debtor_deadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="debt_reminder_frequency" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="nota" Relationship="DatabaseModel.FK_Hutang_Nota1" FromRole="hutang1" ToRole="nota" />
+        </EntityType>
+        <Association Name="FK_Hutang_Nota1">
+          <End Type="DatabaseModel.nota" Role="nota" Multiplicity="1" />
+          <End Type="DatabaseModel.hutang" Role="hutang1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="nota">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="hutang1">
+              <PropertyRef Name="nota_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities">
+          <EntitySetMapping Name="employee">
+            <EntityTypeMapping TypeName="DatabaseModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="employee_name" ColumnName="employee_name" />
+                <ScalarProperty Name="employee_phone_number" ColumnName="employee_phone_number" />
+                <ScalarProperty Name="employee_address" ColumnName="employee_address" />
+                <ScalarProperty Name="employee_description" ColumnName="employee_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="nota">
+            <EntityTypeMapping TypeName="DatabaseModel.nota">
+              <MappingFragment StoreEntitySet="nota">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+                <ScalarProperty Name="buyer_phone_number" ColumnName="buyer_phone_number" />
+                <ScalarProperty Name="buy_date" ColumnName="buy_date" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="total_price" ColumnName="total_price" />
+                <ScalarProperty Name="total_payment" ColumnName="total_payment" />
+                <ScalarProperty Name="payment_method" ColumnName="payment_method" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="nota_detail">
+            <EntityTypeMapping TypeName="DatabaseModel.nota_detail">
+              <MappingFragment StoreEntitySet="nota_detail">
+                <ScalarProperty Name="product_quantity" ColumnName="product_quantity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nota_id" ColumnName="nota_id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_price" ColumnName="product_price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="product">
+            <EntityTypeMapping TypeName="DatabaseModel.product">
+              <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_price" ColumnName="product_price" />
+                <ScalarProperty Name="product_stock" ColumnName="product_stock" />
+                <ScalarProperty Name="product_description" ColumnName="product_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="DatabaseModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hutangSet">
+            <EntityTypeMapping TypeName="DatabaseModel.hutang">
+              <MappingFragment StoreEntitySet="hutang">
+                <ScalarProperty Name="debt_reminder_frequency" ColumnName="debt_reminder_frequency" />
+                <ScalarProperty Name="debtor_deadline" ColumnName="debtor_deadline" />
+                <ScalarProperty Name="debtor_address" ColumnName="debtor_address" />
+                <ScalarProperty Name="debtor_phone_number" ColumnName="debtor_phone_number" />
+                <ScalarProperty Name="debtor_email" ColumnName="debtor_email" />
+                <ScalarProperty Name="debtor_name" ColumnName="debtor_name" />
+                <ScalarProperty Name="nota_id" ColumnName="nota_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

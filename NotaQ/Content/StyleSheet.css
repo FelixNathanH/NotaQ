@@ -1,0 +1,563 @@
+﻿﻿ /*Kapan kapan gua rapiin*/
+* {
+    box-sizing: border-box;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*Header Part*/
+.header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 100px;
+    background-color: #69D3EA;
+}
+
+.header_left {
+    width: 25%;
+}
+
+.header_left_logo {
+    margin-top: 5px;
+    width: 190px;
+    height: 60px;
+}
+
+.header_right_logo {
+    width: 0px;
+    height: 0px;
+}
+
+.header_middle {
+    display: flex;
+    justify-content: center;
+}
+
+    .header_middle a {
+        padding: 15px 60px 15px 60px;
+        transition: all 0.3s ease 0s;
+        background-color: #D1D1D1;
+        border-radius: 10px;
+        font-family: 'Trebuchet MS';
+        color: white;
+        text-align: center;
+        margin-right: 20px;
+        font-size: 24px;
+        max-height: 75px;
+        text-decoration: none;
+    }
+
+    .header_middle .selected {
+        background-color: #26C3E5;
+    }
+
+    .header_middle a:hover {
+        color: #0088a9;
+        cursor: pointer;
+    }
+
+.header_right {
+    width: 25%;
+    justify-content: flex-end;
+    display: flex;
+}
+
+    .header_right a {
+        font-family: 'Trebuchet MS';
+        color: white;
+        margin-left: 20px;
+        padding: 0px 20px;
+        transition: all 0.3s ease 0s;
+        font-size: 32px;
+    }
+
+
+/*Second Header*/
+.second_header {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 0px 10%;
+    background-color: white;
+    justify-content: space-evenly;
+}
+
+    .second_header a:hover {
+        color: #0088a9;
+        cursor: pointer;
+    }
+
+    .second_header a {
+        margin-left: 6%;
+        padding: 10px 4% 10px 4%;
+        transition: all 0.3s ease 0s;
+        background-color: #D1D1D1;
+        border-radius: 10px;
+        font-family: 'Trebuchet MS';
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .second_header .selected {
+        background-color: #69D3EA
+    }
+
+
+/*Make Nota Stuff*/
+.MakeNota_middle_frame {
+    width: 1200px;
+    height: 1200px;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #9DE6F6;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.MakeNota_middle_item {
+    display: flex;
+    flex-direction: column;
+    padding: 3% 15%;
+}
+
+    .MakeNota_middle_item label {
+        font-family: 'Trebuchet MS';
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .MakeNota_middle_item input {
+        height: 40px;
+    }
+
+        .MakeNota_middle_item input[type=text] {
+            padding: 12px 20px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .MakeNota_middle_item input::placeholder {
+            font-weight: bold;
+            color: #949494;
+        }
+
+.MakeNota_tambahProduk_frame, .MakeNota_kirimNota_frame {
+    height: 45px;
+    display: flex;
+    width: 50%;
+    margin-top: 20px;
+    background-color: #D1D1D1;
+    color: white;
+    font-size: 48px;
+    align-items: center;
+    vertical-align: middle;
+    padding: 0% 20px;
+}
+
+.MakeNota_tambahProduk_button, .MakeNota_kirimNota_button {
+    font-family: 'Trebuchet MS';
+    text-align: left;
+    font-size: 24px;
+    color: white;
+    background-color: #D1D1D1;
+    padding-left: 20px;
+}
+
+.MakeNota_total_harga, .MakeNota_pembayaran {
+    width: 70%;
+    background-color: #66D5ED;
+    border-radius: 4px;
+    padding: 12px 20px;
+    margin: 8px 0;
+}
+
+.MakeNota_pembayaran {
+    background-color: white;
+}
+
+.MakeNota_lunas {
+    width: 20%;
+    background-color: white;
+    border-radius: 4px;
+    margin: 7px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.MakeNota_kirimNota_frame {
+    height: 50px;
+    width: 65%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.MakeNota_kirimNota_button {
+    font-size: 36px;
+    margin: auto;
+    padding: 0px 0px;
+}
+
+
+/*Pengaturan Penghutang & Item List Top*/
+.middle_storage_frame {
+    width: 1200px;
+    height: 600px;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #9DE6F6;
+}
+
+    .middle_storage_frame label {
+        font-family: 'Trebuchet MS';
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+
+/*Pengaturan Penghutang Stuff*/
+.debtor_setting, .debtor_item_data {
+    display: flex;
+    flex-direction: column;
+    padding: 3% 15%;
+}
+
+.filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.urutkan, .search {
+    font-family: 'Trebuchet MS';
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    width: 30%;
+    padding: 8px 8px 8px 8px;
+    background-color: #D1D1D1;
+    border-radius: 6px;
+    margin: 8px 0;
+    border: solid;
+}
+
+.search {
+    width: 50%;
+    background-color: #ECE9E9;
+}
+
+.debtor_limit {
+    display: flex;
+}
+
+.debtor_limit_days, .debtor_limit_reminder, .debtor_limit_frequency {
+    background-color: #69D3EA;
+    border-radius: 10px;
+    font-family: 'Trebuchet MS';
+    color: black;
+    text-align: center;
+    margin-right: 10px;
+    padding: 10px 15px 10px 15px;
+}
+
+.debtor_limit_frequency {
+    margin-top: 8px;
+    width: 60%;
+    text-align: left;
+}
+
+.debtor_input {
+    height: 25px;
+    width: 25px;
+    border-radius: 8px;
+}
+
+.debtor_item {
+    margin-top: 20px;
+    display: flex;
+}
+
+.debtor_item_frame {
+    background-color: white;
+    width: 650px;
+    height: 200px;
+}
+
+.debtor_item_numbering {
+    margin-right: 30px;
+    background-color: white;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.debtor_item_data {
+    display: flex;
+    flex-direction: column;
+    padding: 3% 5%;
+}
+
+    .debtor_item_data label {
+        font-family: 'Trebuchet MS';
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+.debtor_action {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 30px;
+}
+
+.debtor_logo_pengingat, .debtor_logo_bayar {
+    display: flex;
+    width: 200px;
+    height: 80px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+    .debtor_logo_pengingat label, .debtor_logo_bayar label {
+        display: flex;
+        margin-left: 15px;
+        justify-content: center;
+        align-items: center;
+    }
+
+.pengingat, .bayar {
+    margin-left: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+}
+
+.debtor_middle {
+    display: flex;
+    flex-direction: column;
+}
+
+/*Item List Stuff*/
+.product_setting {
+    display: flex;
+    flex-direction: column;
+    padding: 3% 15%;
+}
+
+.produk_outside {
+    display: flex;
+    margin-top: 20px;
+}
+
+.produk_inside {
+    background-color: white;
+    width: 600px;
+    height: 90px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5% 4%;
+}
+
+    .produk_inside label {
+        font-family: 'Trebuchet MS';
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+.ItemList_tambahProduk_frame {
+    height: 45px;
+    display: flex;
+    width: 50%;
+    margin-top: 20px;
+    background-color: #D1D1D1;
+    color: white;
+    font-size: 48px;
+    align-items: center;
+    vertical-align: middle;
+    padding: 0% 20px;
+}
+
+.ItemList_tambahProduk_button {
+    font-family: 'Trebuchet MS';
+    text-align: left;
+    font-size: 24px;
+    color: white;
+    background-color: #D1D1D1;
+    padding-left: 20px;
+}
+
+.trash {
+    display: flex;
+    width: 100px;
+    height: 90px;
+    justify-content: center;
+    align-items: center;
+    font-size: 52px;
+}
+
+
+/*Register Stuff*/
+.register_frame {
+    background-color: lightblue;
+    height: 950px;
+}
+
+.register_logo {
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    margin: auto;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.register_form {
+    height: 550px;
+    width: 1200px;
+    display: flex;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.left_profile, .right_profile {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    background-color: #69D3EA;
+    align-items: center;
+    padding-top: 20px;
+}
+
+    .left_profile label {
+        font-family: 'Trebuchet MS';
+        font-size: 36px;
+        color: white;
+    }
+
+.register_button {
+    height: 45px;
+    width: 200px;
+    display: flex;
+    margin-top: 10px;
+    background-color: #9DE6F6;
+}
+
+    .register_button label {
+        font-family: 'Trebuchet MS';
+        font-size: 36px;
+        color: white;
+        padding-left: 5px;
+    }
+
+.unggah_foto {
+    font-family: 'Trebuchet MS';
+    text-align: left;
+    font-size: 18px;
+    background-color: #9DE6F6;
+    color: white;
+    padding-left: 15px;
+}
+
+.big_logo {
+    width: 425px;
+    height: 175px;
+}
+
+.profile_logo {
+    width: 250px;
+    height: 250px;
+    background-color: grey;
+}
+
+.make_account {
+    width: 200px;
+    height: 80px;
+    background-color: #9DE6F6;
+    margin-top: 80px;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    border-radius: 12px;
+}
+
+.right_profile {
+    width: 70%;
+    background-color: white;
+    align-items: baseline;
+}
+
+    .right_profile label {
+        font-family: 'Trebuchet MS';
+        font-size: 24px;
+        font-weight: bold;
+        color: #69D3EA;
+        padding-top: 10px;
+        margin-left: 70px;
+    }
+
+    .right_profile input[type=text] {
+        width: 80%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+    }
+
+
+/*InfoNota stuff*/
+.info_main_frame {
+    width: 1200px;
+    height: 600px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info_frame {
+    width: 100%;
+    padding: 5px 7px 5px 7px;
+    margin: 4px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: 'Trebuchet MS';
+    font-size: 18px;
+    background-color: #9DE6F6;
+}
+
+.info_top, .info_middle, .info_title {
+    display: flex;
+    flex-direction: column;
+}
+
+.info_title, .info_label, .divide {
+    padding: 1px 12px;
+    margin: 2px 0px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+.info_label {
+    padding: 0px 10px;
+}
+
+.info_catatan {
+    width: 100%;
+    height: 60px;
+}
