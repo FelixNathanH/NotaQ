@@ -39,13 +39,7 @@
                 <label>Produk Dibeli :</label>
                 <input type="text" placeholder="Produk 1" />
                 <input type="text" placeholder="Jumlah Produk 1" />
-                <!-- Produk Lain -->
-                <input type="text" placeholder="Produk 2" />
-                <input type="text" placeholder="Jumlah Produk 2" />
-                <div class ="MakeNota_tambahProduk_frame">
-                    <label>+</label>
-                    <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" class="MakeNota_tambahProduk_button"/>
-                </div>
+                 <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" class="MakeNota_tambahProduk_button"/>
                 <label class ="MakeNota_total_harga">Total Harga: Rp.-</label>
                 <!-- Kasih Box disini -->
                 <label>Pembayaran Dipilih :</label>
