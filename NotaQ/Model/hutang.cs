@@ -22,6 +22,7 @@ namespace NotaQ.Model
         public string debtor_address { get; set; }
         public System.DateTime debtor_deadline { get; set; }
         public int debt_reminder_frequency { get; set; }
+        public int debt_total { get; set; }
     
         public virtual nota nota { get; set; }
     }

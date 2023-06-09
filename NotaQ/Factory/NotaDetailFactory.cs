@@ -8,7 +8,7 @@ namespace NotaQ.Factory
 {
     public class NotaDetailFactory
     {
-        public nota_detail CreateNotaDetail(int id, int nota_id, int product_id, string product_name, int product_price)
+        public nota_detail createNotaDetail(int id, int nota_id, int product_id, string product_name, int product_price)
         {
             nota_detail newNotaDetail = new nota_detail();
             newNotaDetail.Id = id;

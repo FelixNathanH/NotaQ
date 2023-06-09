@@ -8,7 +8,7 @@ namespace NotaQ.Factory
 {
     public class UserFactory
     {
-        public user CreateUser(int id, string name, string email, string phoneNumber, string password)
+        public user createUser(int id, string name, string email, string phoneNumber, string password)
         {
             user newUser = new user();
             newUser.Id = id;

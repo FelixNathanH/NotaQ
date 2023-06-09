@@ -8,7 +8,7 @@ namespace NotaQ.Factory
 {
     public class ProductFactory
     {
-        public product CreateProduct(int id, string product_name, int product_price, int product_stock, string product_description)
+        public product createProduct(int id, string product_name, int product_price, int product_stock, string product_description)
         {
             product newProduct = new product();
             newProduct.Id = id;

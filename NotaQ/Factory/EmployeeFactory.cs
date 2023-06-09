@@ -8,7 +8,7 @@ namespace NotaQ.Factory
 {
     public class EmployeeFactory
     {
-        public employee CreateEmployee(int id, string employee_name, string employee_phone_number, string employee_address, string employee_description)
+        public employee createEmployee(int id, string employee_name, string employee_phone_number, string employee_address, string employee_description)
         {
             employee newEmployee = new employee();
             newEmployee.Id = id;

@@ -3,6 +3,63 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <style>
+            .gridviewList {
+                 margin-top: 20px;
+             }
+
+            #GridViewUtang {
+              width: 100%;
+              border-collapse: collapse;
+              border: 1px solid #ddd;
+            }
+
+            #GridViewUtang th,
+            #GridViewUtang td {
+              padding: 8px;
+              border: 1px solid #ddd;
+            }
+
+            #GridViewUtang th {
+              background-color: #f2f2f2;
+              font-weight: bold;
+              text-align: left;
+            }
+
+            #GridViewUtang tr {
+              background-color: white;
+            }
+
+            .debtor_logo_pengingat,
+            .debtor_logo_bayar {
+              display: flex;
+              align-items: center;
+            }
+
+            .debtor_logo_pengingat:hover,
+            .debtor_logo_bayar:hover {
+              background-color:lightgrey;
+            }
+
+            .pengingat,
+            .bayar {
+              margin-right: 5px;
+            }
+
+            .editButton,
+            .deleteButton {
+              text-decoration: none;
+              color: #333;
+              font-weight: bold;
+            }
+
+            .editButton:hover,
+            .deleteButton:hover {
+              text-decoration: underline;
+            }
+
+        </style>
+
         <title>Pengaturan Penghutang</title>
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -11,6 +68,8 @@
         <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     </head>
     <body>
+
+        <%--Header--%> 
        <div class ="header">
             <div class="header_left">
                 <img src="NotaQ.png" alt="logo" class ="header_left_logo" />
@@ -24,62 +83,71 @@
                 <a>Sinar Maju</a>
             </div>
         </div>
+
+        <%--2nd Header--%> 
         <div class ="second_header">
             <a href ="InfoNota.aspx">Info Nota</a>
             <a href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
             <a class ="selected" href ="Pengaturan Penghutang.aspx">Pengaturan Penghutang</a>
         </div>
+
+        <%--Content--%> 
         <div class ="middle_storage_frame">
             <form runat="server" class="debtor_setting">
+
+                <%--Filter--%> 
                 <div class="filter">
-                    <asp:Button ID="urutkan" runat="server" Text="Urutkan" class ="urutkan"/>
-                    <input type="text" placeholder="Cari" class ="search"/>
+                    <asp:Button ID="urutkan" runat="server" Text="Urutkan" class ="urutkan" OnClick="urutkan_Click"/>
+                    <%--<input type="text" placeholder="Cari" class ="search"/>--%>
+                    <asp:TextBox ID="search" runat="server" Text="Cari" class="search" OnTextChanged="search_TextChanged1" AutoPostBack="True"></asp:TextBox>
                 </div>
+
+                <%--Limit Utang--%> 
                 <div class="debtor_limit">
                     <div class ="debtor_limit_days">
-                        <label>Batas Hutang: </label>
-                        <input type="text" placeholder="7" class="debtor_input" />
+                        <label>Batas Hutang:  </label>
+                        <asp:TextBox ID="batasutang" runat="server" Text="7" class="debtor_input"></asp:TextBox>
                         <label> Hari</label>
                     </div>
-                    <div class ="debtor_limit_reminder">
-                        <label>Diingatkan: </label>
-                        <input type="text" placeholder="3" class="debtor_input"/>
-                        <label> Sebelum Batas</label>
-                    </div>
                 </div>
+
+                <%--Frekuensi limit--%> 
                 <div class ="debtor_limit_frequency">
                     <label>Frekuensi Pengingat: </label>
-                    <input type="text" placeholder="1" class="debtor_input"/>
-                    <label> kali setiap  </label>
-                    <input type="text" placeholder="1" class="debtor_input"/>
-                    <label> hari</label>
+                    <asp:TextBox ID="frekuensipengingat" runat="server" Text="1" class="debtor_input"></asp:TextBox>
+                    <label> kali </label>
                 </div>
-                <div class="debtor_middle">
-                    <div class="debtor_item">
-                        <label class="debtor_item_numbering">1</label>
-                        <div class="debtor_item_frame">
-                            <div class="debtor_item_data">
-                                <label>Nama: Andi S</label>
-                                <label>Alamat: Jl. Pajak Utama,Jurang Manggu 15155</label>
-                                <label>Jumlah Hutang: Rp.20.000</label>
-                                <label>Sudah Dibayar: Rp.0</label>
-                                <label>Tanggal Pembelian: 5/3/2023</label>
-                                <label>Batas Pembayaran Hutang: 12/3/2023</label>
-                            </div>
-                        </div>
-                        <div class="debtor_action">
-                            <div class="debtor_logo_pengingat">
-                                <iconify-icon icon="mdi:bell-badge" style="color: green;" class ="pengingat"></iconify-icon>
-                                <label>Pengingat</label>
-                            </div>
-                            <div class="debtor_logo_bayar">
-                                <iconify-icon icon="ph:money-bold" style="color: red;" class ="bayar"></iconify-icon>
-                                <label>Bayar</label>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
+                <%--Grid--%>
+                <div class="gridviewList">
+                    <asp:GridView ID="GridViewUtang" runat="server" AutoGenerateColumns="False" OnRowEditing="GridViewUtang_RowEditing" OnRowDeleting="GridViewUtang_RowDeleting" >
+                    <Columns>
+                        <asp:BoundField DataField="Id" HeaderText="ID" SortExpression="Id" />
+                        <asp:BoundField DataField="debtor_name" HeaderText="Name" SortExpression="debtor_name" />
+                        <asp:BoundField DataField="debtor_address" HeaderText="Address" SortExpression="debtor_address" />
+                        <asp:BoundField DataField="debt_total" HeaderText="Jumlah Utang" SortExpression="debt_total" />
+                        <asp:BoundField DataField="debtor_deadline" HeaderText="Batas Pembayaran Utang" SortExpression="debtor_deadline" />
+                        <%--<asp:BoundField DataField="debt_reminder_frequency" HeaderText="Jumlah Utang" SortExpression="debt_reminder_frequency" />--%>
+                       
+                        <%--<asp:CommandField HeaderText="ACTION" ShowDeleteButton="True" ShowEditButton="True" ShowHeader="True" DeleteText="Bayar" EditText="Pengigat"/>--%>
+
+                         <asp:TemplateField HeaderText="ACTION">
+                            <ItemTemplate>
+                                     <div class="debtor_logo_pengingat">
+                                         <iconify-icon icon="mdi:bell-badge" style="color: green;" class ="pengingat"></iconify-icon>
+                                         <asp:LinkButton ID="btnEdit" runat="server" CommandName="Edit" Text="Pengingat" CssClass="editButton" Font-Underline="false" Font-Size="Large"/>
+                                    </div>
+
+                                     <div class="debtor_logo_bayar">
+                                         <iconify-icon icon="ph:money-bold" style="color: red;" class ="bayar"></iconify-icon>
+                                         <asp:LinkButton ID="btnDelete" runat="server" CommandName="Delete" Text="Bayar" CssClass="deleteButton" Font-Underline="false" Font-Size="Large"/>
+                                    </div>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                    </Columns>  
+                </asp:GridView>
+               </div>
             </form>
         </div>
     </body>

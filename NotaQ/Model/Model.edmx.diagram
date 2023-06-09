@@ -13,8 +13,8 @@
         <AssociationConnector Association="DatabaseModel.FK_Nota_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="DatabaseModel.FK_Nota_Detail_Nota" ManuallyRouted="false" />
         <AssociationConnector Association="DatabaseModel.FK_Nota_Detail_Product" />
-        <EntityTypeShape EntityType="DatabaseModel.hutang" Width="1.5" PointX="5" PointY="0.625" />
-        <AssociationConnector Association="DatabaseModel.FK_Hutang_Nota1" />
+        <EntityTypeShape EntityType="DatabaseModel.hutang" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="DatabaseModel.FK_Hutang_Nota" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

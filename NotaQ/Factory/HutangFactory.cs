@@ -8,7 +8,7 @@ namespace NotaQ.Factory
 {
     public class HutangFactory
     {
-        public hutang CreateHutang(int id, int nota_id, string debtor_name, string debtor_email, string debtor_phone_number, string debtor_address, DateTime debtor_deadline, int debt_reminder_frequency)
+        public hutang createHutang(int id, int nota_id, string debtor_name, string debtor_email, string debtor_phone_number, string debtor_address, DateTime debtor_deadline, int debt_reminder_frequency)
         {
             hutang newHutang = new hutang();
             newHutang.Id = id;

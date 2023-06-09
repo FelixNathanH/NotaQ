@@ -24,9 +24,10 @@
           <Property Name="debtor_name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="debtor_email" Type="varchar" MaxLength="50" />
           <Property Name="debtor_phone_number" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="debtor_address" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="debtor_address" Type="varchar" MaxLength="200" />
           <Property Name="debtor_deadline" Type="datetime" Nullable="false" />
           <Property Name="debt_reminder_frequency" Type="int" Nullable="false" />
+          <Property Name="debt_total" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="nota">
           <Key>
@@ -173,7 +174,7 @@
           <Property Name="payment_method" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="employee" Relationship="Self.FK_Nota_Employee" FromRole="nota" ToRole="employee" />
           <NavigationProperty Name="nota_detail" Relationship="Self.FK_Nota_Detail_Nota" FromRole="nota" ToRole="nota_detail" />
-          <NavigationProperty Name="hutang" Relationship="DatabaseModel.FK_Hutang_Nota1" FromRole="nota" ToRole="hutang1" />
+          <NavigationProperty Name="hutang" Relationship="DatabaseModel.FK_Hutang_Nota" FromRole="nota" ToRole="hutang" />
         </EntityType>
         <EntityType Name="nota_detail">
           <Key>
@@ -251,10 +252,10 @@
             <End Role="product" EntitySet="product" />
             <End Role="nota_detail" EntitySet="nota_detail" />
           </AssociationSet>
-          <EntitySet Name="hutangSet" EntityType="DatabaseModel.hutang" />
-          <AssociationSet Name="FK_Hutang_Nota1" Association="DatabaseModel.FK_Hutang_Nota1">
+          <EntitySet Name="hutang" EntityType="DatabaseModel.hutang" />
+          <AssociationSet Name="FK_Hutang_Nota" Association="DatabaseModel.FK_Hutang_Nota">
             <End Role="nota" EntitySet="nota" />
-            <End Role="hutang1" EntitySet="hutangSet" />
+            <End Role="hutang" EntitySet="hutang" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Nota_Detail_Product">
@@ -278,19 +279,20 @@
           <Property Name="debtor_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="debtor_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="debtor_phone_number" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="debtor_address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="debtor_address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="debtor_deadline" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="debt_reminder_frequency" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="nota" Relationship="DatabaseModel.FK_Hutang_Nota1" FromRole="hutang1" ToRole="nota" />
+          <Property Name="debt_total" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="nota" Relationship="DatabaseModel.FK_Hutang_Nota" FromRole="hutang" ToRole="nota" />
         </EntityType>
-        <Association Name="FK_Hutang_Nota1">
+        <Association Name="FK_Hutang_Nota">
           <End Type="DatabaseModel.nota" Role="nota" Multiplicity="1" />
-          <End Type="DatabaseModel.hutang" Role="hutang1" Multiplicity="*" />
+          <End Type="DatabaseModel.hutang" Role="hutang" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="nota">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="hutang1">
+            <Dependent Role="hutang">
               <PropertyRef Name="nota_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -360,9 +362,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="hutangSet">
+          <EntitySetMapping Name="hutang">
             <EntityTypeMapping TypeName="DatabaseModel.hutang">
               <MappingFragment StoreEntitySet="hutang">
+                <ScalarProperty Name="debt_total" ColumnName="debt_total" />
                 <ScalarProperty Name="debt_reminder_frequency" ColumnName="debt_reminder_frequency" />
                 <ScalarProperty Name="debtor_deadline" ColumnName="debtor_deadline" />
                 <ScalarProperty Name="debtor_address" ColumnName="debtor_address" />
