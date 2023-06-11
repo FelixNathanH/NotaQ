@@ -18,8 +18,8 @@ namespace NotaQ.View
                 string jumlah = (string)Session["jumlah"];
 
                 // Mengatur nilai input di halaman
-                produkInput.Value = produk;
-                jumlahInput.Value = jumlah;
+                //produkInput.Value = produk;
+                //jumlahInput.Value = jumlah;
             }
         }
 
