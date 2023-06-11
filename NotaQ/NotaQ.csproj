@@ -120,6 +120,7 @@
     <Compile Include="Factory\NotaDetailFactory.cs" />
     <Compile Include="Factory\NotaFactory.cs" />
     <Compile Include="Factory\ProductFactory.cs" />
+    <Compile Include="Factory\TestFactory.cs" />
     <Compile Include="Factory\UserFactory.cs" />
     <Compile Include="Model\employee.cs">
       <DependentUpon>Model.tt</DependentUpon>
