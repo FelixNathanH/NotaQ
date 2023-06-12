@@ -115,7 +115,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factory\EmployeeFactory.cs" />
     <Compile Include="Factory\HutangFactory.cs" />
     <Compile Include="Factory\NotaDetailFactory.cs" />
     <Compile Include="Factory\NotaFactory.cs" />
@@ -156,7 +155,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DatabaseSingleton.cs" />
-    <Compile Include="Repository\EmployeeRepo.cs" />
     <Compile Include="Repository\HutangRepo.cs" />
     <Compile Include="Repository\NotaRepo.cs" />
     <Compile Include="Repository\NotaDetailRepo.cs" />
