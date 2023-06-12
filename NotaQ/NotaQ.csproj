@@ -121,9 +121,6 @@
     <Compile Include="Factory\NotaFactory.cs" />
     <Compile Include="Factory\ProductFactory.cs" />
     <Compile Include="Factory\UserFactory.cs" />
-    <Compile Include="Model\employee.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\hutang.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -152,6 +149,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\user.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\user_related.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

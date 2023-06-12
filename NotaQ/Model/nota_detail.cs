@@ -21,7 +21,7 @@ namespace NotaQ.Model
         public int product_price { get; set; }
         public int product_quantity { get; set; }
     
-        public virtual nota nota { get; set; }
         public virtual product product { get; set; }
+        public virtual nota nota { get; set; }
     }
 }

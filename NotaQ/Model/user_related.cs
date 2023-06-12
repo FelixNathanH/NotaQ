@@ -12,20 +12,11 @@ namespace NotaQ.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class hutang
+    public partial class user_related
     {
         public int Id { get; set; }
-        public int nota_id { get; set; }
-        public string debtor_name { get; set; }
-        public string debtor_email { get; set; }
-        public string debtor_phone_number { get; set; }
-        public string debtor_address { get; set; }
-        public System.DateTime debtor_deadline { get; set; }
-        public int debt_reminder_frequency { get; set; }
-        public int debt_total { get; set; }
         public int user_id { get; set; }
     
         public virtual user user { get; set; }
-        public virtual nota nota { get; set; }
     }
 }

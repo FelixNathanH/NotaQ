@@ -17,23 +17,24 @@ namespace NotaQ.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public nota()
         {
-            this.nota_detail = new HashSet<nota_detail>();
             this.hutang = new HashSet<hutang>();
+            this.nota_detail = new HashSet<nota_detail>();
         }
     
         public int Id { get; set; }
         public string buyer_name { get; set; }
         public string buyer_phone_number { get; set; }
         public System.DateTime buy_date { get; set; }
-        public Nullable<int> employee_id { get; set; }
+        public string employee_name { get; set; }
         public int total_price { get; set; }
         public int total_payment { get; set; }
         public string payment_method { get; set; }
+        public int user_id { get; set; }
     
-        public virtual employee employee { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<nota_detail> nota_detail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<hutang> hutang { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<nota_detail> nota_detail { get; set; }
+        public virtual user user { get; set; }
     }
 }

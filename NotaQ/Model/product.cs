@@ -25,8 +25,10 @@ namespace NotaQ.Model
         public int product_price { get; set; }
         public Nullable<int> product_stock { get; set; }
         public string product_description { get; set; }
+        public int user_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<nota_detail> nota_detail { get; set; }
+        public virtual user user { get; set; }
     }
 }

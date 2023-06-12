@@ -25,11 +25,11 @@ namespace NotaQ.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<employee> employee { get; set; }
-        public virtual DbSet<nota> nota { get; set; }
         public virtual DbSet<nota_detail> nota_detail { get; set; }
         public virtual DbSet<product> product { get; set; }
         public virtual DbSet<user> user { get; set; }
         public virtual DbSet<hutang> hutang { get; set; }
+        public virtual DbSet<user_related> user_related { get; set; }
+        public virtual DbSet<nota> nota { get; set; }
     }
 }
