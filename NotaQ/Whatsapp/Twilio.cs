@@ -27,5 +27,24 @@ namespace NotaQ.Whatsapp
             Console.WriteLine(message.Body);
         }
 
+
+
+        public static void SendNota(string phone, string messages)
+        {
+            string PhoneNum = "whatsapp:" + phone;
+            var accountSid = "ACac3d89fa0ece8bad6daab30946ebb4ba";
+            var authToken = "908c2de9e087c3897b4db82bb8a6b134";
+            TwilioClient.Init(accountSid, authToken);
+
+            var messageOptions = new CreateMessageOptions(
+              new PhoneNumber(PhoneNum));
+            messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
+            messageOptions.Body = messages;
+
+
+            var message = MessageResource.Create(messageOptions);
+            Console.WriteLine(message.Body);
+        }
+
     }
 }

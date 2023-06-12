@@ -30,5 +30,11 @@ namespace NotaQ.Repository
         {
             return db.product.FirstOrDefault(p => p.product_name.Contains(productName));
         }
+
+        public static product SearchProductById(int productId)
+        {
+            return db.product.FirstOrDefault(p => p.Id == productId);
+        }
+
     }
 }

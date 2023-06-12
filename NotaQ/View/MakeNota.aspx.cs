@@ -20,19 +20,12 @@ namespace NotaQ.View
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            TableRepeater.DataSource = CartRepo.GetCart();
+                TableRepeater.DataSource = CartRepo.GetCart();
             TableRepeater.DataBind();
-
+            
             
             buyDate.Text = waktu.ToString();
 
-            if (ViewState["BuyerName"] != null)
-            {
-                buyer.Text = ViewState["BuyerName"].ToString();
-                buyerAddress.Text = ViewState["BuyerAddress"].ToString();
-                buyerPhone.Text = ViewState["BuyerPhone"].ToString();
-                buyerAssistant.Text = ViewState["BuyerAssitant"].ToString();
-            }
         }
 
         protected void DeleteLinkBtn_Click(object sender, EventArgs e)
@@ -43,10 +36,7 @@ namespace NotaQ.View
             CartRepo.DeleteCart(cartId);
 
 
-            ViewState["BuyerName"] = buyer.Text;
-            ViewState["BuyerPhone"] = buyerPhone;
-            ViewState["BuyerAddress"] = buyerAddress;
-            ViewState["BuyerAssitant"] = buyerAssistant;
+            
             Response.Redirect(Request.RawUrl);
         }
 
@@ -98,11 +88,15 @@ namespace NotaQ.View
             }
             CartRepo.AddCart(newCart);
 
+            int total=0;
+            List<cart> cartList = CartRepo.GetCart();
+            
+            foreach (cart x in cartList)
+            {
+                total += x.cart_product_price;
+            }
 
-            ViewState["BuyerName"] = buyer.Text;
-            ViewState["BuyerPhone"] = buyerPhone;
-            ViewState["BuyerAddress"] = buyerAddress;
-            ViewState["BuyerAssitant"] = buyerAssistant;
+            
             Response.Redirect(Request.RawUrl);
             found = false;
         }
@@ -120,20 +114,33 @@ namespace NotaQ.View
             string buyerPhn = buyerPhone.Text;
             string buyerAssist = buyerAssistant.Text;
             string payMethod = Request.Form["pembayaran"];
-            int payed = int.Parse(payment.Text);
-            nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, sum, payed, payMethod,1);
+            int paid = int.Parse(payment.Text);
+            nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, sum, paid, payMethod,1);
             NotaRepo.AddNota(newNota);
 
             foreach (cart x in cartList)
             {
                 int cartProductId = x.cart_product_id ?? 0;
                 nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
+                if(x.cart_product_id != null)
+                {
+                    product z = ProductRepo.SearchProductById(cartProductId);
+                    z.product_stock -= x.cart_product_quantity;
+                }
             }
+
+            string messages = buyerNm + buyerAssist + sum + paid + payMethod;
+            string cleanNum = buyerPhn.TrimStart('0');
+            string phoneNumber = "+62" + cleanNum;
+            Whatsapp.Twilio.SendNota(phoneNumber, messages);
+
             foreach (cart x in cartList)
             {
                 CartRepo.DeleteAllCart(x.Id);
             }
-            
+
+
+
         }
     }
 }

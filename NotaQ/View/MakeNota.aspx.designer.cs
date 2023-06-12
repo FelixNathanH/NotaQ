@@ -42,15 +42,6 @@ namespace NotaQ.View
         protected global::System.Web.UI.WebControls.TextBox buyerPhone;
 
         /// <summary>
-        /// buyerAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox buyerAddress;
-
-        /// <summary>
         /// buyerAssistant control.
         /// </summary>
         /// <remarks>
@@ -139,6 +130,15 @@ namespace NotaQ.View
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button tambah_produk;
+
+        /// <summary>
+        /// totalLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label totalLbl;
 
         /// <summary>
         /// lunas_box control.

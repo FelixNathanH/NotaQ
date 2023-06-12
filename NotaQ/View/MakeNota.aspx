@@ -32,8 +32,6 @@
                 <asp:TextBox ID="buyer" runat="server" placeholder="Nama Pembeli"></asp:TextBox>
                 <label>Nomor Telepon Pembeli :</label>
                 <asp:TextBox ID="buyerPhone" runat="server" placeholder="Nomor Pembeli"></asp:TextBox>
-                <label>Alamat Pembeli :</label>
-                <asp:TextBox ID="buyerAddress" runat="server" placeholder="Alamat pembeli"></asp:TextBox>
                 <label>Dilayani Oleh :</label>
                 <asp:TextBox ID="buyerAssistant" runat="server" placeholder="pelayan"></asp:TextBox>
                 <label>Produk Dibeli :</label>
@@ -83,7 +81,7 @@
 
 
 
-                <label class ="MakeNota_total_harga">Total Harga: Rp.-</label>
+                <asp:Label class ="MakeNota_total_harga" ID="totalLbl" runat="server" Text="Rp."></asp:Label>
                 <!-- Kasih Box disini -->
                 <label>Pembayaran Dipilih :</label>
                 <select name="pembayaran" class="MakeNota_pembayaran">
