@@ -31,5 +31,6 @@ namespace NotaQ.Model
         public virtual DbSet<hutang> hutang { get; set; }
         public virtual DbSet<user_related> user_related { get; set; }
         public virtual DbSet<nota> nota { get; set; }
+        public virtual DbSet<cart> cart { get; set; }
     }
 }

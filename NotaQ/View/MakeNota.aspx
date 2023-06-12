@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" type="text/css" href="../Content/StyleSheet.css"/>
         <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    </head>
+     </head>
     <body>
           <div class ="header">
             <div class="header_left">
@@ -37,9 +37,39 @@
                 <label>Dilayani Oleh :</label>
                 <input type="text" placeholder="Karyawan X" />
                 <label>Produk Dibeli :</label>
-                <input type="text" placeholder="Produk 1" />
-                <input type="text" placeholder="Jumlah Produk 1" />
-                 <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" class="MakeNota_tambahProduk_button"/>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Harga Produk</th>
+                            <th scope="col">Jumlah Dibeli</th>
+                            <th scope="col">Hapus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="TableRepeater" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td scope="row"><%# Eval("ProductName") %></td>
+                                    <td scope="row"><%# Eval("ProductPrice") %></td>
+                                    <td scope="row"><%# Eval("Quantity") %></td>
+                                    <td scope="row">
+                                        <asp:LinkButton ID="DeleteLinkBtn" runat="server" onclick="DeleteLinkBtn_Click" CommandArgument='<%#Eval("cart_id") %>' class="btn btn-outline-danger"  > Delete </asp:LinkButton>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+
+                <asp:Label ID="Label1" runat="server" Text="Produk tidak tersimpan"></asp:Label>
+                <input type="text" id="produkName" runat="server" placeholder="Nama Produk" />
+                <input type="text" id="produkprice" runat="server" placeholder="Harga Produk" />
+                <input type="text" id="jumlahProduk" runat="server" placeholder="Jumlah Produk" />
+                <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" onclick="tambah_produk_Click" class="MakeNota_tambahProduk_button" />
+
+
+
                 <label class ="MakeNota_total_harga">Total Harga: Rp.-</label>
                 <!-- Kasih Box disini -->
                 <label>Pembayaran Dipilih :</label>

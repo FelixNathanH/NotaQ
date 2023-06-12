@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="cart_product_id" Type="int" />
+          <Property Name="cart_product_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cart_product_price" Type="int" Nullable="false" />
+          <Property Name="cart_product_quantity" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="hutang">
           <Key>
             <PropertyRef Name="Id" />
@@ -158,6 +168,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DatabaseModelStoreContainer">
+          <EntitySet Name="cart" EntityType="Self.cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="hutang" EntityType="Self.hutang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="nota" EntityType="Self.nota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="nota_detail" EntityType="Self.nota_detail" Schema="dbo" store:Type="Tables" />
@@ -272,6 +283,7 @@
             <End Role="user" EntitySet="user" />
             <End Role="nota" EntitySet="nota" />
           </AssociationSet>
+          <EntitySet Name="cart" EntityType="DatabaseModel.cart" />
         </EntityContainer>
         <Association Name="FK_Nota_Detail_Product">
           <End Type="DatabaseModel.product" Role="product" Multiplicity="0..1" />
@@ -399,6 +411,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="cart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="cart_product_id" Type="Int32" />
+          <Property Name="cart_product_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cart_product_price" Type="Int32" Nullable="false" />
+          <Property Name="cart_product_quantity" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -475,6 +497,17 @@
                 <ScalarProperty Name="buy_date" ColumnName="buy_date" />
                 <ScalarProperty Name="buyer_phone_number" ColumnName="buyer_phone_number" />
                 <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cart">
+            <EntityTypeMapping TypeName="DatabaseModel.cart">
+              <MappingFragment StoreEntitySet="cart">
+                <ScalarProperty Name="cart_product_quantity" ColumnName="cart_product_quantity" />
+                <ScalarProperty Name="cart_product_price" ColumnName="cart_product_price" />
+                <ScalarProperty Name="cart_product_name" ColumnName="cart_product_name" />
+                <ScalarProperty Name="cart_product_id" ColumnName="cart_product_id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
