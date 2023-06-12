@@ -24,40 +24,58 @@ namespace NotaQ.View
         protected global::System.Web.UI.WebControls.Repeater TableRepeater;
 
         /// <summary>
-        /// Label1 control.
+        /// productNameSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.TextBox productNameSearch;
 
         /// <summary>
-        /// produkName control.
+        /// search_product control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText produkName;
+        protected global::System.Web.UI.WebControls.Button search_product;
 
         /// <summary>
-        /// produkprice control.
+        /// productError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText produkprice;
+        protected global::System.Web.UI.WebControls.Label productError;
 
         /// <summary>
-        /// jumlahProduk control.
+        /// Productname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText jumlahProduk;
+        protected global::System.Web.UI.WebControls.TextBox Productname;
+
+        /// <summary>
+        /// productPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox productPrice;
+
+        /// <summary>
+        /// productQuantity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox productQuantity;
 
         /// <summary>
         /// tambah_produk control.

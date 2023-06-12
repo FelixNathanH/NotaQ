@@ -20,5 +20,15 @@ namespace NotaQ.Repository
             db.product.Remove(product);
             db.SaveChanges();
         }
+
+        public static List<product> SearchProductsByName(string productName)
+        {
+            return db.product.Where(p => p.product_name.Contains(productName)).ToList();
+        }
+
+        public static product SearchProductByName(string productName)
+        {
+            return db.product.FirstOrDefault(p => p.product_name.Contains(productName));
+        }
     }
 }

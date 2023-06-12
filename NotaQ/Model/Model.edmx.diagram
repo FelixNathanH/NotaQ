@@ -18,7 +18,7 @@
         <AssociationConnector Association="DatabaseModel.FK_Hutang_Nota" />
         <AssociationConnector Association="DatabaseModel.FK_Nota_Detail_Nota" />
         <AssociationConnector Association="DatabaseModel.FK_Nota_User" />
-        <EntityTypeShape EntityType="DatabaseModel.cart" Width="1.5" PointX="2.375" PointY="6.875" />
+        <EntityTypeShape EntityType="DatabaseModel.cart" Width="1.5" PointX="2.5" PointY="6.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

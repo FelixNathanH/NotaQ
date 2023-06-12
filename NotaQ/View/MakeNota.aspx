@@ -62,10 +62,14 @@
                     </tbody>
                 </table>
 
-                <asp:Label ID="Label1" runat="server" Text="Produk tidak tersimpan"></asp:Label>
-                <input type="text" id="produkName" runat="server" placeholder="Nama Produk" />
-                <input type="text" id="produkprice" runat="server" placeholder="Harga Produk" />
-                <input type="text" id="jumlahProduk" runat="server" placeholder="Jumlah Produk" />
+                <asp:TextBox ID="productNameSearch" runat="server" placeholder="Masukan Nama Produk" ></asp:TextBox>
+                <asp:Button ID="search_product" runat="server" Text="Cek Produk" onclick="search_product_Click"/>
+
+
+                <asp:Label ID="productError" runat="server" Text=""></asp:Label>
+                <asp:TextBox ID="Productname" runat="server" placeholder="Nama Produk" ></asp:TextBox>
+                <asp:TextBox ID="productPrice" runat="server" placeholder="Harga Produk" ></asp:TextBox>
+                <asp:TextBox ID="productQuantity" runat="server" placeholder="Jumlah Produk" ></asp:TextBox>
                 <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" onclick="tambah_produk_Click" class="MakeNota_tambahProduk_button" />
 
 
