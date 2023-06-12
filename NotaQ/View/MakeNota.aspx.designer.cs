@@ -15,6 +15,51 @@ namespace NotaQ.View
     {
 
         /// <summary>
+        /// buyDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox buyDate;
+
+        /// <summary>
+        /// buyer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox buyer;
+
+        /// <summary>
+        /// buyerPhone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox buyerPhone;
+
+        /// <summary>
+        /// buyerAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox buyerAddress;
+
+        /// <summary>
+        /// buyerAssistant control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox buyerAssistant;
+
+        /// <summary>
         /// TableRepeater control.
         /// </summary>
         /// <remarks>
@@ -49,6 +94,15 @@ namespace NotaQ.View
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label productError;
+
+        /// <summary>
+        /// GridViewCart control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewCart;
 
         /// <summary>
         /// Productname control.
@@ -94,6 +148,15 @@ namespace NotaQ.View
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox lunas_box;
+
+        /// <summary>
+        /// payment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox payment;
 
         /// <summary>
         /// kirim_nota control.

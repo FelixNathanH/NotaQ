@@ -1,4 +1,5 @@
-﻿using NotaQ.Model;
+﻿using NotaQ.Factory;
+using NotaQ.Model;
 using NotaQ.Repository;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,38 @@ namespace NotaQ.View
     {
         bool found = false;
         product productFound;
+        DateTime waktu = DateTime.Now;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            TableRepeater.DataSource = CartRepo.GetCart();
+            TableRepeater.DataBind();
 
+            
+            buyDate.Text = waktu.ToString();
+
+            if (ViewState["BuyerName"] != null)
+            {
+                buyer.Text = ViewState["BuyerName"].ToString();
+                buyerAddress.Text = ViewState["BuyerAddress"].ToString();
+                buyerPhone.Text = ViewState["BuyerPhone"].ToString();
+                buyerAssistant.Text = ViewState["BuyerAssitant"].ToString();
+            }
         }
 
         protected void DeleteLinkBtn_Click(object sender, EventArgs e)
         {
+            LinkButton linkbtn = (LinkButton)sender;
+            string cartIdTmp = linkbtn.CommandArgument;
+            int cartId = int.Parse(cartIdTmp);
+            CartRepo.DeleteCart(cartId);
 
+
+            ViewState["BuyerName"] = buyer.Text;
+            ViewState["BuyerPhone"] = buyerPhone;
+            ViewState["BuyerAddress"] = buyerAddress;
+            ViewState["BuyerAssitant"] = buyerAssistant;
+            Response.Redirect(Request.RawUrl);
         }
 
         protected void search_product_Click(object sender, EventArgs e)
@@ -34,23 +58,27 @@ namespace NotaQ.View
 
             if (productFound != null)
             {
-                string price = productFound.product_price.ToString();
-
-                productPrice.Text = price;
+                Productname.Text = productFound.product_name.ToString();
+                productPrice.Text = productFound.product_price.ToString(); ;
                 found = true;
             }
             else
             {
+                Productname.Text = productNameSearch.Text;
                 productError.Text = "produk tidak ditemukan, untuk produk tidak terdaftar, harap masukan harga produk secara manual";
                 productQuantity.Text = "1";
                 found = false;
             }
+
+            GridViewCart.DataSource = productsFound;
+            GridViewCart.DataBind();
         }
 
         protected void tambah_produk_Click(object sender, EventArgs e)
         {
             string name;
             int id, price, quantity, stock;
+            cart newCart;
 
             if(found == true)
             {
@@ -58,10 +86,54 @@ namespace NotaQ.View
                 id = productFound.Id;
                 price = productFound.product_price;
                 quantity = int.Parse(productQuantity.Text);
-
+                newCart = CartFactory.createCart(id, name, price, quantity);
             }
+            else
+            {
+                name = productNameSearch.Text;
+                id = 0;
+                price = int.Parse(productPrice.Text);
+                quantity = int.Parse(productQuantity.Text);
+                newCart = CartFactory.createCart(id, name, price, quantity);
+            }
+            CartRepo.AddCart(newCart);
+
+
+            ViewState["BuyerName"] = buyer.Text;
+            ViewState["BuyerPhone"] = buyerPhone;
+            ViewState["BuyerAddress"] = buyerAddress;
+            ViewState["BuyerAssitant"] = buyerAssistant;
+            Response.Redirect(Request.RawUrl);
+            found = false;
         }
 
-        
+        protected void kirim_nota_Click(object sender, EventArgs e)
+        {
+            List<cart> cartList = CartRepo.GetCart();
+            int sum = 0;
+            foreach(cart x in cartList)
+            {
+                sum += x.cart_product_price;
+            }
+
+            string buyerNm = buyer.Text;
+            string buyerPhn = buyerPhone.Text;
+            string buyerAssist = buyerAssistant.Text;
+            string payMethod = Request.Form["pembayaran"];
+            int payed = int.Parse(payment.Text);
+            nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, sum, payed, payMethod,1);
+            NotaRepo.AddNota(newNota);
+
+            foreach (cart x in cartList)
+            {
+                int cartProductId = x.cart_product_id ?? 0;
+                nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
+            }
+            foreach (cart x in cartList)
+            {
+                CartRepo.DeleteAllCart(x.Id);
+            }
+            
+        }
     }
 }

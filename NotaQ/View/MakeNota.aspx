@@ -27,15 +27,15 @@
         <div class="MakeNota_middle_frame">
             <form runat="server" class="MakeNota_middle_item">
                 <label>Tanggal Pembelian :</label>
-                <input type="text" placeholder="15 Maret 2023" />
+                <asp:TextBox ID="buyDate" runat="server" placeholder="Tanggal Beli"></asp:TextBox>
                 <label>Nama Pembeli :</label>
-                <input type="text" placeholder="Nama Pembeli" />
+                <asp:TextBox ID="buyer" runat="server" placeholder="Nama Pembeli"></asp:TextBox>
                 <label>Nomor Telepon Pembeli :</label>
-                <input type="text" placeholder="081234567890" />
+                <asp:TextBox ID="buyerPhone" runat="server" placeholder="Nomor Pembeli"></asp:TextBox>
                 <label>Alamat Pembeli :</label>
-                <input type="text" placeholder="Alamat Pembeli" />
+                <asp:TextBox ID="buyerAddress" runat="server" placeholder="Alamat pembeli"></asp:TextBox>
                 <label>Dilayani Oleh :</label>
-                <input type="text" placeholder="Karyawan X" />
+                <asp:TextBox ID="buyerAssistant" runat="server" placeholder="pelayan"></asp:TextBox>
                 <label>Produk Dibeli :</label>
                 <table class="table">
                     <thead>
@@ -50,11 +50,11 @@
                         <asp:Repeater ID="TableRepeater" runat="server">
                             <ItemTemplate>
                                 <tr>
-                                    <td scope="row"><%# Eval("ProductName") %></td>
-                                    <td scope="row"><%# Eval("ProductPrice") %></td>
-                                    <td scope="row"><%# Eval("Quantity") %></td>
+                                    <td scope="row"><%# Eval("cart_product_name") %></td>
+                                    <td scope="row"><%# Eval("cart_product_price") %></td>
+                                    <td scope="row"><%# Eval("cart_product_quantity") %></td>
                                     <td scope="row">
-                                        <asp:LinkButton ID="DeleteLinkBtn" runat="server" onclick="DeleteLinkBtn_Click" CommandArgument='<%#Eval("cart_id") %>' class="btn btn-outline-danger"  > Delete </asp:LinkButton>
+                                        <asp:LinkButton ID="DeleteLinkBtn" runat="server" onclick="DeleteLinkBtn_Click" CommandArgument='<%#Eval("Id") %>' class="btn btn-outline-danger"  > Delete </asp:LinkButton>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -67,6 +67,15 @@
 
 
                 <asp:Label ID="productError" runat="server" Text=""></asp:Label>
+
+                 <asp:GridView ID="GridViewCart" runat="server" AutoGenerateColumns="False">
+                    <Columns>
+                        <asp:BoundField DataField="product_name" HeaderText="Product Name" />
+                        <asp:BoundField DataField="product_price" HeaderText="Product Price" />
+                        <asp:BoundField DataField="product_stock" HeaderText="Product Quantity" />
+                    </Columns>
+                </asp:GridView>
+
                 <asp:TextBox ID="Productname" runat="server" placeholder="Nama Produk" ></asp:TextBox>
                 <asp:TextBox ID="productPrice" runat="server" placeholder="Harga Produk" ></asp:TextBox>
                 <asp:TextBox ID="productQuantity" runat="server" placeholder="Jumlah Produk" ></asp:TextBox>
@@ -77,7 +86,7 @@
                 <label class ="MakeNota_total_harga">Total Harga: Rp.-</label>
                 <!-- Kasih Box disini -->
                 <label>Pembayaran Dipilih :</label>
-                <select id="pembayaran" class="MakeNota_pembayaran">
+                <select name="pembayaran" class="MakeNota_pembayaran">
                     <option value="tunai">Tunai</option>
                     <option value="debit">Debit</option>
                     <option value="emoney">E-Money</option>
@@ -87,9 +96,9 @@
                     <asp:CheckBox ID="lunas_box" runat="server" />
                 </div>
                 <label>Dibayar :</label>
-                <input type="text" placeholder="Rp.-" />
+                <asp:TextBox ID="payment" runat="server" placeholder="Rp.--  (Masukan Angka Saja)" ></asp:TextBox>
                 <div class ="MakeNota_kirimNota_frame">
-                    <asp:Button ID="kirim_nota" runat="server" Text="Kirim Nota" class="MakeNota_kirimNota_button"/>
+                    <asp:Button ID="kirim_nota" runat="server" Text="Kirim Nota" class="MakeNota_kirimNota_button" OnClick="kirim_nota_Click"/>
                 </div>
             </form>
         </div>

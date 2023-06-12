@@ -15,9 +15,16 @@ namespace NotaQ.Repository
             db.SaveChanges();
         }
 
-        public static void DeleteCart(cart cart)
+        public static void DeleteCart(int id)
         {
-            db.cart.Remove(cart);
+            cart delCart = db.cart.Where(x => x.Id == id).FirstOrDefault();
+            db.cart.Remove(delCart);
+            db.SaveChanges();
+        }
+
+        public static void DeleteAllCart(int id)
+        {
+            db.cart.RemoveRange(db.cart.Where(x => x.Id == id));
             db.SaveChanges();
         }
 

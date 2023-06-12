@@ -8,14 +8,14 @@ namespace NotaQ.Factory
 {
     public class NotaDetailFactory
     {
-        public nota_detail createNotaDetail(int id, int nota_id, int product_id, string product_name, int product_price)
+        public static nota_detail createNotaDetail(int nota_id, int product_id, string product_name, int product_price, int product_quantity)
         {
             nota_detail newNotaDetail = new nota_detail();
-            newNotaDetail.Id = id;
             newNotaDetail.nota_id = nota_id;
             newNotaDetail.product_id = product_id;
             newNotaDetail.product_name = product_name;
             newNotaDetail.product_price = product_price;
+            newNotaDetail.product_quantity = product_quantity;
             return newNotaDetail;
         }
     }

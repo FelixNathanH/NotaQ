@@ -9,9 +9,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="cart_product_id" Type="int" />
-          <Property Name="cart_product_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cart_product_name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="cart_product_price" Type="int" Nullable="false" />
           <Property Name="cart_product_quantity" Type="int" Nullable="false" />
         </EntityType>
@@ -34,9 +34,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="buyer_name" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="buyer_phone_number" Type="varchar" MaxLength="50" />
+          <Property Name="buyer_phone_number" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="buy_date" Type="datetime" Nullable="false" />
           <Property Name="employee_name" Type="varchar" MaxLength="100" />
           <Property Name="total_price" Type="int" Nullable="false" />
@@ -48,7 +48,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nota_id" Type="int" Nullable="false" />
           <Property Name="product_id" Type="int" />
           <Property Name="product_name" Type="varchar" MaxLength="100" Nullable="false" />
@@ -363,13 +363,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="buyer_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="buyer_phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="buy_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="buyer_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="buyer_phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="buy_date" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="employee_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="total_price" Type="Int32" Nullable="false" />
           <Property Name="total_payment" Type="Int32" Nullable="false" />
-          <Property Name="payment_method" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="payment_method" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="hutang" Relationship="DatabaseModel.FK_Hutang_Nota" FromRole="nota" ToRole="hutang" />
           <NavigationProperty Name="nota_detail" Relationship="DatabaseModel.FK_Nota_Detail_Nota" FromRole="nota" ToRole="nota_detail" />
@@ -417,7 +417,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="cart_product_id" Type="Int32" />
-          <Property Name="cart_product_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cart_product_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="cart_product_price" Type="Int32" Nullable="false" />
           <Property Name="cart_product_quantity" Type="Int32" Nullable="false" />
         </EntityType>

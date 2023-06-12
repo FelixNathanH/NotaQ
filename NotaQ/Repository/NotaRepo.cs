@@ -9,13 +9,13 @@ namespace NotaQ.Repository
     public class NotaRepo
     {
         static DatabaseEntities db = DatabaseSingleton.getInstance();
-        public static void AddHutang(nota newnota)
+        public static void AddNota(nota newnota)
         {
             db.nota.Add(newnota);
             db.SaveChanges();
         }
 
-        public static void DeleteHutang(nota nota)
+        public static void DeleteNota(nota nota)
         {
             db.nota.Remove(nota);
             db.SaveChanges();
