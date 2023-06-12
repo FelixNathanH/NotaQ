@@ -10,7 +10,7 @@ namespace NotaQ.Factory
     {
         public static cart createCart(int id, string product_name, int product_price, int product_quantity)
         {
-            cart newCart= new cart();
+            cart newCart = new cart();
             if (id == 0)
             {
                 newCart.cart_product_id = null;
