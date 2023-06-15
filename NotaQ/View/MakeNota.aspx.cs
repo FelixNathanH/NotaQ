@@ -1,4 +1,5 @@
-﻿using NotaQ.Factory;
+﻿using NotaQ.Controller;
+using NotaQ.Factory;
 using NotaQ.Model;
 using NotaQ.Repository;
 using System;
@@ -115,32 +116,67 @@ namespace NotaQ.View
             string buyerAssist = buyerAssistant.Text;
             string payMethod = Request.Form["pembayaran"];
             int paid = int.Parse(payment.Text);
-            nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, sum, paid, payMethod,1);
-            NotaRepo.AddNota(newNota);
 
-            foreach (cart x in cartList)
+            //VALIDATE
+            int errorNum = NotaController.ValidateBuyerName(buyerNm);
+
+            if (errorNum == 0)
             {
-                int cartProductId = x.cart_product_id ?? 0;
-                nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
-                if(x.cart_product_id != null)
+                errorNum = NotaController.ValidateBuyerPhone(buyerPhn);
+                if(errorNum == 0)
                 {
-                    product z = ProductRepo.SearchProductById(cartProductId);
-                    z.product_stock -= x.cart_product_quantity;
+                    errorNum = NotaController.ValidateBuyerAssistant(buyerAssist);
+                    if(errorNum == 0){
+
+                        nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, sum, paid, payMethod, 1);
+                        NotaRepo.AddNota(newNota);
+
+                        foreach (cart x in cartList)
+                        {
+                            int cartProductId = x.cart_product_id ?? 0;
+                            nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
+                            if (x.cart_product_id != null)
+                            {
+                                product z = ProductRepo.SearchProductById(cartProductId);
+                                z.product_stock -= x.cart_product_quantity;
+                            }
+                        }
+
+                        string messages = buyerNm + buyerAssist + sum + paid + payMethod;
+                        string cleanNum = buyerPhn.TrimStart('0');
+                        string phoneNumber = "+62" + cleanNum;
+                        Whatsapp.Twilio.SendNota(phoneNumber, messages);
+
+                        foreach (cart x in cartList)
+                        {
+                            CartRepo.DeleteAllCart(x.Id);
+                        }
+                    }
+                    else if (errorNum == 1)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (errorNum == 1)
+                {
+
+                }
+                else
+                {
+
                 }
             }
-
-            string messages = buyerNm + buyerAssist + sum + paid + payMethod;
-            string cleanNum = buyerPhn.TrimStart('0');
-            string phoneNumber = "+62" + cleanNum;
-            Whatsapp.Twilio.SendNota(phoneNumber, messages);
-
-            foreach (cart x in cartList)
+            else if(errorNum == 1)
             {
-                CartRepo.DeleteAllCart(x.Id);
+
+            }else
+            {
+
             }
-
-
-
         }
     }
 }
