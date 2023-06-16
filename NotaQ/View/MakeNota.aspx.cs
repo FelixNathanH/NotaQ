@@ -21,10 +21,18 @@ namespace NotaQ.View
 
         protected void Page_Load(object sender, EventArgs e)
         {
-                TableRepeater.DataSource = CartRepo.GetCart();
+            TableRepeater.DataSource = CartRepo.GetCart();
             TableRepeater.DataBind();
-            
-            
+            int total = 0;
+            List<cart> cartList = CartRepo.GetCart();
+
+            foreach (cart x in cartList)
+            {
+                total += x.cart_product_price;
+            }
+
+            totalLbl.Text = "Total harga: Rp." + total.ToString();
+
             buyDate.Text = waktu.ToString();
 
         }
@@ -56,7 +64,7 @@ namespace NotaQ.View
             else
             {
                 Productname.Text = productNameSearch.Text;
-                productError.Text = "produk tidak ditemukan, untuk produk tidak terdaftar, harap masukan harga produk secara manual";
+                errorFound.Text = "produk tidak ditemukan, untuk produk tidak terdaftar, harap masukan harga produk secara manual";
                 productQuantity.Text = "1";
                 found = false;
             }
@@ -83,20 +91,14 @@ namespace NotaQ.View
             {
                 name = productNameSearch.Text;
                 id = 0;
-                price = int.Parse(productPrice.Text);
-                quantity = int.Parse(productQuantity.Text);
-                newCart = CartFactory.createCart(id, name, price, quantity);
+                if (!Controller.NotaController.checkNull(productPrice.Text)){
+                    price = int.Parse(productPrice.Text);
+                    quantity = int.Parse(productQuantity.Text);
+                    newCart = CartFactory.createCart(id, name, price, quantity);
+                    CartRepo.AddCart(newCart);
+                }
+                
             }
-            CartRepo.AddCart(newCart);
-
-            int total=0;
-            List<cart> cartList = CartRepo.GetCart();
-            
-            foreach (cart x in cartList)
-            {
-                total += x.cart_product_price;
-            }
-
             
             Response.Redirect(Request.RawUrl);
             found = false;
@@ -105,78 +107,57 @@ namespace NotaQ.View
         protected void kirim_nota_Click(object sender, EventArgs e)
         {
             List<cart> cartList = CartRepo.GetCart();
-            int sum = 0;
+            int priceSum = 0;
+            int productCnt = 0;
             foreach(cart x in cartList)
             {
-                sum += x.cart_product_price;
+                priceSum += x.cart_product_price;
+                productCnt += 1;
             }
 
             string buyerNm = buyer.Text;
             string buyerPhn = buyerPhone.Text;
             string buyerAssist = buyerAssistant.Text;
             string payMethod = Request.Form["pembayaran"];
-            int paid = int.Parse(payment.Text);
+            string paidAmount = payment.Text;
 
             //VALIDATE
-            int errorNum = NotaController.ValidateBuyerName(buyerNm);
+            string buyerNmE = Controller.NotaController.ValidateBuyerName(buyerNm);
+            string buyerPhnE = Controller.NotaController.ValidateBuyerPhone(buyerPhn);
+            string buyerAssistsE = Controller.NotaController.ValidateBuyerAssistant(buyerAssist);
+            string productCntE = Controller.NotaController.ValidateProduct(productCnt);
+            string paidAmountE = Controller.NotaController.ValidatePaid(paidAmount);
 
-            if (errorNum == 0)
+            string errors = buyerNmE + buyerPhnE + buyerAssistsE + productCntE + paidAmountE;
+
+            if (string.IsNullOrEmpty(errors))
             {
-                errorNum = NotaController.ValidateBuyerPhone(buyerPhn);
-                if(errorNum == 0)
+                int payAmount = Controller.NotaController.ConvertToInt(paidAmount);
+                nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, priceSum, payAmount, payMethod, 1);
+                NotaRepo.AddNota(newNota);
+
+                foreach (cart x in cartList)
                 {
-                    errorNum = NotaController.ValidateBuyerAssistant(buyerAssist);
-                    if(errorNum == 0){
-
-                        nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, sum, paid, payMethod, 1);
-                        NotaRepo.AddNota(newNota);
-
-                        foreach (cart x in cartList)
-                        {
-                            int cartProductId = x.cart_product_id ?? 0;
-                            nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
-                            if (x.cart_product_id != null)
-                            {
-                                product z = ProductRepo.SearchProductById(cartProductId);
-                                z.product_stock -= x.cart_product_quantity;
-                            }
-                        }
-
-                        string messages = buyerNm + buyerAssist + sum + paid + payMethod;
-                        string cleanNum = buyerPhn.TrimStart('0');
-                        string phoneNumber = "+62" + cleanNum;
-                        Whatsapp.Twilio.SendNota(phoneNumber, messages);
-
-                        foreach (cart x in cartList)
-                        {
-                            CartRepo.DeleteAllCart(x.Id);
-                        }
-                    }
-                    else if (errorNum == 1)
+                    int cartProductId = x.cart_product_id ?? 0;
+                    nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
+                    if (x.cart_product_id != null)
                     {
-
-                    }
-                    else
-                    {
-
+                        product z = ProductRepo.SearchProductById(cartProductId);
+                        z.product_stock -= x.cart_product_quantity;
                     }
                 }
-                else if (errorNum == 1)
-                {
 
-                }
-                else
-                {
+                string messages = buyerNm + buyerAssist + priceSum + paidAmount + payMethod; //need update
 
+                string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
+                Whatsapp.Twilio.SendNota(phoneNumber, messages);
+
+                foreach (cart x in cartList)
+                {
+                    CartRepo.DeleteAllCart(x.Id);
                 }
             }
-            else if(errorNum == 1)
-            {
 
-            }else
-            {
-
-            }
         }
     }
 }

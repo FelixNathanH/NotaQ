@@ -26,15 +26,24 @@
         </div>
         <div class="MakeNota_middle_frame">
             <form runat="server" class="MakeNota_middle_item">
+                <!--Informasi Nota & Pembeli -->
                 <label>Tanggal Pembelian :</label>
                 <asp:TextBox ID="buyDate" runat="server" placeholder="Tanggal Beli"></asp:TextBox>
+
                 <label>Nama Pembeli :</label>
+                <asp:Label ID="errorBuyer" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="buyer" runat="server" placeholder="Nama Pembeli"></asp:TextBox>
+
                 <label>Nomor Telepon Pembeli :</label>
+                <asp:Label ID="errorPhn" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="buyerPhone" runat="server" placeholder="Nomor Pembeli"></asp:TextBox>
+
                 <label>Dilayani Oleh :</label>
                 <asp:TextBox ID="buyerAssistant" runat="server" placeholder="pelayan"></asp:TextBox>
+
+                <!--Display produk yang dibeli / dipilih-->
                 <label>Produk Dibeli :</label>
+                <asp:Label ID="errorProduct" runat="server" Text=""></asp:Label>
                 <table class="table">
                     <thead>
                         <tr>
@@ -60,12 +69,13 @@
                     </tbody>
                 </table>
 
+
+                <!--Fungsi untuk search produk-->
+                <asp:Label ID="errorFound" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="productNameSearch" runat="server" placeholder="Masukan Nama Produk" ></asp:TextBox>
                 <asp:Button ID="search_product" runat="server" Text="Cek Produk" onclick="search_product_Click"/>
 
-
-                <asp:Label ID="productError" runat="server" Text=""></asp:Label>
-
+                <!--Tabel produk dengan nama mirip -->
                  <asp:GridView ID="GridViewCart" runat="server" AutoGenerateColumns="False">
                     <Columns>
                         <asp:BoundField DataField="product_name" HeaderText="Product Name" />
@@ -74,27 +84,33 @@
                     </Columns>
                 </asp:GridView>
 
+                <!--Informasi Produk -->
                 <asp:TextBox ID="Productname" runat="server" placeholder="Nama Produk" ></asp:TextBox>
+
+                <asp:Label ID="errorPrice" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="productPrice" runat="server" placeholder="Harga Produk" ></asp:TextBox>
+
+                <asp:Label ID="errorQuantity" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="productQuantity" runat="server" placeholder="Jumlah Produk" ></asp:TextBox>
                 <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" onclick="tambah_produk_Click" class="MakeNota_tambahProduk_button" />
 
-
-
+                <!--Label SUM harga -->
                 <asp:Label class ="MakeNota_total_harga" ID="totalLbl" runat="server" Text="Rp."></asp:Label>
-                <!-- Kasih Box disini -->
+                
+                <!--Metode Pembayaran & jumlah dibayar -->
                 <label>Pembayaran Dipilih :</label>
                 <select name="pembayaran" class="MakeNota_pembayaran">
                     <option value="tunai">Tunai</option>
                     <option value="debit">Debit</option>
                     <option value="emoney">E-Money</option>
                 </select>
-                <div class="MakeNota_lunas">
-                    <label>Lunas</label>
-                    <asp:CheckBox ID="lunas_box" runat="server" />
-                </div>
+
                 <label>Dibayar :</label>
+                <asp:Label ID="errorPayment" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="payment" runat="server" placeholder="Rp.--  (Masukan Angka Saja)" ></asp:TextBox>
+
+                 <!--Buat nota -->
+                <asp:Label ID="errorExists" runat="server" Text=""></asp:Label>
                 <div class ="MakeNota_kirimNota_frame">
                     <asp:Button ID="kirim_nota" runat="server" Text="Kirim Nota" class="MakeNota_kirimNota_button" OnClick="kirim_nota_Click"/>
                 </div>
