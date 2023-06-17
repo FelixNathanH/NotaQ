@@ -22,13 +22,14 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <a>Sinar Maju</a>
+                <asp:Label ID="header_shop" runat="server" Text="Label" class="shop_header"></asp:Label>
             </div>
         </div>
         <div class ="second_header">
             <a href ="InfoNota.aspx">Info Nota</a>
             <a class ="selected" href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
             <a href ="SettingHutang.aspx">Pengaturan Penghutang</a>
+            <a href ="InformasiAkun.aspx">Informasi Akun</a>
         </div>
         <div class ="middle_storage_frame">
              <form runat="server" class="product_setting">
