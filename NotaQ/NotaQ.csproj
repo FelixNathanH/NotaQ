@@ -107,7 +107,9 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
+    <Content Include="View\EditItem.aspx" />
     <Content Include="View\InfoNota.aspx" />
+    <Content Include="View\InsertItem.aspx" />
     <Content Include="View\ItemList.aspx" />
     <Content Include="View\MakeNota.aspx" />
     <Content Include="View\RegisterPage.aspx" />
@@ -166,12 +168,26 @@
     <Compile Include="Repository\NotaDetailRepo.cs" />
     <Compile Include="Repository\ProductRepo.cs" />
     <Compile Include="Repository\UserRepo.cs" />
+    <Compile Include="View\EditItem.aspx.cs">
+      <DependentUpon>EditItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\EditItem.aspx.designer.cs">
+      <DependentUpon>EditItem.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\InfoNota.aspx.cs">
       <DependentUpon>InfoNota.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View\InfoNota.aspx.designer.cs">
       <DependentUpon>InfoNota.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="View\InsertItem.aspx.cs">
+      <DependentUpon>InsertItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="View\InsertItem.aspx.designer.cs">
+      <DependentUpon>InsertItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\ItemList.aspx.cs">
       <DependentUpon>ItemList.aspx</DependentUpon>
