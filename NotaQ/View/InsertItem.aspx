@@ -29,11 +29,11 @@
         <%--2nd Header--%> 
         <div class ="second_header">
             <a href ="InfoNota.aspx">Info Nota</a>
-            <a href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
-            <a class ="selected" href ="Pengaturan Penghutang.aspx">Pengaturan Penghutang</a>
+            <a class ="selected" href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
+            <a href ="SettingHutang.aspx">Pengaturan Penghutang</a>
         </div>
     <form id="form1" runat="server">
-        <div>
+        <div class="middle_storage_frame">
             <div>
                 <asp:Label ID="lbName" runat="server" Text="Name: "></asp:Label>
                 <asp:TextBox ID="tbName" runat="server"></asp:TextBox>

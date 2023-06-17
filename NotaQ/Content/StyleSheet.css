@@ -484,8 +484,19 @@
 }
 
 /*Update Product*/
+.btnUpdate{
+    width: auto;
+    margin: 10px;
+    font-family:'Trebuchet MS';
+    font-size: 20px;
+    font-weight:bold;
+    text-align:center;
+    
+}
+.btnUpdate:hover{
+    cursor: pointer;
+}
 /*Insert Product*/
-
 
 
 /*Register Stuff*/

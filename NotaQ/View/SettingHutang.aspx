@@ -88,7 +88,7 @@
         <div class ="second_header">
             <a href ="InfoNota.aspx">Info Nota</a>
             <a href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
-            <a class ="selected" href ="Pengaturan Penghutang.aspx">Pengaturan Penghutang</a>
+            <a class ="selected" href ="SettingHutang.aspx">Pengaturan Penghutang</a>
         </div>
 
         <%--Content--%> 

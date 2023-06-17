@@ -28,7 +28,7 @@
         <div class ="second_header">
             <a class ="selected" href ="InfoNota.aspx">Info Nota</a>
             <a href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
-            <a href ="Pengaturan Penghutang.aspx">Pengaturan Penghutang</a>
+            <a href ="SettingHutang.aspx">Pengaturan Penghutang</a>
         </div>
         <form runat="server" class="info_main_frame">
             <div class ="info_frame">
