@@ -59,7 +59,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="product_name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="product_price" Type="int" Nullable="false" />
           <Property Name="product_stock" Type="int" />

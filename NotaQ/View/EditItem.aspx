@@ -51,7 +51,7 @@
                 <asp:Label ID="lbDescription" runat="server" Text="Deskripsi: "></asp:Label>
                 <asp:TextBox ID="tbDescription" runat="server"></asp:TextBox>
             </div>
-            <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
+            <asp:Button ID="btnUpdate" runat="server" Text="Update Item" OnClick="btnUpdate_Click" />
         </div>
     </form>
 </body>
