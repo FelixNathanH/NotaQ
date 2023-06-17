@@ -92,8 +92,9 @@ namespace NotaQ.View
 
         protected void tambah_produk_Click(object sender, EventArgs e)
         {
-            string user_id = Request.QueryString["id"];
-            Response.Redirect("InsertItem.aspx?id=" +user_id);
+            user customer = Session["user"] as user;
+            int id = customer.Id;
+            Response.Redirect("InsertItem.aspx?id=" +id);
         }
     }
 }
