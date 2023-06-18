@@ -261,7 +261,7 @@ namespace NotaQ.View
                 if (!string.IsNullOrEmpty(buyerPhn)){
 
                     int paid = int.Parse(paidAmount);
-
+                    string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
 
                     string messages = "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
                         + Controller.NotaController.toCurrency(paid) + "\n" + "Metode Pembayaran: " + payMethod;
@@ -269,14 +269,15 @@ namespace NotaQ.View
                     if(priceSum > paid)
                     {
                         messages += "\n" + "Hutang: " + Controller.NotaController.toCurrency(priceSum - paid);
-                        //hutang newHutang = HutangFactory.createHutang(nota_id, debtor_name, debtor_email, debtor_phone_number, debtor_address, debtor_deadline, debt_reminder_frequency);
+                        hutang newHutang = HutangFactory.createHutang(newNota.Id , buyerNm, "", buyerPhn, "", DateTime.Now, 0, priceSum - paid, uid);
+                        Repository.HutangRepo.AddHutang(newHutang);
                     }
                     else if(priceSum < paid)
                     {
                         messages += "\n" + "Kemabalian: " + Controller.NotaController.toCurrency(paid - priceSum);
                     }
 
-                    string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
+                    
                     Whatsapp.Twilio.SendNota(phoneNumber, messages);
                 }
 
