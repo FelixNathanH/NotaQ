@@ -42,5 +42,16 @@ namespace NotaQ.Repository
             }
             return -1;
         }
+
+        public static void updateQuantity(int id, int newQuantity)
+        {
+            cart cartToUpdate = db.cart.Find(id);
+            if (cartToUpdate != null)
+            {
+                cartToUpdate.cart_product_quantity = cartToUpdate.cart_product_quantity + newQuantity;
+                db.SaveChanges();
+            }
+        }
+
     }
 }

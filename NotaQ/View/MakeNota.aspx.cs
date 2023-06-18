@@ -33,11 +33,15 @@ namespace NotaQ.View
             }
 
             //tulis ulang biar gk ilang di kolom atas
-            if (Session["tempNam"] != null || Session["tempPhn"] != null || Session["tmpAst"] != null)
+            string tempNam = Session["tempNam"] as string;
+            string tempPhn = Session["tempPhn"] as string;
+            string tmpAst = Session["tmpAst"] as string;
+
+            if (tempNam != null || tempPhn != null || tmpAst != null)
             {
-                buyer.Text = (string)Session["tempNam"];
-                buyerPhone.Text = (string)Session["tempPhn"];
-                buyerAssistant.Text = (string)Session["tmpAst"];
+                buyer.Text = tempNam;
+                buyerPhone.Text = tempPhn;
+                buyerAssistant.Text = tmpAst;      
             }
 
 
@@ -72,6 +76,9 @@ namespace NotaQ.View
 
         protected void search_product_Click(object sender, EventArgs e)
         {
+            Session["tempNam"] = buyer.Text;
+            Session["tempPhn"] = buyerPhone.Text;
+            Session["tmpAst"] = buyerAssistant.Text;
             string name = productNameSearch.Text;
             if (string.IsNullOrEmpty(name))
             {
@@ -95,18 +102,23 @@ namespace NotaQ.View
                 found = false;
             }
 
+            
             GridViewCart.DataSource = productsFound;
             GridViewCart.DataBind();
         }
 
         protected void tambah_produk_Click(object sender, EventArgs e)
         {
+            Session["tempNam"] = buyer.Text;
+            Session["tempPhn"] = buyerPhone.Text;
+            Session["tmpAst"] = buyerAssistant.Text;
+
             string errors = "";
             int price,qty, id, stock; 
             cart newCart;
             qty = price = id = 0;
 
-            string name = productNameSearch.Text;
+            string name = Productname.Text;
             string priceS = productPrice.Text; 
             string qtyS = productQuantity.Text;
 
@@ -117,7 +129,7 @@ namespace NotaQ.View
 
             //cek error harga
             string priceErr = Controller.NotaController.validateProductPrice(productPrice.Text);
-            if (string.IsNullOrEmpty(priceErr))
+            if (!string.IsNullOrEmpty(priceErr))
             {
                 errorPrice.Text = priceErr;
                 errors += priceErr;
@@ -129,7 +141,7 @@ namespace NotaQ.View
 
             //cek error jumlah beli
             string qtyeErr = Controller.NotaController.validateProductPrice(productQuantity.Text);
-            if (string.IsNullOrEmpty(qtyeErr))
+            if (!string.IsNullOrEmpty(qtyeErr))
             {
                 errorPrice.Text = qtyeErr;
                 errors += qtyeErr;
@@ -145,7 +157,7 @@ namespace NotaQ.View
                 id = productFound.Id;
                 stock = productFound.product_stock ?? -1;
 
-                if(stock!= -1)
+                if(stock != -1)
                 {
                     if (stock < qty && noStock == false)
                     {
@@ -160,14 +172,18 @@ namespace NotaQ.View
             }
 
             //klo no error gas
-            if (string.IsNullOrEmpty(errors) && noStock==true)
+            if (string.IsNullOrEmpty(errors) && noStock==true);
             {
-                newCart = CartFactory.createCart(id, name, price, qty);
-                CartRepo.AddCart(newCart);
-
-                Session["tempNam"] = buyer.Text;
-                Session["tempPhn"] = buyerPhone.Text;
-                Session["tmpAst"] = buyerAssistant.Text;
+                int srcId = Repository.CartRepo.findByName(name);
+                if(srcId != -1)
+                {
+                    Repository.CartRepo.updateQuantity(srcId, qty);
+                }
+                else
+                {
+                    newCart = CartFactory.createCart(id, name, price, qty);
+                    CartRepo.AddCart(newCart);
+                }
                 Response.Redirect(Request.RawUrl);
                 found = false;
             }
@@ -220,8 +236,8 @@ namespace NotaQ.View
                     int cartProductId = x.cart_product_id ?? 0;
 
                     //list barang dibeli
-                    barangDibeli = $"{cnt}) {x.cart_product_name,-20} {Controller.NotaController.toCurrency(x.cart_product_price),-16} x{x.cart_product_quantity,-14} {Controller.NotaController.toCurrency(totalBelanja)}\n";
-
+                    barangDibeli += cnt.ToString() + ")" + x.cart_product_name + "    " + Controller.NotaController.toCurrency(x.cart_product_price) + "    x"
+                        + x.cart_product_quantity + "    " + Controller.NotaController.toCurrency(totalBelanja) + "\n";
                     nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
 
                     if (x.cart_product_id != null)
@@ -240,9 +256,21 @@ namespace NotaQ.View
                 }
                 //buat kirim ke WA
                 if (!string.IsNullOrEmpty(buyerPhn)){
-                    string header = "No   Nama Barang          Harga            Jumlah         Total Belanja";
-                    string messages = "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n\n" + header + barangDibeli + "\n\n" + "Total pembelian: " + priceSum + "\n" + "Dibayar: "
-                        + paidAmount + "\n" + "Metode Pembayaran: " + payMethod;
+
+                    int paid = int.Parse(paidAmount);
+
+
+                    string messages = "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
+                        + Controller.NotaController.toCurrency(paid) + "\n" + "Metode Pembayaran: " + payMethod;
+
+                    if(priceSum > paid)
+                    {
+                        messages += "\n" + "Hutang: " + Controller.NotaController.toCurrency(priceSum - paid);
+                    }
+                    else if(priceSum < paid)
+                    {
+                        messages += "\n" + "Kemabalian: " + Controller.NotaController.toCurrency(paid - priceSum);
+                    }
 
                     string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
                     Whatsapp.Twilio.SendNota(phoneNumber, messages);
