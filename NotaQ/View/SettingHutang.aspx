@@ -72,7 +72,7 @@
         <%--Header--%> 
        <div class ="header">
             <div class="header_left">
-                <img src="NotaQ.png" alt="logo" class ="header_left_logo" />
+                <img src="../Asset/NotaQ.png" alt="logo" class ="big_logo"/>
             </div>
             <div class ="header_middle">
                 <a href ="MakeNota.aspx">Buat Nota</a>
