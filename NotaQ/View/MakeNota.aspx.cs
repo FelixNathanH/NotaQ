@@ -236,20 +236,23 @@ namespace NotaQ.View
                     int cartProductId = x.cart_product_id ?? 0;
 
                     //list barang dibeli
-                    barangDibeli += cnt.ToString() + ")" + x.cart_product_name + "    " + Controller.NotaController.toCurrency(x.cart_product_price) + "    x"
+                    barangDibeli += cnt.ToString() + ") " + x.cart_product_name + "    " + Controller.NotaController.toCurrency(x.cart_product_price) + "    x"
                         + x.cart_product_quantity + "    " + Controller.NotaController.toCurrency(totalBelanja) + "\n";
                     nota_detail newNotaDetail = NotaDetailFactory.createNotaDetail(newNota.Id, cartProductId, x.cart_product_name, x.cart_product_price, x.cart_product_quantity);
 
                     if (x.cart_product_id != null)
                     {
                         product z = ProductRepo.SearchProductById(cartProductId);
-                        if(z.product_stock > x.cart_product_quantity)
+                        if (z != null)
                         {
-                            z.product_stock -= x.cart_product_quantity;
-                        }
-                        else
-                        {
-                            z.product_stock = 0;
+                            if (z.product_stock >= x.cart_product_quantity)
+                            {
+                                z.product_stock = z.product_stock -  x.cart_product_quantity;
+                            }
+                            else
+                            {
+                                z.product_stock = 0;
+                            }
                         }
                         
                     }
@@ -266,6 +269,7 @@ namespace NotaQ.View
                     if(priceSum > paid)
                     {
                         messages += "\n" + "Hutang: " + Controller.NotaController.toCurrency(priceSum - paid);
+                        hutang newHutang = HutangFactory.createHutang(nota_id, debtor_name, debtor_email, debtor_phone_number, debtor_address, debtor_deadline, debt_reminder_frequency);
                     }
                     else if(priceSum < paid)
                     {

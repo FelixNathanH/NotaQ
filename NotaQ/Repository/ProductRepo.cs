@@ -51,5 +51,6 @@ namespace NotaQ.Repository
         {
             return (from p in db.product where p.Id == productId select p).FirstOrDefault();
         }
+
     }
 }
