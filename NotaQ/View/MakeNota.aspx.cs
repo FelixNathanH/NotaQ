@@ -45,7 +45,7 @@ namespace NotaQ.View
             CartRepo.DeleteCart(cartId);
 
 
-            
+
             Response.Redirect(Request.RawUrl);
         }
 
@@ -79,7 +79,7 @@ namespace NotaQ.View
             int id, price, quantity, stock;
             cart newCart;
 
-            if(found == true)
+            if (found == true)
             {
                 name = productFound.product_name;
                 id = productFound.Id;
@@ -91,25 +91,32 @@ namespace NotaQ.View
             {
                 name = productNameSearch.Text;
                 id = 0;
-                if (!Controller.NotaController.checkNull(productPrice.Text)){
+                if (!Controller.NotaController.checkNull(productPrice.Text))
+                {
                     price = int.Parse(productPrice.Text);
                     quantity = int.Parse(productQuantity.Text);
                     newCart = CartFactory.createCart(id, name, price, quantity);
                     CartRepo.AddCart(newCart);
                 }
-                
+
             }
-            
+
             Response.Redirect(Request.RawUrl);
             found = false;
         }
 
         protected void kirim_nota_Click(object sender, EventArgs e)
         {
+            string errors = "";
+            errorBuyer.Text = "";
+            errorPhn.Text = "";
+            errorQuantity.Text = "";
+            errorPayment.Text = "";
+
             List<cart> cartList = CartRepo.GetCart();
             int priceSum = 0;
             int productCnt = 0;
-            foreach(cart x in cartList)
+            foreach (cart x in cartList)
             {
                 priceSum += x.cart_product_price;
                 productCnt += 1;
@@ -128,7 +135,7 @@ namespace NotaQ.View
             string productCntE = Controller.NotaController.ValidateProduct(productCnt);
             string paidAmountE = Controller.NotaController.ValidatePaid(paidAmount);
 
-            string errors = buyerNmE + buyerPhnE + buyerAssistsE + productCntE + paidAmountE;
+            errors = buyerNmE + buyerPhnE + buyerAssistsE + productCntE + paidAmountE;
 
             if (string.IsNullOrEmpty(errors))
             {
@@ -156,6 +163,13 @@ namespace NotaQ.View
                 {
                     CartRepo.DeleteAllCart(x.Id);
                 }
+            }
+            else
+            {
+                errorBuyer.Text = buyerNmE;
+                errorPhn.Text = buyerPhnE;
+                errorQuantity.Text = productCntE;
+                errorPayment.Text = paidAmountE;
             }
 
         }
