@@ -51,6 +51,25 @@ namespace NotaQ.Repository
         {
             return (from p in db.product where p.Id == productId select p).FirstOrDefault();
         }
+        public static int SearchNameForId(string name)
+        {
+            var product = db.product.FirstOrDefault(p => p.product_name == name);
+            if (product != null)
+            {
+                return product.Id;
+            }
+            return -1;
+        }
+        public static void UpdateProductStockById(int productId, int value)
+        {
+            var product = FindById(productId);
+            if (product != null)
+            {
+                product.product_stock -= value;
+                db.SaveChanges();
+            }
+        }
+
 
     }
 }

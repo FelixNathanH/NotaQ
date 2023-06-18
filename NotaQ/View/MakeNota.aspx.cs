@@ -97,7 +97,7 @@ namespace NotaQ.View
             else
             {
                 Productname.Text = productNameSearch.Text;
-                errorFound.Text = "produk tidak ditemukan, untuk produk tidak terdaftar, harap masukan harga produk secara manual";
+                errorFound.Text = "produk tidak ditemukan. Untuk produk tidak terdaftar, harap masukan harga produk secara manual";
                 productQuantity.Text = "1";
                 found = false;
             }
@@ -242,19 +242,12 @@ namespace NotaQ.View
 
                     if (x.cart_product_id != null)
                     {
-                        product z = ProductRepo.SearchProductById(cartProductId);
-                        if (z != null)
+                        int idP = Repository.ProductRepo.SearchNameForId(x.cart_product_name);
+                        if(idP != -1)
                         {
-                            if (z.product_stock >= x.cart_product_quantity)
-                            {
-                                z.product_stock = z.product_stock -  x.cart_product_quantity;
-                            }
-                            else
-                            {
-                                z.product_stock = 0;
-                            }
+                            Repository.ProductRepo.UpdateProductStockById(idP, x.cart_product_quantity);
                         }
-                        
+
                     }
                 }
                 //buat kirim ke WA
@@ -263,7 +256,7 @@ namespace NotaQ.View
                     int paid = int.Parse(paidAmount);
                     string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
 
-                    string messages = "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
+                    string messages = "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
                         + Controller.NotaController.toCurrency(paid) + "\n" + "Metode Pembayaran: " + payMethod;
 
                     if(priceSum > paid)

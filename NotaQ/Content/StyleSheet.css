@@ -118,9 +118,19 @@
 
 
 /*Make Nota Stuff*/
+
+.gridview_makenota {
+    table-layout: fixed;
+    text-align: left;
+    width: 50%;
+}
+
+.gridview-column_makenota {
+    text-align: left;
+    padding: 5px;
+}
 .MakeNota_middle_frame {
     width: 1200px;
-    height: 1200px;
     margin: auto;
     margin-top: 20px;
     background-color: #9DE6F6;

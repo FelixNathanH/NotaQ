@@ -98,6 +98,7 @@
     </Content>
     <Content Include="Asset\NotaQ.png" />
     <Content Include="Asset\profile.png" />
+    <Content Include="Asset\trash_icon.png" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="Model\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

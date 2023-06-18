@@ -47,10 +47,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Nama Produk</th>
-                            <th scope="col">Harga Produk</th>
-                            <th scope="col">Jumlah Dibeli</th>
-                            <th scope="col">Hapus</th>
+                            <th scope="col" style="text-align: left;">Nama Produk</th>
+                            <th scope="col" style="text-align: left;">Harga Produk</th>
+                            <th scope="col" style="text-align: left;">Jumlah Dibeli</th>
+                            <th scope="col" style="text-align: left;">Hapus</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +61,9 @@
                                     <td scope="row"><%# Eval("cart_product_price") %></td>
                                     <td scope="row"><%# Eval("cart_product_quantity") %></td>
                                     <td scope="row">
-                                        <asp:LinkButton ID="DeleteLinkBtn" runat="server" onclick="DeleteLinkBtn_Click" CommandArgument='<%#Eval("Id") %>' class="btn btn-outline-danger"  > Delete </asp:LinkButton>
+                                        <asp:LinkButton ID="DeleteLinkBtn" runat="server" onclick="DeleteLinkBtn_Click" CommandArgument='<%#Eval("Id") %>' class="btn btn-outline-danger"  > 
+                                            <img src="../Asset/trash_icon.png" alt="Trash Icon" style="width: 25px; height: 25px;" />
+                                        </asp:LinkButton>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -76,11 +78,11 @@
                 <asp:Button ID="search_product" runat="server" Text="Cek Produk" onclick="search_product_Click"/>
 
                 <!--Tabel produk dengan nama mirip -->
-                 <asp:GridView ID="GridViewCart" runat="server" AutoGenerateColumns="False">
+                 <asp:GridView ID="GridViewCart" runat="server" AutoGenerateColumns="False" CssClass="gridview_makenota">
                     <Columns>
-                        <asp:BoundField DataField="product_name" HeaderText="Product Name" />
-                        <asp:BoundField DataField="product_price" HeaderText="Product Price" />
-                        <asp:BoundField DataField="product_stock" HeaderText="Product Quantity" />
+                        <asp:BoundField DataField="product_name" HeaderText="Produk" ItemStyle-CssClass="gridview-column_makenota" />
+                        <asp:BoundField DataField="product_price" HeaderText="Harga" ItemStyle-CssClass="gridview-column_makenota" />
+                        <asp:BoundField DataField="product_stock" HeaderText="Stok" ItemStyle-CssClass="gridview-column_makenota" />
                     </Columns>
                 </asp:GridView>
 
