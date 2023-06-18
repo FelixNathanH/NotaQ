@@ -121,5 +121,57 @@ namespace NotaQ.Controller
         {
             return input == null;
         }
+
+        public static bool CheckInt(string input)
+        {
+            int result;
+            return int.TryParse(input, out result);
+        }
+
+        public static string ValidateNewProduct(int productCnt)
+        {
+            if (productCnt < 1)
+            {
+                return "Tidak ada pembelian";
+            }
+            return "";
+        }
+
+        public static string validateProductPrice(string price)
+        {
+            if (string.IsNullOrEmpty(price))
+            {
+                return "Harga tidak boleh kosong";
+            }
+
+            int result;
+            if (!int.TryParse(price, out result))
+            {
+                return "Harga harus dalam bentuk angka.";
+            }
+
+            return "";
+        }
+        public static string validateProductQuantity(string Quantity)
+        {
+            if (string.IsNullOrEmpty(Quantity))
+            {
+                return "Jumlah dibeli tidak boleh kosong";
+            }
+
+            int result;
+            if (!int.TryParse(Quantity, out result))
+            {
+                return "Jumlah dibeli harus dalam bentuk angka.";
+            }
+
+            return "";
+        }
+
+        public static string toCurrency(int angka)
+        {
+            return "Rp." + angka.ToString("N0");
+        }
+
     }
 }

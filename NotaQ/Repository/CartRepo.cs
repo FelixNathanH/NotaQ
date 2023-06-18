@@ -32,5 +32,15 @@ namespace NotaQ.Repository
         {
             return db.cart.ToList();
         }
+
+        public static int findByName(string name)
+        {
+            cart foundCart = db.cart.Where(x => x.cart_product_name == name).FirstOrDefault();
+            if (foundCart != null)
+            {
+                return foundCart.Id;
+            }
+            return -1;
+        }
     }
 }

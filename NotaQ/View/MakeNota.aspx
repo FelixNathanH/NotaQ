@@ -85,6 +85,7 @@
                 </asp:GridView>
 
                 <!--Informasi Produk -->
+                <asp:Label ID="errorName" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="Productname" runat="server" placeholder="Nama Produk" ></asp:TextBox>
 
                 <asp:Label ID="errorPrice" runat="server" Text=""></asp:Label>
