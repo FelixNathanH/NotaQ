@@ -89,6 +89,7 @@
             <a href ="InfoNota.aspx">Info Nota</a>
             <a href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
             <a class ="selected" href ="SettingHutang.aspx">Pengaturan Penghutang</a>
+            <a href ="InformasiAkun.aspx">Informasi Akun</a>
         </div>
 
         <%--Content--%> 

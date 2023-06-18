@@ -9,7 +9,7 @@
 
 /*Header Part*/
 .header {
-    height: 80px;
+    height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -367,140 +367,7 @@
 }
 
 /*Item List Stuff*/
-.product_setting {
-    display: flex;
-    flex-direction: column;
-    padding: 3% 15%;
-}
 
-.produk_outside {
-    display: flex;
-    margin-top: 20px;
-}
-
-.produk_inside {
-    background-color: white;
-    width: 600px;
-    height: 90px;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    padding: 2.5% 4%;
-}
-
-    .produk_inside label {
-        font-family: 'Trebuchet MS';
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-.urutkanItem {
-    font-family: 'Trebuchet MS';
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    width: auto;
-    padding: 8px 8px 8px 8px;
-    background-color: #D1D1D1;
-    border-radius: 6px;
-    margin: 8px 0;
-    border: solid;
-}
-
-    .urutkanItem:hover {
-        background-color: #a0a0a0;
-        cursor: pointer;
-    }
-
-.searchItem {
-    font-family: 'Trebuchet MS';
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    width: 40%;
-    padding: 8px 8px 8px 8px;
-    background-color: white;
-    border-radius: 6px;
-    margin: 8px 0;
-    border: solid;
-}
-
-    .searchItem::placeholder {
-        font-family: 'Trebuchet MS';
-        font-size: 20px;
-        color: gray;
-    }
-
-.ItemList_tambahProduk_frame {
-    height: 45px;
-    display: flex;
-    width: 50%;
-    margin-top: 20px;
-    background-color: #D1D1D1;
-    color: white;
-    font-size: 48px;
-    align-items: center;
-    vertical-align: middle;
-    padding: 0% 20px;
-}
-
-.ItemList_tambahProduk_button {
-    font-family: 'Trebuchet MS';
-    text-align: left;
-    font-size: 24px;
-    color: white;
-    background-color: #D1D1D1;
-    padding-left: 20px;
-}
-
-.gridviewList {
-    margin-top: 20px;
-}
-
-#GridView1 {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-}
-
-    #GridView1 th,
-    #GridView1 td {
-        padding: 8px;
-        border: 1px solid #ddd;
-    }
-
-    #GridView1 th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    #GridView1 tr {
-        background-color: white;
-    }
-
-.editItem,
-.deleteItem {
-    display: flex;
-    align-items: center;
-}
-
-    .editItem:hover,
-    .delItem:hover {
-        background-color: lightgrey;
-    }
-
-.editt,
-.deletee {
-    margin-right: 5px;
-}
-
-.editButton,
-.deleteButton {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
 
 
 /*Register Stuff*/
@@ -568,8 +435,8 @@
 }
 
 .big_logo {
-    width: 425px;
-    height: 175px;
+    width: auto;
+    height: 80px;
 }
 
 .profile_logo {

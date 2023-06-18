@@ -85,6 +85,7 @@
             <a href ="InfoNota.aspx">Info Nota</a>
             <a class ="selected" href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
             <a href ="SettingHutang.aspx">Pengaturan Penghutang</a>
+            <a href ="InformasiAkun.aspx">Informasi Akun</a>
         </div>
     <form id="form1" runat="server">
         <div class="middle_storage_frame">
