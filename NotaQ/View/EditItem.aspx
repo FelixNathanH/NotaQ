@@ -4,6 +4,59 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <style>
+        body {
+            font-family: 'Trebuchet MS';
+            margin: 0;
+        }  
+        h1 {
+            font-size: 44px;
+            margin-bottom: 25px;
+            text-align:center;
+        }
+        .editlbl {
+            margin-top:10px;
+            margin-bottom: 20px;
+            padding-left: 50px;
+            padding-right: 50px;
+            font-size: 24px;
+        }
+        .editlbl label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .editlbl input[type="text"] {
+            width: 100%;
+            margin-top:5px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .editFrame{
+             margin-top: 20px;
+             display:block;
+             margin-left: 50px;
+         }
+        .editBtn {
+            display: flex;
+            font-family: 'Trebuchet MS';
+            font-size: 20px;
+            font-weight: bold;
+            width: auto;
+            padding: 8px 8px 8px 8px;
+            background-color: #D1D1D1;
+            border-radius: 6px;
+            border: solid;
+        }
+        .editBtn:hover {
+            background-color: #a0a0a0;
+            cursor: pointer;
+        }
+    </style>
     <title>Insert Item</title>
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -35,23 +88,25 @@
     <form id="form1" runat="server">
         <div class="middle_storage_frame">
             <h1>Update Product</h1>
-            <div>
+            <div class="editlbl">
                 <asp:Label ID="lbName" runat="server" Text="Nama Product: "></asp:Label>
                 <asp:TextBox ID="tbName" runat="server"></asp:TextBox>
             </div>
-            <div>
+            <div class="editlbl">
                 <asp:Label ID="lbPrice" runat="server" Text="Harga: "></asp:Label>
                 <asp:TextBox ID="tbPrice" runat="server"></asp:TextBox>
             </div>
-            <div>
+            <div class="editlbl">
                 <asp:Label ID="lbStock" runat="server" Text="Stok: "></asp:Label>
                 <asp:TextBox ID="tbStock" runat="server"></asp:TextBox>
             </div>
-            <div>
+            <div class="editlbl">
                 <asp:Label ID="lbDescription" runat="server" Text="Deskripsi: "></asp:Label>
                 <asp:TextBox ID="tbDescription" runat="server"></asp:TextBox>
             </div>
-            <asp:Button ID="btnUpdate" runat="server" Text="Update Item" OnClick="btnUpdate_Click" />
+            <div class="editFrame">
+                <asp:Button ID="btnUpdate" runat="server" Text="Update Item" OnClick="btnUpdate_Click" class="editBtn" />
+            </div>
         </div>
     </form>
 </body>
