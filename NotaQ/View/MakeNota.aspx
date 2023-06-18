@@ -21,7 +21,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <asp:Label ID="header_shop" runat="server" Text="Label" class="shop_header"></asp:Label>
+                <a>Sinar Maju</a>
             </div>
         </div>
         <div class="MakeNota_middle_frame">

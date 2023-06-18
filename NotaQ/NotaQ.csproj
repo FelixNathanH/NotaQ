@@ -109,20 +109,15 @@
     </Content>
     <Content Include="View\EditItem.aspx" />
     <Content Include="View\InfoNota.aspx" />
-    <Content Include="View\InformasiAkun.aspx" />
     <Content Include="View\InsertItem.aspx" />
     <Content Include="View\ItemList.aspx" />
-    <Content Include="View\Login.aspx" />
     <Content Include="View\MakeNota.aspx" />
-    <Content Include="View\NotaQ.png" />
-    <Content Include="View\profile.png" />
     <Content Include="View\RegisterPage.aspx" />
     <Content Include="View\SettingHutang.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\NotaController.cs" />
-    <Compile Include="Controller\UserController.cs" />
     <Compile Include="Factory\CartFactory.cs" />
     <Compile Include="Factory\HutangFactory.cs" />
     <Compile Include="Factory\NotaDetailFactory.cs" />
@@ -173,7 +168,6 @@
     <Compile Include="Repository\NotaDetailRepo.cs" />
     <Compile Include="Repository\ProductRepo.cs" />
     <Compile Include="Repository\UserRepo.cs" />
-    <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="View\EditItem.aspx.cs">
       <DependentUpon>EditItem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -188,13 +182,6 @@
     <Compile Include="View\InfoNota.aspx.designer.cs">
       <DependentUpon>InfoNota.aspx</DependentUpon>
     </Compile>
-    <Compile Include="View\InformasiAkun.aspx.cs">
-      <DependentUpon>InformasiAkun.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="View\InformasiAkun.aspx.designer.cs">
-      <DependentUpon>InformasiAkun.aspx</DependentUpon>
-    </Compile>
     <Compile Include="View\InsertItem.aspx.cs">
       <DependentUpon>InsertItem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -208,13 +195,6 @@
     </Compile>
     <Compile Include="View\ItemList.aspx.designer.cs">
       <DependentUpon>ItemList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="View\Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="View\Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="View\MakeNota.aspx.cs">
       <DependentUpon>MakeNota.aspx</DependentUpon>

@@ -22,7 +22,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <asp:Label ID="header_shop" runat="server" Text="Label" class="shop_header"></asp:Label>
+                <a>Sinar Maju</a>
             </div>
         </div>
 
@@ -31,7 +31,6 @@
             <a href ="InfoNota.aspx">Info Nota</a>
             <a class ="selected" href ="ItemList.aspx">Pengaturan Produk / Jasa</a>
             <a href ="SettingHutang.aspx">Pengaturan Penghutang</a>
-            <a href ="InformasiAkun.aspx">Informasi Akun</a>
         </div>
     <form id="form1" runat="server">
         <div class="middle_storage_frame">
