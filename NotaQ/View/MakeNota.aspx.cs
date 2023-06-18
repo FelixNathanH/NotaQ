@@ -18,9 +18,28 @@ namespace NotaQ.View
         bool found = false;
         product productFound;
         DateTime waktu = DateTime.Now;
+        int uid;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["user"] != null)
+            {
+                string sUid = (string)Session["user"];
+                int.TryParse(sUid, out uid);
+            }
+            else
+            {
+                Response.Redirect("Login.aspx");
+            }
+
+            if(Session["tempNam"] != null || Session["tempPhn"] != null || Session["tmpAst"] != null)
+            {
+                buyer.Text = (string)Session["tempNam"];
+                buyerPhone.Text = (string)Session["tempPhn"];
+                buyerAssistant.Text = (string)Session["tmpAst"];
+            }
+            
+
             TableRepeater.DataSource = CartRepo.GetCart();
             TableRepeater.DataBind();
             int total = 0;
@@ -44,8 +63,9 @@ namespace NotaQ.View
             int cartId = int.Parse(cartIdTmp);
             CartRepo.DeleteCart(cartId);
 
-
-
+            Session["tempNam"] = buyer.Text;
+            Session["tempPhn"] = buyerPhone.Text;
+            Session["tmpAst"] = buyerAssistant.Text;
             Response.Redirect(Request.RawUrl);
         }
 
@@ -101,6 +121,9 @@ namespace NotaQ.View
 
             }
 
+            Session["tempNam"] = buyer.Text;
+            Session["tempPhn"] = buyerPhone.Text;
+            Session["tmpAst"] = buyerAssistant.Text;
             Response.Redirect(Request.RawUrl);
             found = false;
         }
@@ -140,7 +163,7 @@ namespace NotaQ.View
             if (string.IsNullOrEmpty(errors))
             {
                 int payAmount = Controller.NotaController.ConvertToInt(paidAmount);
-                nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, priceSum, payAmount, payMethod, 1);
+                nota newNota = NotaFactory.createNota(buyerNm, buyerPhn, waktu, buyerAssist, priceSum, payAmount, payMethod, uid);
                 NotaRepo.AddNota(newNota);
 
                 foreach (cart x in cartList)
