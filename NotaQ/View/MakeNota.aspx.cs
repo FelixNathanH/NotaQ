@@ -269,7 +269,7 @@ namespace NotaQ.View
                     if(priceSum > paid)
                     {
                         messages += "\n" + "Hutang: " + Controller.NotaController.toCurrency(priceSum - paid);
-                        hutang newHutang = HutangFactory.createHutang(nota_id, debtor_name, debtor_email, debtor_phone_number, debtor_address, debtor_deadline, debt_reminder_frequency);
+                        //hutang newHutang = HutangFactory.createHutang(nota_id, debtor_name, debtor_email, debtor_phone_number, debtor_address, debtor_deadline, debt_reminder_frequency);
                     }
                     else if(priceSum < paid)
                     {
