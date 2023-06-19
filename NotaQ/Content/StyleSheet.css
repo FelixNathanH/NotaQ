@@ -171,9 +171,9 @@
     font-weight: bold;
 }
 
-
-
-
+.errorLabel {
+    color: red;
+}
 
 .gridview_makenota {
     table-layout: fixed;

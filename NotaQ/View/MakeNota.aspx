@@ -31,11 +31,11 @@
                 <asp:TextBox ID="buyDate" runat="server" placeholder="Tanggal Beli"></asp:TextBox>
 
                 <label>Nama Pembeli :</label>
-                <asp:Label ID="errorBuyer" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorBuyer" class="errorLabel" runat="server" Text="" ></asp:Label>
                 <asp:TextBox ID="buyer" runat="server" placeholder="Nama Pembeli"></asp:TextBox>
 
                 <label>Nomor Telepon Pembeli :</label>
-                <asp:Label ID="errorPhn" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorPhn" class="errorLabel" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="buyerPhone" runat="server" placeholder="Nomor Pembeli"></asp:TextBox>
 
                 <label>Dilayani Oleh :</label>
@@ -43,7 +43,7 @@
 
                 <!--Display produk yang dibeli / dipilih-->
                 <label>Produk Dibeli :</label>
-                <asp:Label ID="errorProduct" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorProduct" class="errorLabel" runat="server" Text=""></asp:Label>
                 <table class="table">
                     <thead>
                         <tr>
@@ -73,7 +73,7 @@
 
 
                 <!--Fungsi untuk search produk-->
-                <asp:Label ID="errorFound" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorFound" class="errorLabel" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="productNameSearch" runat="server" placeholder="Masukan Nama Produk" ></asp:TextBox>
                 <asp:Button ID="search_product" runat="server" Text="Cek Produk" onclick="search_product_Click"/>
 
@@ -87,13 +87,13 @@
                 </asp:GridView>
 
                 <!--Informasi Produk -->
-                <asp:Label ID="errorName" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorName" class="errorLabel" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="Productname" runat="server" placeholder="Nama Produk" ></asp:TextBox>
 
-                <asp:Label ID="errorPrice" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorPrice" class="errorLabel" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="productPrice" runat="server" placeholder="Harga Produk" ></asp:TextBox>
 
-                <asp:Label ID="errorQuantity" runat="server" Text=""></asp:Label>
+                <asp:Label ID="errorQuantity" class="errorLabel" runat="server" Text=""></asp:Label>
                 <asp:TextBox ID="productQuantity" runat="server" placeholder="Jumlah Produk" ></asp:TextBox>
                 <asp:Button ID="tambah_produk" runat="server" Text="Tambah Produk" onclick="tambah_produk_Click" class="MakeNota_tambahProduk_button" />
 
