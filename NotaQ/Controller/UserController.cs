@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using NotaQ.Model;
+﻿using NotaQ.Model;
 using NotaQ.Repository;
+using System;
+using System.Collections.Generic;
 
 namespace NotaQ.Controller
 {

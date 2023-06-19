@@ -1,12 +1,8 @@
-﻿using NotaQ.Controller;
-using NotaQ.Factory;
+﻿using NotaQ.Factory;
 using NotaQ.Model;
 using NotaQ.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace NotaQ.View
@@ -15,7 +11,7 @@ namespace NotaQ.View
 
     public partial class MakeNota : System.Web.UI.Page
     {
-        bool found = false, noStock=false;
+        bool found = false, noStock = false;
         product productFound;
         DateTime waktu = DateTime.Now;
         int uid;
@@ -43,7 +39,7 @@ namespace NotaQ.View
             {
                 buyer.Text = tempNam;
                 buyerPhone.Text = tempPhn;
-                buyerAssistant.Text = tmpAst;      
+                buyerAssistant.Text = tmpAst;
             }
 
 
@@ -104,7 +100,7 @@ namespace NotaQ.View
                 found = false;
             }
 
-            
+
             GridViewCart.DataSource = productsFound;
             GridViewCart.DataBind();
         }
@@ -116,12 +112,12 @@ namespace NotaQ.View
             Session["tmpAst"] = buyerAssistant.Text;
 
             string errors = "";
-            int price,qty, id, stock; 
+            int price, qty, id, stock;
             cart newCart;
             qty = price = id = 0;
 
             string name = Productname.Text;
-            string priceS = productPrice.Text; 
+            string priceS = productPrice.Text;
             string qtyS = productQuantity.Text;
 
             if (string.IsNullOrEmpty(name))
@@ -159,7 +155,7 @@ namespace NotaQ.View
                 id = productFound.Id;
                 stock = productFound.product_stock ?? -1;
 
-                if(stock != -1)
+                if (stock != -1)
                 {
                     if (stock < qty && noStock == false)
                     {
@@ -174,10 +170,10 @@ namespace NotaQ.View
             }
 
             //klo no error gas
-            if (string.IsNullOrEmpty(errors) && noStock==true);
+            if (string.IsNullOrEmpty(errors) && noStock == true) ;
             {
                 int srcId = Repository.CartRepo.findByName(name);
-                if(srcId != -1)
+                if (srcId != -1)
                 {
                     Repository.CartRepo.updateQuantity(srcId, qty);
                 }
@@ -218,7 +214,7 @@ namespace NotaQ.View
             string payMethod = Request.Form["pembayaran"];
             string paidAmount = payment.Text;
 
-            if(paidAmount == "")
+            if (paidAmount == "")
             {
                 paidAmount = "0";
             }
@@ -253,7 +249,7 @@ namespace NotaQ.View
                     if (x.cart_product_id != null)
                     {
                         int idP = Repository.ProductRepo.SearchNameForId(x.cart_product_name);
-                        if(idP != -1)
+                        if (idP != -1)
                         {
                             Repository.ProductRepo.UpdateProductStockById(idP, x.cart_product_quantity);
                         }
@@ -261,7 +257,8 @@ namespace NotaQ.View
                     }
                 }
                 //buat kirim ke WA
-                if (!string.IsNullOrEmpty(buyerPhn)){
+                if (!string.IsNullOrEmpty(buyerPhn))
+                {
 
                     int paid = int.Parse(paidAmount);
                     string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
@@ -269,18 +266,18 @@ namespace NotaQ.View
                     string messages = namToko + "\n" + "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
                         + Controller.NotaController.toCurrency(paid) + "\n" + "Metode Pembayaran: " + payMethod;
 
-                    if(priceSum > paid)
+                    if (priceSum > paid)
                     {
                         messages += "\n" + "Hutang: " + Controller.NotaController.toCurrency(priceSum - paid);
-                        hutang newHutang = HutangFactory.createHutang(newNota.Id , buyerNm, "", buyerPhn, "", DateTime.Now, 0, priceSum - paid, uid);
+                        hutang newHutang = HutangFactory.createHutang(newNota.Id, buyerNm, "", buyerPhn, "", DateTime.Now, 0, priceSum - paid, uid);
                         Repository.HutangRepo.AddHutang(newHutang);
                     }
-                    else if(priceSum < paid)
+                    else if (priceSum < paid)
                     {
                         messages += "\n" + "Kemabalian: " + Controller.NotaController.toCurrency(paid - priceSum);
                     }
 
-                    
+
                     Whatsapp.Twilio.SendNota(phoneNumber, messages);
                 }
 

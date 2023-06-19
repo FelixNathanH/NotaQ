@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace NotaQ.View
@@ -15,7 +13,8 @@ namespace NotaQ.View
         {
             if (IsPostBack == false)
             {
-                List<hutang> listUtang = (db.hutang).ToList();
+                int userID = Convert.ToInt32(((user)Session["user"]).Id);
+                List<hutang> listUtang = db.hutang.Where(x => x.user_id == userID).ToList();
 
                 GridViewUtang.DataSource = listUtang;
                 GridViewUtang.DataBind();
@@ -79,8 +78,8 @@ namespace NotaQ.View
 
         private void SortGridViewUtang(string sortExpression, SortDirection sortDirection)
         {
-            List<hutang> dataSource = (db.hutang).ToList();
-
+            int userID = Convert.ToInt32(((user)Session["user"]).Id);
+            List<hutang> dataSource = db.hutang.Where(x => x.user_id == userID).ToList();
 
             if (sortDirection == SortDirection.Ascending)
             {
@@ -97,7 +96,8 @@ namespace NotaQ.View
         protected void search_TextChanged1(object sender, EventArgs e)
         {
             string keyword = search.Text.Trim();
-            List<hutang> dataSource = (db.hutang).ToList();
+            int userID = Convert.ToInt32(((user)Session["user"]).Id);
+            List<hutang> dataSource = db.hutang.Where(x => x.user_id == userID).ToList();
             dataSource = dataSource.Where(x => x.debtor_name.ToLower().Contains(keyword.ToLower())).ToList();
             GridViewUtang.DataSource = dataSource;
             GridViewUtang.DataBind();

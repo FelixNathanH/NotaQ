@@ -1,9 +1,7 @@
-﻿using NotaQ.Model;
-using NotaQ.Factory;
-using System;
+﻿using NotaQ.Factory;
+using NotaQ.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace NotaQ.Repository
 {

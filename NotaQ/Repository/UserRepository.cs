@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NotaQ.Model;
+using System;
 using System.Linq;
-using System.Web;
-using NotaQ.Model;
 
 namespace NotaQ.Repository
 {

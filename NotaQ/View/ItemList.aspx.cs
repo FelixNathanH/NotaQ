@@ -2,8 +2,6 @@ using NotaQ.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace NotaQ.View
@@ -94,7 +92,7 @@ namespace NotaQ.View
         {
             user customer = Session["user"] as user;
             int id = customer.Id;
-            Response.Redirect("InsertItem.aspx?id=" +id);
+            Response.Redirect("InsertItem.aspx?id=" + id);
         }
     }
 }

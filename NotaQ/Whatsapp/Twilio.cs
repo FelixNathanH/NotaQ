@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
@@ -33,12 +30,12 @@ namespace NotaQ.Whatsapp
         {
             string PhoneNum = "whatsapp:" + phone;
             var accountSid = "ACac3d89fa0ece8bad6daab30946ebb4ba";
-            var authToken = "908c2de9e087c3897b4db82bb8a6b134";
+            var authToken = "410253b0b276bf65eab62f43b775972a";
             TwilioClient.Init(accountSid, authToken);
 
             var messageOptions = new CreateMessageOptions(
               new PhoneNumber(PhoneNum));
-            messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
+            messageOptions.From = new PhoneNumber("whatsapp:+12513175507");
             messageOptions.Body = messages;
 
 

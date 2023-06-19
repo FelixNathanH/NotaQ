@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NotaQ.Model;
+using System;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using NotaQ.Model;
-using NotaQ.Controller;
 
 namespace NotaQ.View
 {
