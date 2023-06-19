@@ -19,6 +19,7 @@ namespace NotaQ.View
         product productFound;
         DateTime waktu = DateTime.Now;
         int uid;
+        string namToko;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,6 +32,7 @@ namespace NotaQ.View
             {
                 Response.Redirect("Login.aspx");
             }
+            namToko = namaToko.Text = "Toko " + olduser.name;
 
             //tulis ulang biar gk ilang di kolom atas
             string tempNam = Session["tempNam"] as string;
@@ -52,7 +54,7 @@ namespace NotaQ.View
 
             foreach (cart x in cartList)
             {
-                total += x.cart_product_price;
+                total += (x.cart_product_price * x.cart_product_quantity);
             }
 
             totalLbl.Text = "Total harga: " + Controller.NotaController.toCurrency(total);
@@ -191,6 +193,9 @@ namespace NotaQ.View
 
         protected void kirim_nota_Click(object sender, EventArgs e)
         {
+            Session["tempNam"] = buyer.Text;
+            Session["tempPhn"] = buyerPhone.Text;
+            Session["tmpAst"] = buyerAssistant.Text;
             string barangDibeli = "";
             string errors = "";
             errorBuyer.Text = "";
@@ -203,7 +208,7 @@ namespace NotaQ.View
             int productCnt = 0;
             foreach (cart x in cartList)
             {
-                priceSum += x.cart_product_price;
+                priceSum += (x.cart_product_price * x.cart_product_quantity);
                 productCnt += 1;
             }
 
@@ -212,6 +217,11 @@ namespace NotaQ.View
             string buyerAssist = buyerAssistant.Text;
             string payMethod = Request.Form["pembayaran"];
             string paidAmount = payment.Text;
+
+            if(paidAmount == "")
+            {
+                paidAmount = "0";
+            }
 
             //validasi
             string buyerNmE = Controller.NotaController.ValidateBuyerName(buyerNm);
@@ -232,7 +242,7 @@ namespace NotaQ.View
                 foreach (cart x in cartList)
                 {
                     cnt++;
-                    totalBelanja += x.cart_product_price * x.cart_product_quantity;
+                    totalBelanja += (x.cart_product_price * x.cart_product_quantity);
                     int cartProductId = x.cart_product_id ?? 0;
 
                     //list barang dibeli
@@ -256,7 +266,7 @@ namespace NotaQ.View
                     int paid = int.Parse(paidAmount);
                     string phoneNumber = Controller.NotaController.ConvertPhn(buyerPhn);
 
-                    string messages = "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
+                    string messages = namToko + "\n" + "Nama Pembeli: " + buyerNm + "\n" + "Dilayani oleh: " + buyerAssist + "\n" + "Barang yang dibeli: \n" + barangDibeli + "\n" + "Total pembelian: " + Controller.NotaController.toCurrency(priceSum) + "\n" + "Dibayar: "
                         + Controller.NotaController.toCurrency(paid) + "\n" + "Metode Pembayaran: " + payMethod;
 
                     if(priceSum > paid)
@@ -274,14 +284,16 @@ namespace NotaQ.View
                     Whatsapp.Twilio.SendNota(phoneNumber, messages);
                 }
 
-                Session["tempNam"] = "";
-                Session["tempPhn"] = "";
-                Session["tmpAst"] = "";
+                Session.Remove("tempNam");
+                Session.Remove("tempPhn");
+                Session.Remove("tmpAst");
 
                 foreach (cart x in cartList)
                 {
                     CartRepo.DeleteAllCart(x.Id);
                 }
+
+                Response.Redirect(Request.RawUrl);
             }
             else
             {

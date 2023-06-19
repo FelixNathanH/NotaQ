@@ -119,6 +119,62 @@
 
 /*Make Nota Stuff*/
 
+/**buttons*/
+#search_product:hover {
+    background-color: #585858;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+#search_product {
+    background-color: #D1D1D1;
+    color: #585858;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Trebuchet MS';
+    font-size: 24px;
+}
+
+#tambah_produk:hover {
+    background-color: #585858;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+#tambah_produk {
+    background-color: #D1D1D1;
+    color: #585858;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Trebuchet MS';
+    font-size: 24px;
+}
+
+
+#kirim_nota:hover {
+    background-color: #585858;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+#kirim_nota {
+    background-color: #D1D1D1;
+    color: #585858;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Trebuchet MS';
+    font-size: 30px;
+}
+
+/*nama toko*/
+#namaToko {
+    color: #ffffff;
+    font-family: 'Trebuchet MS';
+    font-size: 40px;
+    font-weight: bold;
+}
+
+
+
+
+
 .gridview_makenota {
     table-layout: fixed;
     text-align: left;
@@ -218,11 +274,7 @@
     margin-top: 10px;
 }
 
-.MakeNota_kirimNota_button {
-    font-size: 36px;
-    margin: auto;
-    padding: 0px 0px;
-}
+
 
 
 /*Pengaturan Penghutang & Item List Top*/

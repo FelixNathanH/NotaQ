@@ -21,7 +21,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <a>Sinar Maju</a>
+                <asp:Label ID="namaToko" runat="server"></asp:Label>
             </div>
         </div>
         <div class="MakeNota_middle_frame">
@@ -114,9 +114,7 @@
 
                  <!--Buat nota -->
                 <asp:Label ID="errorExists" runat="server" Text=""></asp:Label>
-                <div class ="MakeNota_kirimNota_frame">
-                    <asp:Button ID="kirim_nota" runat="server" Text="Kirim Nota" class="MakeNota_kirimNota_button" OnClick="kirim_nota_Click"/>
-                </div>
+                <asp:Button ID="kirim_nota" runat="server" Text="Kirim Nota" class="MakeNota_kirimNota_button" OnClick="kirim_nota_Click"/>
             </form>
         </div>
     </body>
