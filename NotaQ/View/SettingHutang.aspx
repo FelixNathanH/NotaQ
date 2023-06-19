@@ -100,14 +100,14 @@
                 <div class="filter">
                     <asp:Button ID="urutkan" runat="server" Text="Urutkan" class ="urutkan" OnClick="urutkan_Click"/>
                     <%--<input type="text" placeholder="Cari" class ="search"/>--%>
-                    <asp:TextBox ID="search" runat="server" Text="Cari" class="search" OnTextChanged="search_TextChanged1" AutoPostBack="True"></asp:TextBox>
+                    <asp:TextBox ID="search" runat="server" placeholder="Cari" class="search" OnTextChanged="search_TextChanged1" AutoPostBack="True"></asp:TextBox>
                 </div>
 
                 <%--Limit Utang--%> 
                 <div class="debtor_limit">
                     <div class ="debtor_limit_days">
                         <label>Batas Hutang:  </label>
-                        <asp:TextBox ID="batasutang" runat="server" Text="7" class="debtor_input"></asp:TextBox>
+                        <asp:TextBox ID="batasutang" runat="server" placeholder="7" class="debtor_input"></asp:TextBox>
                         <label> Hari</label>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                 <%--Frekuensi limit--%> 
                 <div class ="debtor_limit_frequency">
                     <label>Frekuensi Pengingat: </label>
-                    <asp:TextBox ID="frekuensipengingat" runat="server" Text="1" class="debtor_input"></asp:TextBox>
+                    <asp:TextBox ID="frekuensipengingat" runat="server" placeholder="1" class="debtor_input"></asp:TextBox>
                     <label> kali </label>
                 </div>
 
