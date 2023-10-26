@@ -14,7 +14,7 @@ namespace NotaQ.View
         bool found = false, noStock = false;
         product productFound;
         DateTime waktu = DateTime.Now;
-        int uid;
+        int uid, total;
         string namToko;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -45,7 +45,7 @@ namespace NotaQ.View
 
             TableRepeater.DataSource = CartRepo.GetCart();
             TableRepeater.DataBind();
-            int total = 0;
+            total = 0;
             List<cart> cartList = CartRepo.GetCart();
 
             foreach (cart x in cartList)
