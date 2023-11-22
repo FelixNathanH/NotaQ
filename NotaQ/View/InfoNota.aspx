@@ -22,7 +22,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <a>Sinar Maju</a>
+                <a>Toko Test</a>
             </div>
         </div>
         <div class ="second_header">
@@ -34,7 +34,7 @@
         <form runat="server" class="info_main_frame">
             <div class ="info_frame">
                 <div class ="info_title">
-                    <label>Toko Sinar Maju</label>
+                    <label>Toko Test</label>
                     <label>Jl. KH. Wahid Hasyim, RT.002/RW.007, Cipadu, Kec. Larangan, Kota Tangerang, Banten 15155</label>
                     <label>============================================================================</label>
                 </div>

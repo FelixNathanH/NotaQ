@@ -75,7 +75,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <a>Sinar Maju</a>
+                <a>Toko Test</a>
             </div>
         </div>
 
