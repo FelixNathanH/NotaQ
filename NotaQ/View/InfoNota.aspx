@@ -22,7 +22,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <a>Toko Test</a>
+                <a>Toko NotaQ</a>
             </div>
         </div>
         <div class ="second_header">
@@ -34,8 +34,8 @@
         <form runat="server" class="info_main_frame">
             <div class ="info_frame">
                 <div class ="info_title">
-                    <label>Toko Test</label>
-                    <label>Jl. KH. Wahid Hasyim, RT.002/RW.007, Cipadu, Kec. Larangan, Kota Tangerang, Banten 15155</label>
+                    <label>Toko NotaQ</label>
+                    <label>Jl. Griya Sutera 8 No.7, RT.007/RW.009, Kunciran, Kec. Pinang, Kota Tangerang, Banten 15144</label>
                     <label>============================================================================</label>
                 </div>
             </div>

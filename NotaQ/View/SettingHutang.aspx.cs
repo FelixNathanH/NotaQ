@@ -11,6 +11,12 @@ namespace NotaQ.View
         DatabaseEntities db = new DatabaseEntities();
         protected void Page_Load(object sender, EventArgs e)
         {
+            user olduser = Session["user"] as user;
+            if (olduser == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
             if (IsPostBack == false)
             {
                 int userID = Convert.ToInt32(((user)Session["user"]).Id);

@@ -30,7 +30,7 @@ namespace NotaQ.Whatsapp
         {
             string PhoneNum = "whatsapp:" + phone;
             var accountSid = "ACac3d89fa0ece8bad6daab30946ebb4ba";
-            var authToken = "f646565317c1e2f8e46e09eb59f0eb4e";
+            var authToken = "0db75aed6b6b53541616ec97f99c1868";
             TwilioClient.Init(accountSid, authToken);
 
             var messageOptions = new CreateMessageOptions(
