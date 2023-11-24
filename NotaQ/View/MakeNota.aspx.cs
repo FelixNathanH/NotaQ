@@ -45,12 +45,14 @@ namespace NotaQ.View
 
             TableRepeater.DataSource = CartRepo.GetCart();
             TableRepeater.DataBind();
-            total = 0;
             List<cart> cartList = CartRepo.GetCart();
 
-            foreach (cart x in cartList)
+            total = 0;
+            int productPrice;
+            foreach (cart item in cartList)
             {
-                total += (x.cart_product_price * x.cart_product_quantity);
+                productPrice = item.cart_product_price * item.cart_product_quantity;
+                total = total + productPrice;
             }
 
             totalLbl.Text = "Total harga: " + Controller.NotaController.toCurrency(total);
@@ -105,8 +107,10 @@ namespace NotaQ.View
             GridViewCart.DataBind();
         }
 
+        //tambah produk
         protected void tambah_produk_Click(object sender, EventArgs e)
         {
+            // simpan input
             Session["tempNam"] = buyer.Text;
             Session["tempPhn"] = buyerPhone.Text;
             Session["tmpAst"] = buyerAssistant.Text;
@@ -125,8 +129,8 @@ namespace NotaQ.View
                 errorName.Text = "Nama produk tidak bisa kosong, silahkan cari kembali diatas atau isi manual";
             }
 
-            //cek error harga
-            string priceErr = Controller.NotaController.validateProductPrice(productPrice.Text);
+            // Validasi price
+            string priceErr = Controller.NotaController.validateProductPrice(priceS);
             if (!string.IsNullOrEmpty(priceErr))
             {
                 errorPrice.Text = priceErr;
@@ -134,30 +138,31 @@ namespace NotaQ.View
             }
             else
             {
-                price = int.Parse(productPrice.Text);
+                price = int.Parse(priceS);
             }
 
-            //cek error jumlah beli
-            string qtyeErr = Controller.NotaController.validateProductPrice(productQuantity.Text);
+            // validasi quantity
+            string qtyeErr = Controller.NotaController.validateProductQuantity(qtyS);
             if (!string.IsNullOrEmpty(qtyeErr))
             {
-                errorPrice.Text = qtyeErr;
+                errorQuantity.Text = qtyeErr;
                 errors += qtyeErr;
             }
             else
             {
-                qty = int.Parse(productQuantity.Text);
+                qty = int.Parse(qtyS);
             }
 
-            //misal produknya ada di database
-            if (found == true && string.IsNullOrEmpty(errors))
+            // kalo produk ada di database & no error
+            if (found && string.IsNullOrEmpty(errors))
             {
                 id = productFound.Id;
                 stock = productFound.product_stock ?? -1;
 
+                // Cek stok
                 if (stock != -1)
                 {
-                    if (stock < qty && noStock == false)
+                    if (stock < qty && !noStock)
                     {
                         errorQuantity.Text = "Stok tidak mencukupi permintaan\n Apabila tetap ingin melakukan order tekan kembali tombol [Tambah Produk]";
                         noStock = true;
@@ -169,8 +174,8 @@ namespace NotaQ.View
                 }
             }
 
-            //klo no error gas
-            if (string.IsNullOrEmpty(errors) && noStock == true) ;
+            // gk error gas
+            if (string.IsNullOrEmpty(errors) && !noStock)
             {
                 int srcId = Repository.CartRepo.findByName(name);
                 if (srcId != -1)
@@ -182,10 +187,13 @@ namespace NotaQ.View
                     newCart = CartFactory.createCart(id, name, price, qty);
                     CartRepo.AddCart(newCart);
                 }
-                Response.Redirect(Request.RawUrl);
+
                 found = false;
+                Response.Redirect(Request.RawUrl);
             }
         }
+
+
 
         protected void kirim_nota_Click(object sender, EventArgs e)
         {
@@ -279,6 +287,18 @@ namespace NotaQ.View
 
 
                     Whatsapp.Twilio.SendNota(phoneNumber, messages);
+                }
+
+                foreach (cart x in cartList)
+                {
+                    if (x.cart_product_id != null)
+                    {
+                        int idP = Repository.ProductRepo.SearchNameForId(x.cart_product_name);
+                        if (idP != -1)
+                        {
+                            Repository.ProductRepo.UpdateProductStockById(idP, x.cart_product_quantity);
+                        }
+                    }
                 }
 
                 Session.Remove("tempNam");
