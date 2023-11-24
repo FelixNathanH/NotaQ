@@ -11,12 +11,6 @@ namespace NotaQ.View
         DatabaseEntities db = new DatabaseEntities();
         protected void Page_Load(object sender, EventArgs e)
         {
-            user olduser = Session["user"] as user;
-            if (olduser == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
-
             if (IsPostBack == false)
             {
                 List<product> products = (db.product).ToList();

@@ -1,5 +1,4 @@
-﻿using NotaQ.Model;
-using NotaQ.Repository;
+﻿using NotaQ.Repository;
 using System;
 
 namespace NotaQ.View
@@ -8,11 +7,7 @@ namespace NotaQ.View
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            user olduser = Session["user"] as user;
-            if (olduser == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)

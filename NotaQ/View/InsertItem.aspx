@@ -76,7 +76,7 @@
             </div>
             <div class ="header_right">
                 <img src="images/logo.svg" alt="logo" class ="header_right_logo"/>
-                <a>Toko NotaQ</a>
+                <a>Toko Test</a>
             </div>
         </div>
 
