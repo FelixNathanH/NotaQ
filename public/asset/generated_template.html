@@ -1,0 +1,592 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="generator" content="PhpSpreadsheet, https://github.com/PHPOffice/PhpSpreadsheet" />
+      <title>Sheet1</title>
+      <meta name="author" content="THEODORICH ADYTIA" />
+      <meta name="lastModifiedBy" content="THEODORICH ADYTIA" />
+      <meta name="created" content="2024-12-06T02:37:35+00:00" />
+      <meta name="modified" content="2025-01-09T07:56:39+00:00" />
+    <style type="text/css">
+      html { font-family:Calibri, Arial, Helvetica, sans-serif; font-size:11pt; background-color:white }
+      a.comment-indicator:hover + div.comment { background:#ffd; position:absolute; display:block; border:1px solid black; padding:0.5em }
+      a.comment-indicator { background:red; display:inline-block; border:1px solid black; width:0.5em; height:0.5em }
+      div.comment { display:none }
+      table { border-collapse:collapse }
+      .b { text-align:center }
+      .e { text-align:center }
+      .f { text-align:right }
+      .inlineStr { text-align:left }
+      .n { text-align:right }
+      .s { text-align:left }
+      td.style0, th.style0 { vertical-align:bottom; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style1, th.style1 { vertical-align:bottom; border-bottom:3px double #000000 !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style2, th.style2 { vertical-align:bottom; border-bottom:3px double #000000 !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style3, th.style3 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style4, th.style4 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:3px double #000000 !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style5, th.style5 { vertical-align:bottom; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style6, th.style6 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style7, th.style7 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:3px double #000000 !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style8, th.style8 { vertical-align:middle; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:10.5pt }
+      td.style9, th.style9 { vertical-align:middle; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Times New Roman'; font-size:10pt }
+      td.style10, th.style10 { vertical-align:middle; text-align:left; padding-left:18px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:10.5pt }
+      td.style11, th.style11 { vertical-align:middle; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Calibri'; font-size:11pt }
+      td.style12, th.style12 { vertical-align:middle; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:10.5pt }
+      td.style13, th.style13 { vertical-align:middle; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Times New Roman'; font-size:9pt }
+      td.style14, th.style14 { vertical-align:middle; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Times New Roman'; font-size:8pt }
+      td.style15, th.style15 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:10.5pt }
+      td.style16, th.style16 { vertical-align:middle; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#A6ACCD; font-family:'Consolas'; font-size:8pt }
+      td.style17, th.style17 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style18, th.style18 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style19, th.style19 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style20, th.style20 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style21, th.style21 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Aptos Narrow'; font-size:11pt }
+      td.style22, th.style22 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'Aptos Narrow'; font-size:16pt }
+      table.sheet0 { page-break-inside:avoid; break-inside:avoid }
+      table.sheet0 col.col0 { width:135.75pt }
+      table.sheet0 col.col1 { width:8.25pt }
+      table.sheet0 col.col2 { width:135pt }
+      table.sheet0 col.col3 { width:105.75pt }
+      table.sheet0 col.col4 { width:14.25pt }
+      table.sheet0 col.col5 { width:135.75pt }
+      table.sheet0 col.col6 { width:8.25pt }
+      table.sheet0 col.col7 { width:125.25pt }
+      table.sheet0 col.col8 { width:101.25pt }
+      table.sheet0 tr { height:15pt }
+      table.sheet0 tr.row9 { height:15pt }
+      table.sheet0 tr.row10 { height:15pt }
+      table.sheet0 tr.row30 { height:28.8pt }
+      table.sheet0 tr.row41 { height:15pt }
+      table.sheet0 tr.row42 { height:15pt }
+@page page0 { margin-left: 0.25in; margin-right: 0.25in; margin-top: 0.25in; margin-bottom: 0.25in; size: portrait; }
+.navigation {page-break-after: always;}
+.scrpgbrk, div + div {page-break-before: always;}
+@media screen {
+  .gridlines td {border: 1px solid black;}
+  .gridlines th {border: 1px solid black;}
+  body>div {margin-top: 5px;}
+  body>div:first-child {margin-top: 0;}
+  .scrpgbrk {margin-top: 1px;}
+}
+@media print {
+  .gridlinesp td {border: 1px solid black;}
+  .gridlinesp th {border: 1px solid black;}
+  .navigation {display: none;}
+}
+    </style>
+  </head>
+
+  <body>
+<div style='page: page0'>
+    <table border='0' cellpadding='0' cellspacing='0' id='sheet0' class='sheet0 gridlines'>
+        <col class="col0" />
+        <col class="col1" />
+        <col class="col2" />
+        <col class="col3" />
+        <col class="col4" />
+        <col class="col5" />
+        <col class="col6" />
+        <col class="col7" />
+        <col class="col8" />
+        <tbody>
+          <tr class="row0">
+            <td class="column0 style0 null" style='position: relative;'>
+<img style="position: absolute; z-index: 1; left: 0px; top: 0px; width: 139px; height: 43px;" src="data:," alt="Embedded image" /></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style22 s style22" colspan="4" rowspan="3">SLIP GAJI</td>
+          </tr>
+          <tr class="row1">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+          </tr>
+          <tr class="row2">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+          </tr>
+          <tr class="row3">
+            <td class="column0 style0 s">Pasti keubah ini</td>
+            <td class="column1 style5 s">:</td>
+            <td class="column2 style6 s">Username2</td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 s">Tanggal Cetak</td>
+            <td class="column6 style5 s">:</td>
+            <td class="column7 style21 n">43507</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row4">
+            <td class="column0 style0 s">Div./Dept.</td>
+            <td class="column1 style5 s">:</td>
+            <td class="column2 style6 s">iService</td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 s">Dibayarkan melalui</td>
+            <td class="column6 style5 s">:</td>
+            <td class="column7 style20 s">BCA</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row5">
+            <td class="column0 style0 s">Jabatan</td>
+            <td class="column1 style5 s">:</td>
+            <td class="column2 style6 s">Direktur</td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 s">Nomor Rekening</td>
+            <td class="column6 style5 s">:</td>
+            <td class="column7 style20 n">&nbsp;&nbsp;4,271,000,001 </td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row6">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 s">Nama Pemilik Rekening</td>
+            <td class="column6 style5 s">:</td>
+            <td class="column7 style21 s">Username2</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row7">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row8">
+            <td class="column0 style0 s">*semua nilai dalam Rupiah</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row9">
+            <td class="column0 style1 s">PENERIMAAN</td>
+            <td class="column1 style2 null"></td>
+            <td class="column2 style4 null"></td>
+            <td class="column3 style4 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style1 s">POTONGAN</td>
+            <td class="column6 style2 null"></td>
+            <td class="column7 style4 null"></td>
+            <td class="column8 style4 null"></td>
+          </tr>
+          <tr class="row10">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row11">
+            <td class="column0 style0 s">Gaji Pokok</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style18 s">Rp 1.200.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style15 s">Cicilan Pinjaman</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row12">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style18 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style12 s">Potongan bulan ini</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row13">
+            <td class="column0 style8 s">Tunj. Jabatan</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style18 s">Rp 100.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style12 s">Jumlah Pinjaman</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 s">-</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row14">
+            <td class="column0 style8 s">Tunj. Keahlian</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 s">Rp 50.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style12 s">Pinjaman Terbayar</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 s">-</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row15">
+            <td class="column0 style8 s">Tunj. Masa Kerja</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 s">Rp 100.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style12 s">Sisa Pinjaman</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style19 s">-</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row16">
+            <td class="column0 style8 s">Tunj. Keluarga</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 s">Rp 25.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row17">
+            <td class="column0 style8 s">Jumlah Hari Kerja</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 n">22</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style13 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row18">
+            <td class="column0 style8 s">Jumlah Hari Hadir WFO</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 n">22</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style13 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row19">
+            <td class="column0 style8 s">Jumlah Hari Hadir WFA</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 s"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style13 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style18 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row20">
+            <td class="column0 style8 s">Jumlah Hari Ijin/Cuti/Sakit</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 s"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style15 s">Pot. Kehadiran</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style19 s">-</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row21">
+            <td class="column0 style8 s">Jumlah Hari Alpha</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style16 null"></td>
+            <td class="column3 style19 s"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style15 s">Pot. Keterlambatan</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style19 s">-</td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row22">
+            <td class="column0 style9 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row23">
+            <td class="column0 style8 s">Tunj. Transportasi</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style13 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row24">
+            <td class="column0 style10 s">Tunj. Transportasi</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 s">Rp 220.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style14 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row25">
+            <td class="column0 style10 s">Total Tunj. Transportasi</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 s">Rp 220.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row26">
+            <td class="column0 style11 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row27">
+            <td class="column0 style8 s">Tunj. Makan</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row28">
+            <td class="column0 style10 s">Tunj. Makan Harian</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style19 s">Rp 110.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row29">
+            <td class="column0 style10 s">Total Tunj. Makan</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style19 s">Rp 110.000</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row30">
+            <td class="column0 style8 s">Tunj. Komunikasi Tunj. Lembur</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style18 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row31">
+            <td class="column0 style8 s">Tunj. Pph21</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style19 s">-</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">PPh 21</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row32">
+            <td class="column0 style8 s">Tunj. Hari Raya</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style19 s">-</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row33">
+            <td class="column0 style8 s">Tunj. BPJS:</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style18 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">Potongan. BPJS:</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row34">
+            <td class="column0 style12 s">Kesehatan</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style19 s">-</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">Kesehatan</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row35">
+            <td class="column0 style12 s">Jaminan Hari Tua (JHT)</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">Jaminan Hari Tua (JHT)</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row36">
+            <td class="column0 style12 s">Jaminan Kecelakaan Kerja</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">Jaminan Kecelakaan Kerja</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row37">
+            <td class="column0 style12 s">Jaminan Kematian</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style17 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">Jaminan Kematian</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row38">
+            <td class="column0 style8 s">Bonus</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 s">-</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style9 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row39">
+            <td class="column0 style8 s">Lain-lain</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 s">Rp 625.403</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style10 s">Lain-lain</td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row40">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row41">
+            <td class="column0 style2 null"></td>
+            <td class="column1 style2 null"></td>
+            <td class="column2 style4 null"></td>
+            <td class="column3 style7 s">Rp 2.440.403</td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style2 null"></td>
+            <td class="column6 style2 null"></td>
+            <td class="column7 style4 null"></td>
+            <td class="column8 style7 s">-</td>
+          </tr>
+          <tr class="row42">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row43">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 s">Total Transfer:</td>
+            <td class="column8 style6 s">Rp 2.440.403</td>
+          </tr>
+          <tr class="row44">
+            <td class="column0 style0 null"></td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+          <tr class="row45">
+            <td class="column0 style0 s">Slip pembayaran gaji ini dibuat secara sistem dan tidak membutuhkan cap perusahaan dan tanda- tangan.</td>
+            <td class="column1 style0 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style3 null"></td>
+            <td class="column4 style0 null"></td>
+            <td class="column5 style0 null"></td>
+            <td class="column6 style0 null"></td>
+            <td class="column7 style3 null"></td>
+            <td class="column8 style3 null"></td>
+          </tr>
+    </tbody></table>
+</div>
+  </body>
+</html>
