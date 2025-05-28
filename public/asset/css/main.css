@@ -45,12 +45,14 @@
     margin-right: 0; /* Remove right margin from the last button */
 }
 
-.login-req{
+.login-req {
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+    height: 100vh;           /* full viewport height */
     text-align: center;
-    margin-top: 250px;
-    margin-bottom: 250px;
-
 }
+
 
 .sidemenu{
     text-align: center;
@@ -58,10 +60,35 @@
     color: var(--color-dark-variant);
 }
 
+.main-sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-right: 1px solid #dee2e6;
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+}
+
+.logout-button {
+  margin-top: auto;
+}
+    
+
 .g-recaptcha{
     margin-bottom: 10px;
     margin-left: 10px;
 }
+
+.logout-container {
+    border-top: 1px solid #dee2e6; /* or black */
+}
+
 
 /* ==== Sidebar ==== */
 /* Align the icon and menu name horizontally */
