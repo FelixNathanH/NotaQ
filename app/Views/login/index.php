@@ -37,14 +37,26 @@
                 <span>Please input your credential to continue</span>
                 <!-- Username -->
                 <div class="form-group">
-                    <div ctlass="inputGroup">
-                        <input type="text" name="nama" id="nama" class="form-control" placeholder="Full Name">
+                    <div class="inputGroup">
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Full Name">
                     </div>
                 </div>
                 <!-- Email -->
                 <div class="form-group">
                     <div class="inputGroup">
                         <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                    </div>
+                </div>
+                <!-- Company -->
+                <div class="form-group">
+                    <div class="inputGroup">
+                        <input type="text" name="company" id="company" class="form-control" placeholder="Company">
+                    </div>
+                </div>
+                <!-- Phone number -->
+                <div class="form-group">
+                    <div class="inputGroup">
+                        <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Phone number" inputmode="numeric">
                     </div>
                 </div>
                 <!-- Password -->
@@ -80,9 +92,6 @@
                     <div class="form-group">
                         <div class="inputGroup">
                             <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                            <button type="button" id="togglePassword" class="btn btn-outline-secondary position-absolute">
-                                <span class="fas fa-eye"></span>
-                            </button>
                         </div>
                     </div>
                     <!-- Google Recaptcha -->
@@ -178,7 +187,7 @@
             // Form Validation (Register)
             $('#quickFormReg').validate({
                 rules: {
-                    nama: {
+                    name: {
                         required: true,
                     },
                     email: {
@@ -187,10 +196,17 @@
                     },
                     password: {
                         required: true,
-                    }
+                    },
+                    company: {
+                        required: true,
+                    },
+                    phone_number: {
+                        required: true,
+                        digits: true,
+                    },
                 },
                 messages: {
-                    nama: {
+                    name: {
                         required: "'Name' cannot be empty",
                     },
                     email: {
@@ -199,6 +215,13 @@
                     },
                     password: {
                         required: "'password' cannot be empty",
+                    },
+                    company: {
+                        required: "'company' cannot be empty",
+                    },
+                    phone_number: {
+                        required: "'phone' cannot be empty",
+                        digits: "Please enter a valid phone number"
                     }
                 },
                 errorPlacement: function(error, element) {
@@ -235,20 +258,10 @@
                             window.location.href = '/';
                         } else {
                             // Display error message if authentication failed
-                            $('#popup-title').fadeOut(300, function() {
-                                $(this).text('Error!').fadeIn(300);
-                            });
-                            $('.wave').css('background', 'red'); // Change wave color to error state
-                            $('.box').animate({
-                                width: '400px',
-                            }, 1000); // Slowly expand the box
-                            $('.wave').animate({
-                                width: '800px',
-                                height: '800px',
-                            }, 1000); // Slowly expand the wave
-
-                            $('#popup-message').fadeOut(300, function() {
-                                $(this).text('Credential invalid, please try again').fadeIn(300);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: response.message
                             });
                             setTimeout(function() {
                                 window.location.href = '/login';
