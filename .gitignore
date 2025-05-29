@@ -97,8 +97,6 @@ _modules/*
 # Netbeans
 nbproject/
 nbbuild/
-dist/
-nbdist/
 nbactions.xml
 nb-configuration.xml
 .nb-gradle/
