@@ -35,5 +35,14 @@ $routes->post('/resetPass', 'auth::resetPassword');
 
 //Staff
 $routes->get('/staff', 'staff::index');
+$routes->post('/staff/get', 'staff::get');
 $routes->post('/staffdtb', 'staff::staffDtb');
-$routes->post('staff/add', 'Staff::addStaff');
+$routes->post('/staff/add', 'staff::addStaff');
+$routes->post('/staff/edit', 'staff::editStaff');
+$routes->post('/staff/delete', 'staff::deleteStaff');
+
+
+//invoice
+$routes->get('/invoice', 'invoice::index');
+$routes->post('/invoicedtb', 'invoice::invoiceDtb');
+$routes->post('/invoiceAdd', 'invoice::addStaff');

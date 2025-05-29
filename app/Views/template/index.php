@@ -168,7 +168,7 @@
                                         <a href="<?= base_url('/staff') ?>" class="nav-link">
                                             <i class="fa fa-user-circle" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Staff List
+                                                Invoice
                                             </p>
                                         </a>
                                     </li>
@@ -176,7 +176,7 @@
                                         <a href="<?= base_url('/staff') ?>" class="nav-link">
                                             <i class="fa fa-user-circle" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Staff List
+                                                Debt List
                                             </p>
                                         </a>
                                     </li>

@@ -82,7 +82,7 @@
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="KTP" class="form-label">no KTP</label>
+                            <label for="KTP" class="form-label">Nomor KTP</label>
                             <input type="text" name="government_id" id="government_id" class="form-control">
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="Jabatan" class="form-label">no KTP</label>
+                            <label for="Jabatan" class="form-label">Jabatan</label>
                             <input type="text" name="company_role" id="company_role" class="form-control">
                         </div>
                     </div>
@@ -162,6 +162,7 @@
         });
     });
 </script>
+
 <!-- Jquery -->
 <script>
     $(document).ready(function() {
@@ -189,7 +190,7 @@
                 }
             },
             messages: {
-                nama: {
+                name: {
                     required: "nama tidak boleh kosong",
                 },
                 email: {
@@ -222,7 +223,115 @@
                 $(element).removeClass('is-invalid');
             }
         });
+        $('#exampleModal').on('hidden.bs.modal', function() {
+            $('#quickForm').trigger('reset');
+            $('#quickForm :input').removeClass('is-invalid');
+            $('#quickForm').removeClass('error invalid-feedback');
+            $('#btnModal').attr('name', 'add').text('Add Staff');
+            $('#quickForm')[0].reset();
+        });
+        $('#btnAdd').click(function() {
+            $('#quickForm')[0].reset();
+            $('#staff_id').val('');
+            $('#mTitle').text('Tambah Staff');
+            $('#btnModal').text('Add Staff').attr('name', 'add');
+            $('#exampleModal').modal('show');
+        })
+        $('#btnModal').on('click', function() {
+            const action = $(this).attr('name');
+
+            let url = '';
+            if (action === 'update') {
+                url = "<?= site_url('staff/edit') ?>";
+            } else {
+                url = "<?= site_url('staff/add') ?>";
+            }
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: $('#quickForm').serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#exampleModal').modal('hide');
+                        $('#example').DataTable().ajax.reload(null, false);
+                        Swal.fire('Success', response.message, 'success');
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                }
+            });
+        });
     });
 </script>
+
+<!-- Script untuk Edit -->
+<script>
+    $(document).on('click', '.edit-btn', function() {
+        const staffId = $(this).data('id');
+
+        $.ajax({
+            url: "<?= site_url('staff/get') ?>",
+            method: "POST",
+            data: {
+                staff_id: staffId
+            },
+            success: function(response) {
+                if (response.success) {
+                    const staff = response.data;
+                    $('#staff_id').val(staff.staff_id);
+                    $('#name').val(staff.name);
+                    $('#email').val(staff.email);
+                    $('#phone_number').val(staff.phone_number);
+                    $('#government_id').val(staff.government_id);
+                    $('#company_role').val(staff.company_role);
+                    $('#password').val(''); // leave password blank
+                    $('#mTitle').text('Edit Staff');
+                    $('#btnModal').text('Update Staff').attr('name', 'update');
+                    $('#exampleModal').modal('show');
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            }
+        });
+    });
+</script>
+
+<!-- Script untuk Delete -->
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let staffId = $(this).data('id');
+        swal.fire({
+            title: 'Yakin ingin menghapus akun?',
+            text: "Tindakan ini tidak bisa dibatalkan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus akun',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= site_url('staff/delete') ?>",
+                    method: "POST",
+                    data: {
+                        staff_id: staffId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#example').DataTable().ajax.reload(null, false);
+                            Swal.fire('Success', response.message, 'success');
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
 
 <?= $this->endSection('scripts'); ?>
