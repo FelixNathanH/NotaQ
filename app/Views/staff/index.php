@@ -50,7 +50,7 @@
 </div>
 
 <!-- Modal add dan edit Karyawan (Modal dari Bootstrap)-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -65,7 +65,6 @@
                         <div class="mb-3">
                             <label for="nama" class="form-label">nama</label>
                             <input type="text" name="name" id="name" class="form-control">
-
                         </div>
                     </div>
                     <div class="form-group">
@@ -87,12 +86,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="mb-3">
-                            <input type="password" name="password" id="password" class="form-control">
-                            <button type="button" class="btn btn-outline-secondary" id="togglePassword" style="display: none;">
-                                <span class="fas fa-eye"></span>
-                            </button>
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password" class="form-control" disabled />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">Ubah Password</button>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -165,6 +164,8 @@
 
 <!-- Jquery -->
 <script>
+    let originalStaffForm = "";
+
     $(document).ready(function() {
         $('#quickForm').validate({
             rules: {
@@ -238,6 +239,8 @@
             $('#staff_id').val('');
             $('#mTitle').text('Tambah Staff');
             $('#btnModal').text('Add Staff').attr('name', 'add');
+            $('#password').prop('disabled', false).val('');
+            $('#togglePassword').hide();
             $('#exampleModal').modal('show');
         })
         $('#btnModal').on('click', function() {
@@ -250,11 +253,21 @@
                 } else {
                     url = "<?= site_url('staff/add') ?>";
                 }
+                const currentForm = $('#quickForm').serialize();
+
+                if (action === 'update' && currentForm === originalStaffForm) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tidak ada perubahan',
+                        text: 'Data staff tidak berubah dari sebelumnya.'
+                    });
+                    return;
+                }
 
                 $.ajax({
                     url: url,
                     method: "POST",
-                    data: $('#quickForm').serialize(),
+                    data: currentForm,
                     success: function(response) {
                         if (response.success) {
                             $('#exampleModal').modal('hide');
@@ -267,6 +280,7 @@
                 });
             }
         });
+
 
     });
 </script>
@@ -291,10 +305,15 @@
                     $('#phone_number').val(staff.phone_number);
                     $('#government_id').val(staff.government_id);
                     $('#company_role').val(staff.company_role);
-                    $('#password').val(''); // leave password blank
+                    $('#password').val('').prop('disabled', true); // disable during edit
+                    $('#togglePassword').show();
                     $('#mTitle').text('Edit Staff');
                     $('#btnModal').text('Update Staff').attr('name', 'update');
                     $('#exampleModal').modal('show');
+                    // Delay to ensure fields are populated before saving
+                    setTimeout(() => {
+                        originalStaffForm = $('#quickForm').serialize();
+                    }, 100);
                 } else {
                     Swal.fire('Error', response.message, 'error');
                 }
@@ -302,6 +321,33 @@
         });
     });
 </script>
+
+<!-- Optional: Re-enable password when typing -->
+<script>
+    $(document).ready(function() {
+        let passwordEnabled = false;
+
+        $('#togglePassword').on('click', function() {
+            passwordEnabled = !passwordEnabled;
+
+            if (passwordEnabled) {
+                $('#password').prop('disabled', false).focus();
+                $(this).text('Batalkan');
+            } else {
+                $('#password').prop('disabled', true).val('');
+                $(this).text('Ubah Password');
+            }
+        });
+
+        // Reset password field on modal close
+        $('#exampleModal').on('hidden.bs.modal', function() {
+            passwordEnabled = false;
+            $('#password').prop('disabled', true).val('');
+            $('#togglePassword').text('Ubah Password');
+        });
+    });
+</script>
+
 
 <!-- Script untuk Delete -->
 <script>

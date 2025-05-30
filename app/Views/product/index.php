@@ -49,7 +49,7 @@
 </div>
 
 <!-- Modal add dan edit Inventory (Modal dari Bootstrap)-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -63,26 +63,26 @@
                     <div class="form-group">
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Produk</label>
-                            <input type="text" name="product_name" id="product_name" class="form-control">
+                            <input type="text" name="product_name" id="product_name" class="form-control" placeholder="Masukkan Nama Produk">
 
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi Produk</label>
-                            <input type="text" name="product_description" id="product_description" class="form-control">
+                            <input type="text" name="product_description" id="product_description" class="form-control" placeholder="Masukkan Deskripsi Produk">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
                             <label for="KTP" class="form-label">Jumlah Produk</label>
-                            <input type="number" name="product_stock" id="product_stock" class="form-control" min="0">
+                            <input type="number" name="product_stock" id="product_stock" class="form-control" min="0" placeholder="Masukkan Jumlah Produk">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="telp" class="form-label">Harga Produk</label>
-                            <input type="number" name="product_price" id="product_price" class="form-control" step="0.01" min="0">
+                            <label for="product_price" class="form-label">Harga Produk</label>
+                            <input type="text" name="product_price" id="product_price" class="form-control" placeholder="Masukkan Harga Produk">
                         </div>
                     </div>
                     <button type="button" id="btnModal" name="update" class="btn btn-primary"></button>
@@ -137,7 +137,10 @@
             }, {
                 "data": "product_stock"
             }, {
-                "data": "product_price"
+                data: 'product_price',
+                render: function(data, type, row) {
+                    return 'Rp ' + parseInt(data).toLocaleString('id-ID');
+                }
             }, {
                 "data": "action"
             }]
@@ -147,6 +150,8 @@
 
 <!-- Jquery -->
 <script>
+    let originalProductForm = "";
+
     $(document).ready(function() {
         $('#quickForm').validate({
             rules: {
@@ -158,7 +163,6 @@
                 },
                 product_price: {
                     required: true,
-                    digits: true
                 },
                 product_stock: {
                     required: true,
@@ -174,8 +178,6 @@
                 },
                 product_price: {
                     required: "harga produk tidak boleh kosong",
-                    digits: "Harga harus berupa angka yang valid"
-
                 },
                 product_stock: {
                     required: "kuantitas produk tidak boleh kosong",
@@ -212,18 +214,30 @@
         $('#btnModal').on('click', function() {
             if ($('#quickForm').valid()) {
                 const action = $(this).attr('name');
+                let url = (action === 'update') ?
+                    "<?= site_url('product/edit') ?>" :
+                    "<?= site_url('product/add') ?>";
 
-                let url = '';
-                if (action === 'update') {
-                    url = "<?= site_url('product/edit') ?>";
-                } else {
-                    url = "<?= site_url('product/add') ?>";
+                // Convert formatted price to raw number
+                let rawPrice = $('#product_price').val().replace(/[^\d]/g, '');
+                $('#product_price').val(rawPrice);
+
+                const currentForm = $('#quickForm').serialize();
+
+                // Check if form is unchanged during update
+                if (action === 'update' && currentForm === originalProductForm) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tidak ada perubahan',
+                        text: 'Data produk tidak berubah dari sebelumnya.'
+                    });
+                    return;
                 }
 
                 $.ajax({
                     url: url,
                     method: "POST",
-                    data: $('#quickForm').serialize(),
+                    data: currentForm,
                     success: function(response) {
                         if (response.success) {
                             $('#exampleModal').modal('hide');
@@ -236,6 +250,7 @@
                 });
             }
         });
+
     });
 </script>
 
@@ -256,11 +271,20 @@
                     $('#product_id').val(product.product_id);
                     $('#product_name').val(product.product_name);
                     $('#product_description').val(product.product_description);
-                    $('#product_price').val(product.product_price);
+                    // Clean float to integer, then format properly
+                    let cleanPrice = parseInt(product.product_price);
+                    $('#product_price').val(formatRupiah(cleanPrice.toString()));
                     $('#product_stock').val(product.product_stock);
                     $('#mTitle').text('Edit Produk');
                     $('#btnModal').text('Update Produk').attr('name', 'update');
                     $('#exampleModal').modal('show');
+
+                    // Capture original form state after inputs are set
+                    setTimeout(() => {
+                        $('#product_price').val(cleanPrice); // unformatted before serialize
+                        originalProductForm = $('#quickForm').serialize();
+                        $('#product_price').val(formatRupiah(cleanPrice.toString())); // reapply formatting for user
+                    }, 100);
                 } else {
                     Swal.fire('Error', response.message, 'error');
                 }
@@ -268,6 +292,7 @@
         });
     });
 </script>
+
 
 <!-- Script untuk Delete -->
 <script>
@@ -303,5 +328,32 @@
         });
     });
 </script>
+
+<!-- Script untuk Format Rupiah -->
+<script>
+    function formatRupiah(angka, prefix = 'Rp ') {
+        let number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix + rupiah;
+    }
+
+    $(document).ready(function() {
+        $('#product_price').on('keyup', function() {
+            let inputVal = $(this).val();
+            $(this).val(formatRupiah(inputVal));
+        });
+    });
+</script>
+
 
 <?= $this->endSection('scripts'); ?>
