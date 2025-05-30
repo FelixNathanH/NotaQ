@@ -7,11 +7,15 @@ use CodeIgniter\Model;
 class ModelProduct extends Model
 {
     protected $table = 'product';
-    protected $allowedFields = ['company_id', 'product_name', 'product_price', 'product_description'];
     protected $primaryKey = 'product_id';
-
-    public function add_product($data, $db)
+    protected $allowedFields = ['product_id', 'company_id', 'product_name', 'product_price', 'product_description'];
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at'; // If you want soft deletes
+    protected $useSoftDeletes = true;
+    public function add_product($data)
     {
-        return $db->table('product')->insert($data);
+        return $this->insert($data); // uses base Model connection
     }
 }

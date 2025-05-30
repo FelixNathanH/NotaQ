@@ -239,5 +239,69 @@
     });
 </script>
 
+<!-- Script untuk Edit -->
+<script>
+    $(document).on('click', '.edit-btn', function() {
+        const productId = $(this).data('id');
+
+        $.ajax({
+            url: "<?= site_url('product/get') ?>",
+            method: "POST",
+            data: {
+                product_id: productId
+            },
+            success: function(response) {
+                if (response.success) {
+                    const product = response.data;
+                    $('#product_id').val(product.product_id);
+                    $('#product_name').val(product.product_name);
+                    $('#product_description').val(product.product_description);
+                    $('#product_price').val(product.product_price);
+                    $('#product_stock').val(product.product_stock);
+                    $('#mTitle').text('Edit Produk');
+                    $('#btnModal').text('Update Produk').attr('name', 'update');
+                    $('#exampleModal').modal('show');
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            }
+        });
+    });
+</script>
+
+<!-- Script untuk Delete -->
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let productId = $(this).data('id');
+        swal.fire({
+            title: 'Yakin ingin menghapus produk?',
+            text: "Tindakan ini tidak bisa dibatalkan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus produk',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= site_url('product/delete') ?>",
+                    method: "POST",
+                    data: {
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#example').DataTable().ajax.reload(null, false);
+                            Swal.fire('Success', response.message, 'success');
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection('scripts'); ?>

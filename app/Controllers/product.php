@@ -26,6 +26,30 @@ class product extends Home
         return view('product/index', $data);
     }
 
+    public function get()
+    {
+        $productId = $this->request->getPost('product_id');
+
+        $product = $this->ModelProduct
+            ->select('product.*, inventory.product_stock')
+            ->join('inventory', 'inventory.product_id = product.product_id')
+            ->where('product.product_id', $productId)
+            ->first();
+
+        if ($product) {
+            return $this->response->setJSON([
+                'success' => true,
+                'data' => $product
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Produk tidak ditemukan.'
+            ]);
+        }
+    }
+
+
     public function productDtb()
     {
         $companyId = session()->get('company_id');
@@ -80,8 +104,8 @@ class product extends Home
             ];
 
             // Use transaction-safe methods
-            $this->ModelProduct->add_product($productData, $db);
-            $this->ModelInventory->add_inventory($inventoryData, $db);
+            $this->ModelProduct->add_product($productData);
+            $this->ModelInventory->add_inventory($inventoryData);
 
             $db->transComplete();
 
@@ -106,51 +130,62 @@ class product extends Home
 
 
 
-    // public function editStaff()
-    // {
-    //     $staffId = $this->request->getPost('staff_id');
-    //     $name = $this->request->getPost('name');
-    //     $email = $this->request->getPost('email');
-    //     $phone = $this->request->getPost('phone_number');
-    //     $govId = $this->request->getPost('government_id');
-    //     $role = $this->request->getPost('company_role');
-    //     $password = $this->request->getPost('password');
+    public function editProduct()
+    {
+        $productId = $this->request->getPost('product_id');
+        $companyId = session()->get('company_id');
 
-    //     $data = [
-    //         'name' => $name,
-    //         'email' => $email,
-    //         'phone_number' => $phone,
-    //         'government_id' => $govId,
-    //         'company_role' => $role,
-    //         'updated_at' => date('Y-m-d H:i:s'),
-    //     ];
+        $product_name = $this->request->getPost('product_name');
+        $product_description = $this->request->getPost('product_description');
+        $product_price = $this->request->getPost('product_price');
+        $product_stock = $this->request->getPost('product_stock');
 
-    //     // Update password only if a new one is provided
-    //     if (!empty($password)) {
-    //         $data['password'] = password_hash($password, PASSWORD_DEFAULT);
-    //     }
+        $productData = [
+            'product_name' => $product_name,
+            'product_description' => $product_description,
+            'product_price' => $product_price,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
 
-    //     try {
-    //         $this->ModelStaff->update($staffId, $data);
-    //         return $this->response->setJSON(['success' => true, 'message' => 'Staff updated successfully']);
-    //     } catch (\Exception $e) {
-    //         return $this->response->setJSON(['error' => true, 'message' => 'Failed to update staff', 'details' => $e->getMessage()]);
-    //     }
-    // }
+        $inventoryData = [
+            'product_stock' => $product_stock,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
 
-    // public function deleteStaff()
-    // {
-    //     $staffId = $this->request->getPost('staff_id');
+        try {
+            $this->ModelProduct->update($productId, $productData);
 
-    //     if (!$staffId) {
-    //         return $this->response->setJSON(['success' => false, 'message' => 'Missing staff ID']);
-    //     }
+            // Update inventory using WHERE condition
+            $this->ModelInventory
+                ->where('product_id', $productId)
+                ->where('company_id', $companyId)
+                ->set($inventoryData)
+                ->update();
 
-    //     $deleted = $this->ModelStaff->delete($staffId); // Soft delete, if enabled
+            return $this->response->setJSON(['success' => true, 'message' => 'Produk berhasil diperbarui']);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'error' => true,
+                'message' => 'Gagal memperbarui produk',
+                'details' => $e->getMessage()
+            ]);
+        }
+    }
 
-    //     return $this->response->setJSON([
-    //         'success' => $deleted,
-    //         'message' => $deleted ? 'Staff deleted successfully.' : 'Failed to delete staff.'
-    //     ]);
-    // }
+
+    public function deleteProduct()
+    {
+        $productId = $this->request->getPost('product_id');
+
+        if (!$productId) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Missing product ID']);
+        }
+
+        $deleted = $this->ModelProduct->delete($productId); // Soft delete, if enabled
+
+        return $this->response->setJSON([
+            'success' => $deleted,
+            'message' => $deleted ? 'Produk berhasil dihapus.' : 'Failed to delete product.'
+        ]);
+    }
 }

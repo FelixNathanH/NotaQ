@@ -48,6 +48,7 @@ $routes->post('/invoiceAdd', 'invoice::addStaff');
 
 //product
 $routes->get('/product', 'product::index');
+$routes->post('/product/get', 'product::get');
 $routes->post('/productdtb', 'product::productDtb');
 $routes->post('/product/add', 'product::addProduct');
 $routes->post('/product/edit', 'product::editProduct');
