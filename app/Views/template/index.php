@@ -165,7 +165,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= base_url('/staff') ?>" class="nav-link">
+                                        <a href="<?= base_url('/invoice') ?>" class="nav-link">
                                             <i class="fa fa-user-circle" aria-hidden="true"></i>
                                             <p id="menu-names">
                                                 Invoice
@@ -173,10 +173,10 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= base_url('/staff') ?>" class="nav-link">
+                                        <a href="<?= base_url('/product') ?>" class="nav-link">
                                             <i class="fa fa-user-circle" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Debt List
+                                                Product List
                                             </p>
                                         </a>
                                     </li>

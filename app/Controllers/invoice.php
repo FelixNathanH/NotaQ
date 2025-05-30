@@ -2,26 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Models\ModelStaff;
+use app\Models\ModelInvoice;
 
-class staff extends Home
+class invoice extends Home
 {
-    protected $db, $builder, $ModelStaff;
+    protected $db, $builder, $ModelInvoice;
 
     public function __construct()
     {
         $this->db      = \Config\Database::connect();
-        $this->builder = $this->db->table('staff');
-        $this->ModelStaff = new ModelStaff();
+        $this->builder = $this->db->table('invoice');
+        $this->ModelInvoice = new ModelInvoice();
         $this->request = \Config\Services::request();
     }
 
     public function index()
     {
-        $data['title'] = 'staff';
+        $data['title'] = 'invoice';
         $data['name'] = session()->get('name') ?? '';
         $data['company'] = session()->get('company') ?? '';
-        return view('staff/index', $data);
+        return view('invoice/index', $data);
     }
 
     public function staffdtb()
@@ -120,9 +120,7 @@ class staff extends Home
         $phone = $this->request->getPost('phone_number');
         $govId = $this->request->getPost('government_id');
         $role = $this->request->getPost('company_role');
-        if (!empty($this->request->getPost('password'))) {
-            $data['password'] = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
-        }
+        $password = $this->request->getPost('password');
 
         $data = [
             'name' => $name,

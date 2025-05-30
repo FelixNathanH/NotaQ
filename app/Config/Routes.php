@@ -41,8 +41,14 @@ $routes->post('/staff/add', 'staff::addStaff');
 $routes->post('/staff/edit', 'staff::editStaff');
 $routes->post('/staff/delete', 'staff::deleteStaff');
 
-
 //invoice
 $routes->get('/invoice', 'invoice::index');
 $routes->post('/invoicedtb', 'invoice::invoiceDtb');
 $routes->post('/invoiceAdd', 'invoice::addStaff');
+
+//product
+$routes->get('/product', 'product::index');
+$routes->post('/productdtb', 'product::productDtb');
+$routes->post('/product/add', 'product::addProduct');
+$routes->post('/product/edit', 'product::editProduct');
+$routes->post('/product/delete', 'product::deleteProduct');

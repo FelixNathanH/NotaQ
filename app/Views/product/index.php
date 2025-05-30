@@ -20,24 +20,23 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Staff List</h3>
+                <h3 class="card-title">Product List</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
                 <!-- Tombol Add Users -->
                 <div class="btn-addKarywan">
                     <a button type="button" id="btnAdd" class="btn btn-success swalDefaultSuccess" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Tambah Staff
+                        Tambah Produk
                     </a>
                 </div>
                 <table id="example" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">No telp</th>
-                            <th scope="col">No KTP</th>
-                            <th scope="col">Jabatan</th>
+                            <th scope="col">Nama Produk</th>
+                            <th scope="col">Deskripsi Produk</th>
+                            <th scope="col">Jumlah Produk</th>
+                            <th scope="col">Harga Produk</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -49,7 +48,7 @@
     </div>
 </div>
 
-<!-- Modal add dan edit Karyawan (Modal dari Bootstrap)-->
+<!-- Modal add dan edit Inventory (Modal dari Bootstrap)-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -58,47 +57,32 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modal-addK">
-                <form name="formKaryawan" id="quickForm">
+                <form name="formInventory" id="quickForm">
                     <?= csrf_field(); ?>
-                    <input type="hidden" name="staff_id" id="staff_id" value="">
+                    <input type="hidden" name="product_id" id="product_id" value="">
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="nama" class="form-label">nama</label>
-                            <input type="text" name="name" id="name" class="form-control">
+                            <label for="nama" class="form-label">Nama Produk</label>
+                            <input type="text" name="product_name" id="product_name" class="form-control">
 
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="email" class="form-label">email</label>
-                            <input type="email" name="email" id="email" class="form-control">
+                            <label for="deskripsi" class="form-label">Deskripsi Produk</label>
+                            <input type="text" name="product_description" id="product_description" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="telp" class="form-label">Nomor telp</label>
-                            <input type="text" name="phone_number" id="phone_number" class="form-control">
+                            <label for="KTP" class="form-label">Jumlah Produk</label>
+                            <input type="number" name="product_stock" id="product_stock" class="form-control" min="0">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="mb-3">
-                            <label for="KTP" class="form-label">Nomor KTP</label>
-                            <input type="text" name="government_id" id="government_id" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="mb-3">
-                            <input type="password" name="password" id="password" class="form-control">
-                            <button type="button" class="btn btn-outline-secondary" id="togglePassword" style="display: none;">
-                                <span class="fas fa-eye"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="Jabatan" class="form-label">Jabatan</label>
-                            <input type="text" name="company_role" id="company_role" class="form-control">
+                            <label for="telp" class="form-label">Harga Produk</label>
+                            <input type="number" name="product_price" id="product_price" class="form-control" step="0.01" min="0">
                         </div>
                     </div>
                     <button type="button" id="btnModal" name="update" class="btn btn-primary"></button>
@@ -145,17 +129,15 @@
             'processing': true,
             'serverSide': false,
             'serverMethod': 'post',
-            "ajax": "<?= site_url('staffdtb') ?>",
+            "ajax": "<?= site_url('productdtb') ?>",
             "columns": [{
-                "data": "nama"
+                "data": "product_name"
             }, {
-                "data": "email"
+                "data": "product_description"
             }, {
-                "data": "phone_number"
+                "data": "product_stock"
             }, {
-                "data": "government_id"
-            }, {
-                "data": "company_role"
+                "data": "product_price"
             }, {
                 "data": "action"
             }]
@@ -168,51 +150,38 @@
     $(document).ready(function() {
         $('#quickForm').validate({
             rules: {
-                name: {
+                product_name: {
                     required: true,
                 },
-                email: {
-                    required: true,
-                    email: true
-                },
-                phone_number: {
-                    required: true
-                },
-                government_id: {
+                product_description: {
                     required: true,
                 },
-                password: {
-                    required: function() {
-                        // Only require password if we're adding
-                        return $('#btnModal').attr('name') === 'add';
-                    },
-                    minlength: 8
-                },
-                company_role: {
+                product_price: {
                     required: true,
-                }
+                    digits: true
+                },
+                product_stock: {
+                    required: true,
+                    digits: true
+                },
             },
             messages: {
-                name: {
-                    required: "nama tidak boleh kosong",
+                product_name: {
+                    required: "nama produk tidak boleh kosong",
                 },
-                email: {
-                    required: "email tidak boleh kosong",
-                    email: "Mohon diisi dengan email yang valid"
+                product_description: {
+                    required: "keterangan produk tidak boleh kosong",
                 },
-                phone_number: {
-                    required: "nomor telepon tidak boleh kosong",
-                },
-                government_id: {
-                    required: "nomor KTP tidak boleh kosong",
-                },
+                product_price: {
+                    required: "harga produk tidak boleh kosong",
+                    digits: "Harga harus berupa angka yang valid"
 
-                password: {
-                    required: "password tidak boleh kosong",
                 },
-                company_role: {
-                    required: "Jabatan tidak boleh kosong",
-                }
+                product_stock: {
+                    required: "kuantitas produk tidak boleh kosong",
+                    digits: "Stok harus berupa angka bulat"
+
+                },
             },
             errorElement: 'span',
             errorPlacement: function(error, element) {
@@ -230,14 +199,14 @@
             $('#quickForm').trigger('reset');
             $('#quickForm :input').removeClass('is-invalid');
             $('#quickForm').removeClass('error invalid-feedback');
-            $('#btnModal').attr('name', 'add').text('Add Staff');
+            $('#btnModal').attr('name', 'add').text('Tambah Produk');
             $('#quickForm')[0].reset();
         });
         $('#btnAdd').click(function() {
             $('#quickForm')[0].reset();
-            $('#staff_id').val('');
-            $('#mTitle').text('Tambah Staff');
-            $('#btnModal').text('Add Staff').attr('name', 'add');
+            $('#product_id').val('');
+            $('#mTitle').text('Tambah Produk');
+            $('#btnModal').text('Tambah Produk').attr('name', 'add');
             $('#exampleModal').modal('show');
         })
         $('#btnModal').on('click', function() {
@@ -246,9 +215,9 @@
 
                 let url = '';
                 if (action === 'update') {
-                    url = "<?= site_url('staff/edit') ?>";
+                    url = "<?= site_url('product/edit') ?>";
                 } else {
-                    url = "<?= site_url('staff/add') ?>";
+                    url = "<?= site_url('product/add') ?>";
                 }
 
                 $.ajax({
@@ -267,77 +236,8 @@
                 });
             }
         });
-
     });
 </script>
-
-<!-- Script untuk Edit -->
-<script>
-    $(document).on('click', '.edit-btn', function() {
-        const staffId = $(this).data('id');
-
-        $.ajax({
-            url: "<?= site_url('staff/get') ?>",
-            method: "POST",
-            data: {
-                staff_id: staffId
-            },
-            success: function(response) {
-                if (response.success) {
-                    const staff = response.data;
-                    $('#staff_id').val(staff.staff_id);
-                    $('#name').val(staff.name);
-                    $('#email').val(staff.email);
-                    $('#phone_number').val(staff.phone_number);
-                    $('#government_id').val(staff.government_id);
-                    $('#company_role').val(staff.company_role);
-                    $('#password').val(''); // leave password blank
-                    $('#mTitle').text('Edit Staff');
-                    $('#btnModal').text('Update Staff').attr('name', 'update');
-                    $('#exampleModal').modal('show');
-                } else {
-                    Swal.fire('Error', response.message, 'error');
-                }
-            }
-        });
-    });
-</script>
-
-<!-- Script untuk Delete -->
-<script>
-    $(document).on('click', '.delete-btn', function() {
-        let staffId = $(this).data('id');
-        swal.fire({
-            title: 'Yakin ingin menghapus akun?',
-            text: "Tindakan ini tidak bisa dibatalkan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, hapus akun',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "<?= site_url('staff/delete') ?>",
-                    method: "POST",
-                    data: {
-                        staff_id: staffId
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#example').DataTable().ajax.reload(null, false);
-                            Swal.fire('Success', response.message, 'success');
-                        } else {
-                            Swal.fire('Error', response.message, 'error');
-                        }
-                    }
-                });
-            }
-        });
-    });
-</script>
-
 
 
 <?= $this->endSection('scripts'); ?>
