@@ -7,9 +7,4 @@ use CodeIgniter\Model;
 class ModelInvoice extends Model
 {
     protected $table = 'invoice';
-
-    public function add_staff($data)
-    {
-        return $this->insert($data);
-    }
 }

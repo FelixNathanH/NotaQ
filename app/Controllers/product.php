@@ -31,9 +31,7 @@ class product extends Home
         $productId = $this->request->getPost('product_id');
 
         $product = $this->ModelProduct
-            ->select('product.*, inventory.product_stock')
-            ->join('inventory', 'inventory.product_id = product.product_id')
-            ->where('product.product_id', $productId)
+            ->where('product_id', $productId)
             ->first();
 
         if ($product) {
@@ -57,13 +55,11 @@ class product extends Home
 
         $data = [];
         foreach ($products as $row) {
-            $stock = $this->ModelInventory->where('product_id', $row['product_id'])->first()['product_stock'] ?? 0;
-
             $data[] = [
                 'product_name' => $row['product_name'],
                 'product_description' => $row['product_description'],
                 'product_price' => $row['product_price'],
-                'product_stock' => $stock,
+                'product_stock' => $row['product_stock'],
                 'action' => '
                 <button class="btn btn-sm btn-warning edit-btn" data-id="' . $row['product_id'] . '">Edit</button>
                 <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row['product_id'] . '">Delete</button>
@@ -73,6 +69,7 @@ class product extends Home
 
         return $this->response->setJSON(['data' => $data]);
     }
+
 
 
     public function addProduct()
@@ -95,18 +92,11 @@ class product extends Home
                 'product_name' => $product_name,
                 'product_description' => $product_description,
                 'product_price' => $product_price,
-            ];
-
-            $inventoryData = [
-                'company_id' => $companyId,
-                'product_id' => $productId,
-                'product_stock' => $product_stock,
+                'product_stock' => $product_stock
             ];
 
             // Use transaction-safe methods
             $this->ModelProduct->add_product($productData);
-            $this->ModelInventory->add_inventory($inventoryData);
-
             $db->transComplete();
 
             if ($db->transStatus() === false) {
@@ -127,42 +117,25 @@ class product extends Home
         }
     }
 
-
-
-
     public function editProduct()
     {
         $productId = $this->request->getPost('product_id');
-        $companyId = session()->get('company_id');
-
-        $product_name = $this->request->getPost('product_name');
-        $product_description = $this->request->getPost('product_description');
-        $product_price = $this->request->getPost('product_price');
-        $product_stock = $this->request->getPost('product_stock');
 
         $productData = [
-            'product_name' => $product_name,
-            'product_description' => $product_description,
-            'product_price' => $product_price,
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
-
-        $inventoryData = [
-            'product_stock' => $product_stock,
+            'product_name' => $this->request->getPost('product_name'),
+            'product_description' => $this->request->getPost('product_description'),
+            'product_price' => $this->request->getPost('product_price'),
+            'product_stock' => $this->request->getPost('product_stock'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         try {
             $this->ModelProduct->update($productId, $productData);
 
-            // Update inventory using WHERE condition
-            $this->ModelInventory
-                ->where('product_id', $productId)
-                ->where('company_id', $companyId)
-                ->set($inventoryData)
-                ->update();
-
-            return $this->response->setJSON(['success' => true, 'message' => 'Produk berhasil diperbarui']);
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Produk berhasil diperbarui'
+            ]);
         } catch (\Exception $e) {
             return $this->response->setJSON([
                 'error' => true,
@@ -171,6 +144,7 @@ class product extends Home
             ]);
         }
     }
+
 
 
     public function deleteProduct()
