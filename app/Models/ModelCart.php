@@ -7,5 +7,15 @@ use CodeIgniter\Model;
 class ModelCart extends Model
 {
     protected $table = 'cart';
-    protected $allowedFields = ['invoice_id	', 'company_id', 'product_id', 'order_amount', 'order_price', 'is_custom_product', 'custom_product_name', 'custom_product_price'];
+    protected $allowedFields = [
+        'invoice_id',
+        'company_id',
+        'product_id',
+        'order_amount',
+        'order_price',
+        'order_note', // also missing from your current model
+        'is_custom_product',
+        'custom_product_name',
+        'custom_product_price'
+    ];
 }

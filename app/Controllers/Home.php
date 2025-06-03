@@ -125,7 +125,25 @@ class Home extends BaseController
             ]);
         }
     }
-
-
     // End of myProfile
+
+    public function testing()
+    {
+        $model = new \App\Models\ModelCart();
+        $result = $model->insert([
+            'invoice_id' => 'test_invoice',
+            'company_id' => 'test_company',
+            'product_id' => 'prd683f28bc78501',
+            'order_amount' => 1,
+            'order_price' => 12000,
+            'order_note' => null,
+            'is_custom_product' => false,
+            'custom_product_name' => null,
+            'custom_product_price' => null,
+        ]);
+
+        if (!$result) {
+            dd($model->errors());
+        }
+    }
 }

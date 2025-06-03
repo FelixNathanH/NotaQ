@@ -11,6 +11,7 @@ $routes->get('/', 'Home::index');
 
 //testing
 $routes->get('/test', 'Home::test');
+$routes->get('/testing', 'Home::testing');
 
 //myProfile
 $routes->get('/myprofile', 'Home::profile');
