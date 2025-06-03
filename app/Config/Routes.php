@@ -45,6 +45,7 @@ $routes->post('/staff/delete', 'staff::deleteStaff');
 $routes->get('/invoice', 'invoice::index');
 $routes->post('/invoicedtb', 'invoice::invoiceDtb');
 $routes->post('/invoice/check-stock', 'invoice::checkStock');
+$routes->post('/invoice/submit', 'invoice::submit');
 
 //product
 $routes->get('/product', 'product::index');

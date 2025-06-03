@@ -145,8 +145,6 @@ class product extends Home
         }
     }
 
-
-
     public function deleteProduct()
     {
         $productId = $this->request->getPost('product_id');

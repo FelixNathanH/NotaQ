@@ -19,7 +19,7 @@
 <!-- Invoice Create View -->
 <div class="container mt-5 pt-5 pb-5">
     <h2>Buat Invoice</h2>
-    <form id="invoice-form">
+    <form name="formInvoice" id="quickForm">
         <!-- Tanggal Pembelian -->
         <div class="mb-3">
             <label for="transaction_date" class="form-label">Tanggal Pembelian</label>
@@ -44,6 +44,8 @@
         <div class="mb-3">
             <label class="form-label">Dilayani Oleh</label>
             <input type="text" class="form-control" value="<?= $name; ?>" readonly>
+            <input type="hidden" name="staff_name" value="<?= $name; ?>">
+
         </div>
 
         <!-- Produk Dibeli -->
@@ -220,24 +222,27 @@
     // Add row to cart table
     function addToCart(product) {
         cartIndex++;
-        let maxStockAttr = product.isCustom ? '' : `max="${product.stock}"`;
-        let stockInfo = product.isCustom ? '' : `data-stock="${product.stock}"`;
+
+        const disabledQty = product.stock === 0 && !product.isCustom ? 'readonly style="background-color:#eee;"' : '';
+        const initialQty = product.stock === 0 && !product.isCustom ? 0 : 1;
+        const warning = product.stock === 0 && !product.isCustom ? '<span class="text-danger small">Stok Habis</span>' : '';
 
         let row = `
-<tr data-index="${cartIndex}">
-  <td><input type="hidden" name="products[${cartIndex}][product_id]" value="${product.id}">${product.id}</td>
-  <td><input type="hidden" name="products[${cartIndex}][product_name]" value="${product.name}">${product.name}</td>
-  <td><input type="hidden" name="products[${cartIndex}][product_price]" value="${product.price}">${product.price.toLocaleString()}</td>
-  <td>
-    <input type="number" class="form-control quantity-input" 
-           name="products[${cartIndex}][quantity]" 
-           data-price="${product.price}" 
-           ${stockInfo} ${maxStockAttr} 
-           value="1" min="1">
-  </td>
-  <td class="subtotal">Rp ${product.price.toLocaleString()}</td>
-  <td><button type="button" class="btn btn-sm btn-danger remove-product">Hapus</button></td>
-</tr>`;
+        <tr data-index="${cartIndex}">
+            <td><input type="hidden" name="products[${cartIndex}][product_id]" value="${product.id}">${product.id}</td>
+            <td><input type="hidden" name="products[${cartIndex}][product_name]" value="${product.name}">${product.name} ${warning}</td>
+            <td><input type="hidden" name="products[${cartIndex}][product_price]" value="${product.price}">Rp ${product.price.toLocaleString()}</td>
+            <td>
+                <input type="number" class="form-control quantity-input" 
+                    name="products[${cartIndex}][quantity]" 
+                    data-price="${product.price}" 
+                    data-stock="${product.stock || 0}" 
+                    value="${initialQty}" 
+                    min="0" ${disabledQty}>
+            </td>
+            <td class="subtotal">Rp ${(initialQty * product.price).toLocaleString()}</td>
+            <td><button type="button" class="btn btn-sm btn-danger remove-product">Hapus</button></td>
+        </tr>`;
         $('#cart-table tbody').append(row);
         calculateTotal();
     }
@@ -291,7 +296,6 @@
         calculateTotal();
     }
 
-
     // Remove row
     $(document).on('click', '.remove-product', function() {
         $(this).closest('tr').remove();
@@ -310,6 +314,145 @@
     }
 </script>
 
+<!-- Form Validationa -->
+<script>
+    $('#quickForm').validate({
+        rules: {
+            transaction_time: {
+                required: true
+            },
+            customer_name: {
+                required: true
+            },
+            customer_contact: {
+                required: true
+            },
+            customer_email: {
+                required: true,
+                email: true
+            },
+            payment_method: {
+                required: true
+            },
+            payment_amount: {
+                required: true,
+                number: true,
+                min: 0
+            }
+        },
+        messages: {
+            transaction_time: {
+                required: "Tanggal transaksi wajib diisi"
+            },
+            customer_name: {
+                required: "Nama pembeli wajib diisi"
+            },
+            customer_contact: {
+                required: "Nomor telepon wajib diisi"
+            },
+            customer_email: {
+                required: "Email wajib diisi",
+                email: "Gunakan format email yang valid"
+            },
+            payment_method: {
+                required: "Metode pembayaran wajib diisi"
+            },
+            payment_amount: {
+                required: "Jumlah pembayaran wajib diisi",
+                number: "Masukkan angka yang valid",
+                min: "Jumlah tidak boleh negatif"
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.mb-3').append(error);
+        },
+        highlight: function(element) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    $('#quickForm').on('submit', function(e) {
+        e.preventDefault();
+
+        if (!$(this).valid()) return;
+
+        // Collect product data from the table
+        let products = [];
+        $('#cart-table tbody tr').each(function() {
+            const product_id = $(this).find('input[name*="[product_id]"]').val();
+            const name = $(this).find('input[name*="[product_name]"]').val();
+            const price = parseFloat($(this).find('input[name*="[product_price]"]').val());
+            const quantity = parseInt($(this).find('input[name*="[quantity]"]').val());
+            const subtotal = price * quantity;
+
+
+            if (quantity > 0) {
+                products.push({
+                    product_id,
+                    name,
+                    price,
+                    quantity,
+                    subtotal
+                });
+            }
+        });
+
+        if (products.length === 0) {
+            Swal.fire('Oops!', 'Mohon tambahkan setidaknya satu produk.', 'warning');
+            return;
+        }
+
+        const formData = {
+            transaction_time: $('#transaction_date').val(),
+            customer_name: $('#customer_name').val(),
+            customer_contact: $('#customer_contact').val(),
+            customer_email: $('#customer_email').val(),
+            payment_method: $('#payment_method').val(),
+            payment_amount: $('#payment_amount').val(),
+            total_price: parseInt($('#total_price').val().replace(/[^\d]/g, '')),
+            products: products
+        };
+
+        Swal.fire({
+            title: 'Kirim Invoice?',
+            text: "Pastikan semua data sudah benar.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, kirim!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url("invoice/submit"); ?>', // Adjust this to your route
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    beforeSend: function() {
+                        Swal.fire({
+                            title: 'Sedang diproses...',
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+                    },
+                    success: function(res) {
+                        Swal.fire('Berhasil!', 'Invoice berhasil dikirim.', 'success');
+                        $('#quickForm')[0].reset();
+                        $('#cart-table tbody').empty();
+                        $('#total_price').val('');
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Gagal!', 'Terjadi kesalahan saat mengirim invoice.', 'error');
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 
 <?= $this->endSection('scripts'); ?>
