@@ -44,95 +44,94 @@ class invoice extends Home
         }
     }
 
-    public function submit()
+    public function submitInvoice()
     {
-        // Make sure it's an AJAX request
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON(['error' => 'Invalid request']);
-        }
-
-        $json = $this->request->getJSON(true); // associative array
-
-        // 1. Validate incoming data
-        $validation = \Config\Services::validation();
-        $validation->setRules([
-            'transaction_time' => 'required|valid_date[Y-m-d]',
-            'customer_name' => 'required',
-            'customer_contact' => 'required',
-            'customer_email' => 'required|valid_email',
-            'payment_method' => 'required',
-            'payment_amount' => 'required|decimal',
-            'total_price' => 'required|decimal',
-            'products' => 'required|is_array'
-        ]);
-
-        if (!$validation->run($json)) {
-            return $this->response->setStatusCode(422)->setJSON([
-                'error' => 'Validation failed',
-                'messages' => $validation->getErrors()
-            ]);
-        }
-
-        // 2. Start transaction
         $db = \Config\Database::connect();
         $db->transStart();
 
-        // 3. Insert into invoice table
-        $invoiceData = [
-            'transaction_time' => $json['transaction_time'],
-            'customer_name' => $json['customer_name'],
-            'customer_contact' => $json['customer_contact'],
-            'customer_email' => $json['customer_email'],
-            'payment_method' => $json['payment_method'],
-            'payment_amount' => $json['payment_amount'],
-            'total_price' => $json['total_price'],
-            'debt_status' => ((float)$json['payment_amount'] < (float)$json['total_price']) ? 'unpaid' : 'paid',
-            'staff_id' => session()->get('staff_id'), // assuming you're using sessions
-        ];
+        try {
+            $invoiceId = 'inv' . uniqid();
+            $companyId = session()->get('company_id');
+            $createdBy = session()->get('user_id'); // or username, if stored that way
 
-        $invoiceModel = new \App\Models\InvoiceModel();
-        $invoiceId = $invoiceModel->insert($invoiceData, true); // get inserted ID
+            // Get posted form data
+            $customer_name    = $this->request->getPost('customer_name');
+            $customer_contact = $this->request->getPost('customer_contact');
+            $customer_email   = $this->request->getPost('customer_email');
+            // $customer_address = $this->request->getPost('customer_address');
+            $transaction_time = $this->request->getPost('transaction_time');
+            $total_price      = $this->request->getPost('total_price');
+            $total_payment    = $this->request->getPost('total_payment');
 
-        // 4. Insert products into invoice_details table
-        $detailModel = new \App\Models\InvoiceDetailModel();
-        $productModel = new \App\Models\ProductModel();
+            // Get invoice items (from JS as JSON)
+            $items = $this->request->getPost('items'); // Should be JSON string
+            $items = json_decode($items, true);
 
-        foreach ($json['products'] as $p) {
-            $isCustom = str_starts_with($p['product_id'], 'custom-');
+            // Build invoice data
+            $invoiceData = [
+                'invoice_id'       => $invoiceId,
+                'company_id'       => $companyId,
+                'created_by'       => $createdBy,
+                'customer_name'    => $customer_name,
+                'customer_contact' => $customer_contact,
+                'customer_email'   => $customer_email,
+                // 'customer_address' => $customer_address,
+                'transaction_time' => $transaction_time,
+                'total_price'      => $total_price,
+                'total_payment'    => $total_payment,
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => date('Y-m-d H:i:s'),
+            ];
 
-            $detailModel->insert([
-                'invoice_id' => $invoiceId,
-                'product_id' => $p['product_id'],
-                'product_name' => $p['name'],
-                'product_price' => $p['price'],
-                'quantity' => $p['quantity'],
-                'subtotal' => $p['subtotal']
-            ]);
+            // Insert invoice
+            $invoiceModel = new \App\Models\ModelInvoice();
+            $invoiceModel->insert($invoiceData);
 
-            // Reduce stock if not custom
-            if (!$isCustom) {
-                $product = $productModel->find($p['product_id']);
-                if ($product) {
-                    $newStock = max(0, $product['product_stock'] - $p['quantity']);
-                    $productModel->update($p['product_id'], ['product_stock' => $newStock]);
-                }
+            // Insert items into cart table
+            $cartModel = new \App\Models\ModelCart();
+
+            foreach ($items as $item) {
+                $cartData = [
+                    'invoice_id'           => $invoiceId,
+                    'company_id'           => $companyId,
+                    'product_id'           => $item['product_id'] ?? null,
+                    'order_amount'         => $item['quantity'],
+                    'order_price'          => $item['price'],
+                    'order_note'           => $item['note'] ?? null,
+                    'is_custom_product'    => $item['is_custom'] ?? false,
+                    'custom_product_name'  => $item['custom_name'] ?? null,
+                    'custom_product_price' => $item['custom_price'] ?? null,
+                ];
+
+                $cartModel->insert($cartData);
             }
-        }
 
-        // 5. Complete transaction
-        $db->transComplete();
+            $db->transComplete();
 
-        if ($db->transStatus() === false) {
-            return $this->response->setStatusCode(500)->setJSON([
-                'error' => 'Database transaction failed.'
+            // terakhir smape ini
+            if ($db->transStatus() === false) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Invoice failed at transStatus check',
+                    'invoice_data' => $invoiceData,
+                    'items' => $items,
+                    'db_error' => $db->error(),
+                ]);
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Invoice berhasil disimpan',
+                'invoice_id' => $invoiceId
+            ]);
+        } catch (\Exception $e) {
+            $db->transRollback();
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Gagal menyimpan invoice',
+                'error'   => $e->getMessage(),
+                'db_error' => $db->error(), // ✅ this reveals the underlying DB error
             ]);
         }
-
-        // 6. Send notification (optional)
-
-        return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Invoice created successfully.'
-        ]);
     }
 }

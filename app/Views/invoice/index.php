@@ -406,16 +406,15 @@
             return;
         }
 
-        const formData = {
-            transaction_time: $('#transaction_date').val(),
-            customer_name: $('#customer_name').val(),
-            customer_contact: $('#customer_contact').val(),
-            customer_email: $('#customer_email').val(),
-            payment_method: $('#payment_method').val(),
-            payment_amount: $('#payment_amount').val(),
-            total_price: parseInt($('#total_price').val().replace(/[^\d]/g, '')),
-            products: products
-        };
+        const formData = new FormData();
+        formData.append('transaction_time', $('#transaction_date').val());
+        formData.append('customer_name', $('#customer_name').val());
+        formData.append('customer_contact', $('#customer_contact').val());
+        formData.append('customer_email', $('#customer_email').val());
+        formData.append('payment_method', $('#payment_method').val());
+        formData.append('payment_amount', $('#payment_amount').val());
+        formData.append('total_price', parseInt($('#total_price').val().replace(/[^\d]/g, '')));
+        formData.append('items', JSON.stringify(products)); // KEY LINE
 
         Swal.fire({
             title: 'Kirim Invoice?',
@@ -427,10 +426,11 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '<?= base_url("invoice/submit"); ?>', // Adjust this to your route
+                    url: '<?= base_url("invoice/submit"); ?>',
                     method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     beforeSend: function() {
                         Swal.fire({
                             title: 'Sedang diproses...',
