@@ -82,8 +82,13 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Jumlah yang Dibayar</label>
-            <input type="number" class="form-control" name="payment_amount" id="payment_amount">
+            <input type="number" class="form-control" name="payment_amount" id="payment_amount" placeholder="Rp 0">
         </div>
+        <div class="mb-3">
+            <label for="change_amount" class="form-label">Kembalian</label>
+            <input type="text" id="change_amount" class="form-control" readonly>
+        </div>
+
 
         <!-- Submit -->
         <button type="submit" class="btn btn-success">Kirim Invoice</button>
@@ -177,7 +182,7 @@
 <!-- Script Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-
+<!-- Script untuk form -->
 <script>
     let cartIndex = 0;
 
@@ -205,9 +210,17 @@
     // Add custom product
     $('#add-custom-product').on('click', function() {
         let name = $('#custom_product_name').val();
-        let price = parseFloat($('#custom_product_price').val());
+        let rawPrice = $('#custom_product_price').val().replace(/\./g, '').replace(/[^\d]/g, '');
+        let price = parseInt(rawPrice);
 
-        if (!name || isNaN(price)) return alert("Isi nama dan harga dengan benar.");
+        if (!name || isNaN(price)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Input tidak valid',
+                text: 'Isi nama dan harga dengan benar.'
+            });
+            return;
+        }
 
         addToCart({
             id: 'custom-' + cartIndex,
@@ -229,24 +242,43 @@
         const warning = product.stock === 0 && !product.isCustom ? '<span class="text-danger small">Stok Habis</span>' : '';
 
         let row = `
-        <tr data-index="${cartIndex}">
-            <td><input type="hidden" name="products[${cartIndex}][product_id]" value="${product.id}">${product.id}</td>
-            <td><input type="hidden" name="products[${cartIndex}][product_name]" value="${product.name}">${product.name} ${warning}</td>
-            <td><input type="hidden" name="products[${cartIndex}][product_price]" value="${product.price}">Rp ${product.price.toLocaleString()}</td>
-            <td>
-                <input type="number" class="form-control quantity-input" 
-                    name="products[${cartIndex}][quantity]" 
-                    data-price="${product.price}" 
-                    data-stock="${product.stock || 0}" 
-                    value="${initialQty}" 
-                    min="0" ${disabledQty}>
-            </td>
-            <td class="subtotal">Rp ${(initialQty * product.price).toLocaleString()}</td>
-            <td><button type="button" class="btn btn-sm btn-danger remove-product">Hapus</button></td>
-        </tr>`;
+    <tr data-index="${cartIndex}" data-is-custom="${product.isCustom}">
+        <td>
+            <input type="hidden" name="products[${cartIndex}][product_id]" value="${product.id}">
+            ${product.id ?? '-'}
+        </td>
+        <td>
+            <input type="hidden" name="products[${cartIndex}][product_name]" value="${product.name}">
+            ${product.name} ${warning}
+        </td>
+        <td>
+            <input type="hidden" name="products[${cartIndex}][product_price]" value="${product.price}">
+            Rp ${product.price.toLocaleString()}
+        </td>
+        <td>
+            <input type="number" class="form-control quantity-input" 
+                name="products[${cartIndex}][quantity]" 
+                data-price="${product.price}" 
+                data-stock="${product.stock || 0}" 
+                value="${initialQty}" 
+                min="0" ${disabledQty}>
+        </td>
+        <td class="subtotal">Rp ${(initialQty * product.price).toLocaleString()}</td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger remove-product">Hapus</button>
+        </td>
+        <!-- Extra hidden fields if custom -->
+        ${product.isCustom ? `
+            <input type="hidden" name="products[${cartIndex}][is_custom]" value="1">
+            <input type="hidden" name="products[${cartIndex}][custom_name]" value="${product.name}">
+            <input type="hidden" name="products[${cartIndex}][custom_price]" value="${product.price}">
+        ` : ''}
+    </tr>`;
+
         $('#cart-table tbody').append(row);
         calculateTotal();
     }
+
 
     // Quantity change updates subtotal
     $(document).on('input', '.quantity-input', function() {
@@ -311,8 +343,21 @@
             let price = parseFloat($(this).find('.quantity-input').data('price'));
             total += qty * price;
         });
-        $('#total_price').val(total.toLocaleString());
+        $('#total_price').val('Rp ' + total.toLocaleString('id-ID'));
     }
+
+    // Calculate change
+    function calculateChange() {
+        let total = parseInt($('#total_price').val().replace(/[^\d]/g, '')) || 0;
+        let paid = parseInt($('#payment_amount').val().replace(/[^\d]/g, '')) || 0;
+
+        let change = paid - total;
+        $('#change_amount').val(change > 0 ? 'Rp ' + change.toLocaleString('id-ID') : 'Rp 0');
+    }
+
+    $('#payment_amount').on('input', function() {
+        calculateChange();
+    });
 </script>
 
 
@@ -389,19 +434,26 @@
             const name = $(this).find('input[name*="[product_name]"]').val();
             const price = parseFloat($(this).find('input[name*="[product_price]"]').val());
             const quantity = parseInt($(this).find('input[name*="[quantity]"]').val());
-            const subtotal = price * quantity;
+            const is_custom = $(this).find('input[name*="[is_custom]"]').val() === '1';
 
+            let product = {
+                product_id: is_custom ? null : product_id,
+                name,
+                price,
+                quantity,
+                is_custom
+            };
+
+            if (is_custom) {
+                product.custom_name = $(this).find('input[name*="[custom_name]"]').val();
+                product.custom_price = parseFloat($(this).find('input[name*="[custom_price]"]').val());
+            }
 
             if (quantity > 0) {
-                products.push({
-                    product_id,
-                    name,
-                    price,
-                    quantity,
-                    subtotal
-                });
+                products.push(product);
             }
         });
+
 
         if (products.length === 0) {
             Swal.fire('Oops!', 'Mohon tambahkan setidaknya satu produk.', 'warning');
@@ -414,46 +466,72 @@
         formData.append('customer_contact', $('#customer_contact').val());
         formData.append('customer_email', $('#customer_email').val());
         formData.append('payment_method', $('#payment_method').val());
-        formData.append('payment_amount', $('#payment_amount').val());
+        formData.append('payment_amount', parseInt($('#payment_amount').val().replace(/[^\d]/g, '')));
         formData.append('total_price', parseInt($('#total_price').val().replace(/[^\d]/g, '')));
         formData.append('items', JSON.stringify(products)); // KEY LINE
 
-        Swal.fire({
-            title: 'Kirim Invoice?',
-            text: "Pastikan semua data sudah benar.",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, kirim!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '<?= base_url("invoice/submit"); ?>',
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Sedang diproses...',
-                            allowOutsideClick: false,
-                            didOpen: () => Swal.showLoading()
-                        });
-                    },
-                    success: function(res) {
-                        Swal.fire('Berhasil!', 'Invoice berhasil dikirim.', 'success');
-                        $('#quickForm')[0].reset();
-                        $('#cart-table tbody').empty();
-                        $('#total_price').val('');
-                    },
-                    error: function(xhr) {
-                        Swal.fire('Gagal!', 'Terjadi kesalahan saat mengirim invoice.', 'error');
-                        console.log(xhr.responseText);
-                    }
+        let total = parseInt($('#total_price').val().replace(/[^\d]/g, '')) || 0;
+        let paid = parseInt($('#payment_amount').val().replace(/[^\d]/g, '')) || 0;
+
+        if (paid < total) {
+            Swal.fire({
+                title: 'Pembayaran Kurang!',
+                text: 'Jumlah yang dibayar lebih kecil dari total. Izinkan pelanggan berhutang?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Izinkan Hutang',
+                cancelButtonText: 'Batalkan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitInvoice(formData); // kita buat fungsi khusus agar tidak duplikasi
+                }
+            });
+        } else {
+            Swal.fire({
+                title: 'Kirim Invoice?',
+                text: "Pastikan semua data sudah benar.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, kirim!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitInvoice(formData);
+                }
+            });
+        }
+
+    });
+</script>
+
+<script>
+    function submitInvoice(formData) {
+        $.ajax({
+            url: '<?= base_url("invoice/submit"); ?>',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Sedang diproses...',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
                 });
+            },
+            success: function(res) {
+                Swal.fire('Berhasil!', 'Invoice berhasil dikirim.', 'success');
+                $('#quickForm')[0].reset();
+                $('#cart-table tbody').empty();
+                $('#total_price').val('');
+                $('#change_amount').val('');
+            },
+            error: function(xhr) {
+                Swal.fire('Gagal!', 'Terjadi kesalahan saat mengirim invoice.', 'error');
+                console.log(xhr.responseText);
             }
         });
-    });
+    }
 </script>
 
 

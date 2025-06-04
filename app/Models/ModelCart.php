@@ -13,9 +13,9 @@ class ModelCart extends Model
         'product_id',
         'order_amount',
         'order_price',
-        'order_note', // also missing from your current model
+        'order_note',
         'is_custom_product',
         'custom_product_name',
-        'custom_product_price'
+        'custom_product_price',
     ];
 }

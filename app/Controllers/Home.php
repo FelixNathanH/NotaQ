@@ -19,10 +19,10 @@ class Home extends BaseController
     public function index()
     {
         // Debug: Dump session contents
-        // echo '<pre>';
-        // print_r(session()->get());
-        // echo '</pre>';
-        // exit;
+        echo '<pre>';
+        print_r(session()->get());
+        echo '</pre>';
+        exit;
         // Stop execution so you can inspect the output
         $data['title'] = 'Home';
         $data['name'] = session()->get('name') ?? '';

@@ -11,7 +11,7 @@ class CreateCartTable extends Migration
         $this->forge->addField([
             'invoice_id'            => ['type' => 'VARCHAR', 'constraint' => 255],
             'company_id'            => ['type' => 'VARCHAR', 'constraint' => 255],
-            'product_id'            => ['type' => 'VARCHAR', 'constraint' => 255],
+            'product_id'            => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'order_amount'          => ['type' => 'INT'],
             'order_price'           => ['type' => 'DECIMAL', 'constraint' => '10,2'],
             'order_note'            => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
@@ -22,7 +22,8 @@ class CreateCartTable extends Migration
 
         $this->forge->addForeignKey('invoice_id', 'invoice', 'invoice_id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('company_id', 'company', 'company_id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('product_id', 'product', 'product_id', 'CASCADE', 'CASCADE'); // If product deleted, leave null
+        $this->forge->addForeignKey('product_id', 'product', 'product_id', 'SET NULL', 'CASCADE');
+
 
         $this->forge->createTable('cart');
     }

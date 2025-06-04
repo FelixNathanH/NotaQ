@@ -6,6 +6,7 @@ use CodeIgniter\Database\Migration;
 
 class CreateInvoicesTable extends Migration
 {
+
     public function up()
     {
         $this->forge->addField([

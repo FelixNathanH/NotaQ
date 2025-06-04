@@ -16,6 +16,6 @@ class ModelProduct extends Model
     protected $useSoftDeletes = true;
     public function add_product($data)
     {
-        return $this->insert($data); // uses base Model connection
+        return $this->insert($data);
     }
 }
