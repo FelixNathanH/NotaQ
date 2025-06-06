@@ -16,6 +16,7 @@ class CreateInvoicesTable extends Migration
             'customer_name'     => ['type' => 'VARCHAR', 'constraint' => 255],
             'customer_contact'  => ['type' => 'VARCHAR', 'constraint' => 255],
             'customer_email'    => ['type' => 'VARCHAR', 'constraint' => 255],
+            'payment_method'    => ['type' => 'VARCHAR', 'constraint' => 255],
             'customer_address'  => ['type' => 'VARCHAR', 'constraint' => 255],
             'transaction_time'  => ['type' => 'DATETIME'],
             'total_price'       => ['type' => 'DECIMAL', 'constraint' => '10,2'],

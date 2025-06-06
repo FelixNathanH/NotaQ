@@ -15,6 +15,7 @@ class ModelInvoice extends Model
         'customer_name',
         'customer_contact',
         'customer_email',
+        'payment_method',
         'transaction_time',
         'total_price',
         'total_payment',

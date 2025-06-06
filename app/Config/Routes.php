@@ -55,3 +55,11 @@ $routes->post('/productdtb', 'product::productDtb');
 $routes->post('/product/add', 'product::addProduct');
 $routes->post('/product/edit', 'product::editProduct');
 $routes->post('/product/delete', 'product::deleteProduct');
+
+//debt
+$routes->get('/debt', 'debt::index');
+$routes->post('/debt/get', 'debt::get');
+$routes->post('/debtdtb', 'debt::debtDtb');
+$routes->post('/debt/submit', 'debt::submit');
+$routes->post('/debt/edit', 'debt::editDebt');
+$routes->post('/debt/delete', 'debt::deleteDebt');

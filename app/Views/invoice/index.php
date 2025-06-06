@@ -153,6 +153,38 @@
     </div>
 </div>
 
+<!-- Modal untuk debt -->
+<div class="modal fade" id="debtModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="debtForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Piutang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nama Pelanggan:</strong> <span id="debt_customer_name"></span></p>
+                <p><strong>Kontak:</strong> <span id="debt_customer_contact"></span></p>
+                <p><strong>Email:</strong> <span id="debt_customer_email"></span></p>
+                <p><strong>Total Harga:</strong> <span id="debt_total_price"></span></p>
+                <p><strong>Jumlah Dibayar:</strong> <span id="debt_payment_amount"></span></p>
+                <p><strong>Sisa Hutang:</strong> <span id="debt_amount_due"></span></p>
+                <hr>
+                <h6>Daftar Produk:</h6>
+                <div id="debt_items"></div>
+                <div class="mb-3">
+                    <label for="due_date" class="form-label">Batas Waktu Pembayaran</label>
+                    <input type="date" id="due_date" name="due_date" class="form-control" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Simpan Piutang</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
 
 <?= $this->endSection('content'); ?>
@@ -323,13 +355,14 @@
         });
     });
 
+    // Update subtotal
     function updateSubtotal(input, qty, price) {
         let subtotal = qty * price;
         input.closest('tr').find('.subtotal').text('Rp ' + subtotal.toLocaleString());
         calculateTotal();
     }
 
-    // Remove row
+    // Remove product dari cart
     $(document).on('click', '.remove-product', function() {
         $(this).closest('tr').remove();
         calculateTotal();
@@ -355,6 +388,7 @@
         $('#change_amount').val(change > 0 ? 'Rp ' + change.toLocaleString('id-ID') : 'Rp 0');
     }
 
+    // Untuk menunjukan hasil pada field payment_amount
     $('#payment_amount').on('input', function() {
         calculateChange();
     });
@@ -475,7 +509,7 @@
 
         if (paid < total) {
             Swal.fire({
-                title: 'Pembayaran Kurang!',
+                title: 'Pelanggan berhutang?',
                 text: 'Jumlah yang dibayar lebih kecil dari total. Izinkan pelanggan berhutang?',
                 icon: 'warning',
                 showCancelButton: true,
@@ -483,7 +517,21 @@
                 cancelButtonText: 'Batalkan'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    submitInvoice(formData); // kita buat fungsi khusus agar tidak duplikasi
+                    $('#debtModal').modal('show');
+                    const customerName = $('#customer_name').val();
+                    const customerContact = $('#customer_contact').val();
+                    const customerEmail = $('#customer_email').val();
+                    const totalPrice = parseInt($('#total_price').val().replace(/[^\d]/g, ''));
+                    const paymentAmount = parseInt($('#payment_amount').val().replace(/[^\d]/g, ''));
+                    const amountDue = totalPrice - paymentAmount;
+
+                    $('#debt_customer_name').text(customerName);
+                    $('#debt_customer_contact').text(customerContact);
+                    $('#debt_customer_email').text(customerEmail);
+                    $('#debt_total_price').text(formatRupiah(totalPrice.toString()));
+                    $('#debt_payment_amount').text(formatRupiah(paymentAmount.toString()));
+                    $('#debt_items').html(buildDebtItemList(products)); // products assumed to be your global
+                    $('#debt_amount_due').text(formatRupiah(amountDue.toString()));
                 }
             });
         } else {
@@ -504,6 +552,7 @@
     });
 </script>
 
+<!-- Functions -->
 <script>
     function submitInvoice(formData) {
         $.ajax({
@@ -532,6 +581,119 @@
             }
         });
     }
+
+    function buildDebtItemList(items) {
+        return items.map(item => `
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            ${item.name}
+            <span class="badge bg-primary rounded-pill">${item.quantity} x Rp${item.price.toLocaleString('id-ID')}</span>
+        </li>
+    `).join('');
+    }
+
+    function collectProducts() {
+        let products = [];
+        $('#cart-table tbody tr').each(function() {
+            const product_id = $(this).find('input[name*="[product_id]"]').val();
+            const name = $(this).find('input[name*="[product_name]"]').val();
+            const price = parseFloat($(this).find('input[name*="[product_price]"]').val());
+            const quantity = parseInt($(this).find('input[name*="[quantity]"]').val());
+            const is_custom = $(this).find('input[name*="[is_custom]"]').val() === '1';
+
+            let product = {
+                product_id: is_custom ? null : product_id,
+                name,
+                price,
+                quantity,
+                is_custom
+            };
+
+            if (is_custom) {
+                product.custom_name = $(this).find('input[name*="[custom_name]"]').val();
+                product.custom_price = parseFloat($(this).find('input[name*="[custom_price]"]').val());
+            }
+
+            if (quantity > 0) {
+                products.push(product);
+            }
+        });
+        return products;
+    }
+
+    function formatRupiah(angka, prefix = 'Rp ') {
+        let number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix + rupiah;
+    }
+</script>
+
+<!-- Debt Submit -->
+<script>
+    $('#debtForm').on('submit', function(e) {
+        e.preventDefault();
+
+        const batasWaktu = $('#debt_due_date').val();
+        if (!batasWaktu) {
+            return Swal.fire('Oops!', 'Silakan tentukan batas waktu pembayaran.', 'warning');
+        }
+
+        // Recollect all necessary data
+        const formData = new FormData();
+        formData.append('transaction_time', $('#transaction_date').val());
+        formData.append('customer_name', $('#customer_name').val());
+        formData.append('customer_contact', $('#customer_contact').val());
+        formData.append('customer_email', $('#customer_email').val());
+        formData.append('payment_method', $('#payment_method').val());
+
+        const totalPrice = parseInt($('#total_price').val().replace(/[^\d]/g, ''));
+        const paymentAmount = parseInt($('#payment_amount').val().replace(/[^\d]/g, ''));
+        const amountDue = totalPrice - paymentAmount;
+
+        formData.append('payment_amount', paymentAmount);
+        formData.append('total_price', totalPrice);
+        formData.append('amount_due', amountDue);
+        formData.append('due_date', batasWaktu);
+
+        const products = collectProducts(); // reuse the product collection logic
+        formData.append('items', JSON.stringify(products));
+
+        // Submit debt via AJAX
+        $.ajax({
+            url: '<?= base_url("debt/submit") ?>',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Menyimpan Piutang...',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+            },
+            success: function(res) {
+                Swal.fire('Berhasil!', 'Data piutang telah disimpan.', 'success');
+                $('#quickForm')[0].reset();
+                $('#cart-table tbody').empty();
+                $('#total_price').val('');
+                $('#debtModal').modal('hide');
+            },
+            error: function(xhr) {
+                Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan data piutang.', 'error');
+                console.log(xhr.responseText);
+            }
+        });
+    });
 </script>
 
 

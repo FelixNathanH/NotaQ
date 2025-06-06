@@ -57,6 +57,7 @@ class invoice extends Home
             $customer_name    = $this->request->getPost('customer_name');
             $customer_contact = $this->request->getPost('customer_contact');
             $customer_email   = $this->request->getPost('customer_email');
+            $payment_method   = $this->request->getPost('payment_method');
             $transaction_time = $this->request->getPost('transaction_time');
             $total_price      = $this->request->getPost('total_price');
             $total_payment    = $this->request->getPost('payment_amount');
@@ -69,6 +70,8 @@ class invoice extends Home
                 'customer_name'    => $customer_name,
                 'customer_contact' => $customer_contact,
                 'customer_email'   => $customer_email,
+                'customer_email'   => $customer_email,
+                'payment_method'   => $payment_method,
                 'transaction_time' => $transaction_time,
                 'total_price'      => $total_price,
                 'total_payment'    => $total_payment,
