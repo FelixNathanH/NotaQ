@@ -58,8 +58,12 @@ $routes->post('/product/delete', 'product::deleteProduct');
 
 //debt
 $routes->get('/debt', 'debt::index');
-$routes->post('/debt/get', 'debt::get');
 $routes->post('/debtdtb', 'debt::debtDtb');
 $routes->post('/debt/submit', 'debt::submit');
-$routes->post('/debt/edit', 'debt::editDebt');
+$routes->post('/debt/updateReminderFrequency', 'debt::updateReminderFrequency');
 $routes->post('/debt/delete', 'debt::deleteDebt');
+$routes->post('/debt/getReminderFrequency', 'debt::getReminderFrequency');
+$routes->post('/debt/sendReminder', 'debt::sendReminder');
+$routes->post('/debt/triggerAutoReminder', 'debt::triggerAutoReminder');
+$routes->post('/debt/getDebtAmount', 'debt::getDebtAmount');
+$routes->post('/debt/submitPartialPayment', 'debt::submitPartialPayment');

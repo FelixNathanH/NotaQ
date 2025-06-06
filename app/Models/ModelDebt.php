@@ -21,10 +21,11 @@ class ModelDebt extends Model
         'status',
         'created_at',
         'updated_at',
+        'original_amount',
+        'paid_amount',
     ];
     protected $primaryKey = 'debt_id';
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 }

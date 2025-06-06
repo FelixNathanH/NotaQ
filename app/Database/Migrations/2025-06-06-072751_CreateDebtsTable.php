@@ -60,6 +60,10 @@ class CreateDebtsTable extends Migration
                 'type' => 'DATETIME',
                 'null' => true,
             ],
+            'deleted_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
         $this->forge->addKey('debt_id', true); // primary key
         $this->forge->addForeignKey('invoice_id', 'invoice', 'invoice_id', 'CASCADE', 'CASCADE');

@@ -80,9 +80,9 @@
             <label class="form-label">Metode Pembayaran</label>
             <input type="text" class="form-control" name="payment_method" id="payment_method">
         </div>
-        <div class="mb-3">
-            <label class="form-label">Jumlah yang Dibayar</label>
-            <input type="number" class="form-control" name="payment_amount" id="payment_amount" placeholder="Rp 0">
+        <div class="input-group mb-3">
+            <span class="input-group-text">Rp</span>
+            <input type="text" class="form-control rupiah-input" id="payment_amount" name="payment_amount" required>
         </div>
         <div class="mb-3">
             <label for="change_amount" class="form-label">Kembalian</label>
@@ -122,7 +122,7 @@
                                 <td><?= $product['product_id'] ?></td>
                                 <td><?= $product['product_name'] ?></td>
                                 <td><?= $product['product_stock'] ?></td>
-                                <td><?= $product['product_price'] ?></td>
+                                <td><?= format_rupiah($product['product_price']) ?></td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-primary select-product"
                                         data-id="<?= $product['product_id'] ?>"
@@ -395,7 +395,7 @@
 </script>
 
 
-<!-- Form Validationa -->
+<!-- Form Validation -->
 <script>
     $('#quickForm').validate({
         rules: {
@@ -417,8 +417,6 @@
             },
             payment_amount: {
                 required: true,
-                number: true,
-                min: 0
             }
         },
         messages: {
@@ -500,7 +498,8 @@
         formData.append('customer_contact', $('#customer_contact').val());
         formData.append('customer_email', $('#customer_email').val());
         formData.append('payment_method', $('#payment_method').val());
-        formData.append('payment_amount', parseInt($('#payment_amount').val().replace(/[^\d]/g, '')));
+        const rawPayment = $('#payment_amount').val().replace(/[^\d]/g, '');
+        formData.append('payment_amount', parseInt(rawPayment));
         formData.append('total_price', parseInt($('#total_price').val().replace(/[^\d]/g, '')));
         formData.append('items', JSON.stringify(products)); // KEY LINE
 
@@ -642,7 +641,7 @@
     $('#debtForm').on('submit', function(e) {
         e.preventDefault();
 
-        const batasWaktu = $('#debt_due_date').val();
+        const batasWaktu = $('#due_date').val();
         if (!batasWaktu) {
             return Swal.fire('Oops!', 'Silakan tentukan batas waktu pembayaran.', 'warning');
         }
@@ -695,6 +694,29 @@
         });
     });
 </script>
+
+<!-- Script rupiah formatting -->
+<script>
+    function formatRupiahInput(angka, prefix = 'Rp ') {
+        let number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            rupiah += (sisa ? '.' : '') + ribuan.join('.');
+        }
+
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix + rupiah;
+    }
+
+    $(document).on('input', '.rupiah-input', function() {
+        this.value = formatRupiahInput(this.value, 'Rp ');
+    });
+</script>
+
 
 
 <?= $this->endSection('scripts'); ?>

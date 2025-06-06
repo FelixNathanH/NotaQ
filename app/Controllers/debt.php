@@ -6,6 +6,8 @@ use App\Models\ModelInvoice;
 use App\Models\ModelCart;
 use App\Models\ModelProduct;
 use App\Models\ModelDebt;
+use App\Services\ReminderService;
+
 
 class debt extends Home
 {
@@ -21,6 +23,102 @@ class debt extends Home
         $this->ModelCart = new ModelCart();
         $this->request = \Config\Services::request();
     }
+
+    public function index()
+    {
+        $data['title'] = 'debt';
+        $data['name'] = session()->get('name') ?? '';
+        $data['company'] = session()->get('company') ?? '';
+        $data['products'] = $this->ModelProduct->where('company_id', session()->get('company_id'))->findAll();
+        return view('debt/index', $data);
+    }
+
+    public function getReminderFrequency()
+    {
+        $debtId = $this->request->getPost('debt_id');
+        $debt = $this->ModelDebt->find($debtId);
+
+        if ($debt && $debt['company_id'] == session()->get('company_id')) {
+            return $this->response->setJSON(['reminder_frequency' => $debt['reminder_frequency']]);
+        }
+
+        return $this->response->setStatusCode(404)->setJSON(['error' => 'Debt not found']);
+    }
+
+    public function updateReminderFrequency()
+    {
+        $debtId = $this->request->getPost('debt_id');
+        $frequency = (int)$this->request->getPost('reminder_frequency');
+
+        if ($frequency < 1) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Frekuensi harus minimal 1 hari']);
+        }
+
+        $debt = $this->ModelDebt->find($debtId);
+        if (!$debt || $debt['company_id'] != session()->get('company_id')) {
+            return $this->response->setStatusCode(403)->setJSON(['error' => 'Unauthorized']);
+        }
+
+        $this->ModelDebt->update($debtId, ['reminder_frequency' => $frequency]);
+
+        return $this->response->setJSON(['message' => 'Frekuensi pengingat berhasil diperbarui']);
+    }
+
+
+
+    public function debtDtb()
+    {
+        $companyId = session()->get('company_id');
+        $debts = $this->ModelDebt->where('company_id', $companyId)->findAll();
+
+        $data = [];
+        foreach ($debts as $row) {
+            // Calculate due date status
+            $today = new \DateTime();
+            $dueDate = new \DateTime($row['due_date']);
+            $interval = $today->diff($dueDate);
+            $daysDiff = (int)$interval->format('%r%a');
+
+            // Format status badge
+            $status = '';
+            if ($row['status'] === 'paid') {
+                $status = '<span class="badge badge-success">Lunas</span>';
+            } elseif ($daysDiff < 0) {
+                $status = '<span class="badge badge-danger">Terlambat</span>';
+            } else {
+                $status = '<span class="badge badge-warning text-dark">Aktif</span>';
+            }
+
+            // Add reminder & action buttons
+            $action = '
+            <button class="btn btn-sm btn-info btn-reminder" data-id="' . $row['debt_id'] . '">Kirim Reminder</button>
+            <button class="btn btn-sm btn-success partial-pay-btn" data-id="' . $row['debt_id'] . '">Bayar Sebagian</button>
+            <button class="btn btn-sm btn-warning edit-btn" data-id="' . $row['debt_id'] . '">Frekuensi Pengingat</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row['debt_id'] . '">Delete</button>
+        ';
+
+            // Add "days remaining" info
+            $daysRemaining = $daysDiff >= 0
+                ? "Sisa {$daysDiff} hari"
+                : "<span class='text-danger'>Lewat " . abs($daysDiff) . " hari</span>";
+
+            $data[] = [
+                'invoice_id'       => $row['invoice_id'],
+                'customer_name'    => $row['customer_name'],
+                'customer_contact' => $row['customer_contact'],
+                'customer_email'   => $row['customer_email'],
+                'total_amount' => format_rupiah($row['total_amount']),
+                'paid_amount' => format_rupiah($row['paid_amount']),
+                'due_date'         => $row['due_date'] . "<br><small class='text-muted'>{$daysRemaining}</small>",
+                'reminder_frequency' => $row['reminder_frequency'],
+                'status'           => $status,
+                'action'           => $action,
+            ];
+        }
+
+        return $this->response->setJSON(['data' => $data]);
+    }
+
 
     public function submit()
     {
@@ -97,6 +195,7 @@ class debt extends Home
                 'customer_contact'  => $customer_contact,
                 'customer_email'    => $customer_email,
                 'total_amount'      => $amount_due,
+                'original_amount'    => $amount_due,
                 'due_date'          => $due_date,
                 'reminder_frequency' => 3, // or null if not used yet
                 'reminder_method'   => 'none',
@@ -120,5 +219,87 @@ class debt extends Home
                 'message' => 'Gagal menyimpan piutang: ' . $e->getMessage()
             ]);
         }
+    }
+
+    public function getDebtAmount()
+    {
+        $debtId = $this->request->getPost('debt_id');
+        $debt = $this->ModelDebt->find($debtId);
+
+        if (!$debt || $debt['company_id'] != session()->get('company_id')) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'Debt tidak ditemukan']);
+        }
+
+        return $this->response->setJSON([
+            'total_amount' => (int)$debt['total_amount'],
+            'paid_amount'  => (int)$debt['paid_amount']
+        ]);
+    }
+
+    public function submitPartialPayment()
+    {
+        $debtId = $this->request->getPost('debt_id');
+        $amount = (int)$this->request->getPost('payment_amount');
+
+        if ($amount <= 0) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Jumlah tidak valid']);
+        }
+
+        $debt = $this->ModelDebt->find($debtId);
+        if (!$debt || $debt['company_id'] != session()->get('company_id')) {
+            return $this->response->setStatusCode(403)->setJSON(['error' => 'Akses ditolak']);
+        }
+
+        // Calculate new values
+        $newPaid = $debt['paid_amount'] + $amount;
+        $newTotal = max(0, $debt['original_amount'] - $newPaid);
+        $status = $newTotal <= 0 ? 'paid' : 'unpaid';
+
+        $this->ModelDebt->update($debtId, [
+            'paid_amount'  => $newPaid,
+            'total_amount' => $newTotal,
+            'status'       => $status,
+        ]);
+
+        return $this->response->setJSON(['message' => 'Pembayaran berhasil diproses.']);
+    }
+
+
+
+
+    // Send reminder (manual)
+    public function sendReminder()
+    {
+        $debtId = $this->request->getPost('debt_id');
+        $debt = $this->ModelDebt->find($debtId);
+
+        if (!$debt) {
+            return $this->response->setJSON(['status' => false, 'message' => 'Data tidak ditemukan']);
+        }
+
+        $email = \Config\Services::email();
+
+        $email->setTo($debt['customer_email']);
+        $email->setSubject('Pengingat Piutang dari NotaQ');
+        $email->setMessage(view('emails/debt_reminder', ['debt' => $debt]));
+
+        if ($email->send()) {
+            return $this->response->setJSON(['status' => true, 'message' => 'Email pengingat berhasil dikirim.']);
+        } else {
+            return $this->response->setJSON(['status' => false, 'message' => 'Gagal mengirim email.']);
+        }
+    }
+
+    // Trigger auto reminder
+    public function triggerAutoReminder()
+    {
+        $reminderService = new ReminderService();
+        $sentEmails = $reminderService->sendAutoReminders();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'count' => count($sentEmails),
+            'sent' => $sentEmails,
+        ]);
     }
 }

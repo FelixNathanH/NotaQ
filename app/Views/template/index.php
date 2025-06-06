@@ -180,6 +180,14 @@
                                             </p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('/debt') ?>" class="nav-link">
+                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                            <p id="menu-names">
+                                                Debt List
+                                            </p>
+                                        </a>
+                                    </li>
                                     <!-- /.Placeholders untuk menu -->
                                 <?php else : ?>
                                     <div class="brand-text font-weight-light">
