@@ -89,13 +89,17 @@ class debt extends Home
                 $status = '<span class="badge badge-warning text-dark">Aktif</span>';
             }
 
+
+
             // Add reminder & action buttons
             $action = '
             <button class="btn btn-sm btn-info btn-reminder" data-id="' . $row['debt_id'] . '">Kirim Reminder</button>
             <button class="btn btn-sm btn-success partial-pay-btn" data-id="' . $row['debt_id'] . '">Bayar Sebagian</button>
             <button class="btn btn-sm btn-warning edit-btn" data-id="' . $row['debt_id'] . '">Frekuensi Pengingat</button>
-            <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row['debt_id'] . '">Delete</button>
         ';
+            if ($row['status'] !== 'paid') {
+                $action .= '<button class="btn btn-sm btn-success mark-paid-btn" data-id="' . $row['debt_id'] . '">Tandai Lunas</button>';
+            }
 
             // Add "days remaining" info
             $daysRemaining = $daysDiff >= 0
@@ -115,6 +119,7 @@ class debt extends Home
                 'action'           => $action,
             ];
         }
+
 
         return $this->response->setJSON(['data' => $data]);
     }
@@ -236,6 +241,35 @@ class debt extends Home
         ]);
     }
 
+    // public function submitPartialPayment()
+    // {
+    //     $debtId = $this->request->getPost('debt_id');
+    //     $amount = (int)$this->request->getPost('payment_amount');
+
+    //     if ($amount <= 0) {
+    //         return $this->response->setStatusCode(400)->setJSON(['error' => 'Jumlah tidak valid']);
+    //     }
+
+    //     $debt = $this->ModelDebt->find($debtId);
+    //     if (!$debt || $debt['company_id'] != session()->get('company_id')) {
+    //         return $this->response->setStatusCode(403)->setJSON(['error' => 'Akses ditolak']);
+    //     }
+
+    //     // Calculate new values
+    //     $newPaid = $debt['paid_amount'] + $amount;
+    //     $newTotal = max(0, $debt['original_amount'] - $newPaid);
+    //     $status = $newTotal <= 0 ? 'paid' : 'unpaid';
+
+    //     $this->ModelDebt->update($debtId, [
+    //         'paid_amount'  => $newPaid,
+    //         'total_amount' => $newTotal,
+    //         'status'       => $status,
+    //     ]);
+
+    //     return $this->response->setJSON(['message' => 'Pembayaran berhasil diproses.']);
+    // }
+
+
     public function submitPartialPayment()
     {
         $debtId = $this->request->getPost('debt_id');
@@ -250,8 +284,12 @@ class debt extends Home
             return $this->response->setStatusCode(403)->setJSON(['error' => 'Akses ditolak']);
         }
 
-        // Calculate new values
         $newPaid = $debt['paid_amount'] + $amount;
+
+        if ($newPaid > $debt['original_amount']) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Jumlah melebihi sisa hutang.']);
+        }
+
         $newTotal = max(0, $debt['original_amount'] - $newPaid);
         $status = $newTotal <= 0 ? 'paid' : 'unpaid';
 
@@ -259,9 +297,18 @@ class debt extends Home
             'paid_amount'  => $newPaid,
             'total_amount' => $newTotal,
             'status'       => $status,
+            // updated_at will automatically be updated if you're using CI4's Timestampable trait
         ]);
 
-        return $this->response->setJSON(['message' => 'Pembayaran berhasil diproses.']);
+        // Return a special flag if debt is now fully paid
+        $message = $status === 'paid'
+            ? 'Pembayaran lunas. Hutang telah diselesaikan.'
+            : 'Pembayaran berhasil diproses.';
+
+        return $this->response->setJSON([
+            'message' => $message,
+            'is_fully_paid' => $status === 'paid' // you can use this in JS to trigger Swal
+        ]);
     }
 
 
@@ -301,5 +348,25 @@ class debt extends Home
             'count' => count($sentEmails),
             'sent' => $sentEmails,
         ]);
+    }
+
+    public function markDebtAsPaid()
+    {
+        $debtId = $this->request->getPost('debt_id');
+        $debt = $this->ModelDebt->find($debtId);
+
+        if (!$debt || $debt['company_id'] != session()->get('company_id')) {
+            return $this->response->setStatusCode(403)->setJSON(['error' => 'Akses ditolak']);
+        }
+
+        // Mark as paid
+        $this->ModelDebt->update($debtId, [
+            'status' => 'paid',
+            'total_amount' => 0,
+            'paid_amount' => $debt['original_amount'],
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $this->response->setJSON(['message' => 'Hutang ditandai sebagai lunas.']);
     }
 }

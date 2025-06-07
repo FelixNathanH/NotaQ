@@ -91,7 +91,7 @@
                     <input type="hidden" name="debt_id" id="pay_debt_id">
                     <div class="input-group mb-3">
                         <span class="input-group-text">Rp</span>
-                        <input type="number" class="form-control" id="payment_amount" name="payment_amount" min="1" required>
+                        <input type="text" class="form-control" id="payment_amount" name="payment_amount" min="1" required>
                     </div>
                     <div class="mt-2">
                         <small id="current_debt_info" class="text-muted">Sisa hutang: </small>
@@ -303,6 +303,7 @@
         });
     });
 </script>
+
 <!-- Script untuk partial payment -->
 <script>
     const formatter = new Intl.NumberFormat('id-ID');
@@ -345,12 +346,45 @@
             },
             success: function(response) {
                 $('#partialPayModal').modal('hide');
-                Swal.fire('Berhasil!', response.message, 'success');
+
+                // ✅ Show different Swal alert depending on whether debt is fully paid
+                Swal.fire({
+                    title: response.is_fully_paid ? 'Lunas!' : 'Berhasil!',
+                    text: response.message,
+                    icon: response.is_fully_paid ? 'success' : 'info',
+                });
+
                 $('#example').DataTable().ajax.reload();
             },
             error: function(xhr) {
                 let err = xhr.responseJSON?.error || 'Terjadi kesalahan';
                 Swal.fire('Gagal!', err, 'error');
+            }
+        });
+    });
+
+    // Mark debt as paid
+    $(document).on('click', '.mark-paid-btn', function() {
+        let debtId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Tandai sebagai lunas?',
+            text: "Tindakan ini tidak bisa dibatalkan.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, tandai lunas!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("<?= site_url('debt/markDebtAsPaid') ?>", {
+                    debt_id: debtId
+                }, function(response) {
+                    Swal.fire('Berhasil!', response.message, 'success');
+                    $('#example').DataTable().ajax.reload();
+                }).fail(function(xhr) {
+                    let err = xhr.responseJSON?.error || 'Terjadi kesalahan';
+                    Swal.fire('Gagal!', err, 'error');
+                });
             }
         });
     });

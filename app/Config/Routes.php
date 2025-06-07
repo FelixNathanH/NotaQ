@@ -67,3 +67,4 @@ $routes->post('/debt/sendReminder', 'debt::sendReminder');
 $routes->post('/debt/triggerAutoReminder', 'debt::triggerAutoReminder');
 $routes->post('/debt/getDebtAmount', 'debt::getDebtAmount');
 $routes->post('/debt/submitPartialPayment', 'debt::submitPartialPayment');
+$routes->post('/debt/markDebtAsPaid', 'debt::markDebtAsPaid');
