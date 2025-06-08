@@ -15,8 +15,8 @@
 <!-- Main Content -->
 <?= $this->section('content'); ?>
 
-
-<div class="row">
+<!-- DataTable -->
+<div class="row pt-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -50,7 +50,7 @@
 </div>
 
 <!-- Modal add dan edit Karyawan (Modal dari Bootstrap)-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,7 +105,64 @@
             </div>
         </div>
     </div>
+</div> -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header bg-primary bg-gradient text-white rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="mTitle">
+                    <i class="bi bi-person-fill-add"></i> <!-- Bootstrap Icon -->
+                    Tambah / Edit Karyawan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4 px-5" id="modal-addK">
+                <form name="formKaryawan" id="quickForm" class="needs-validation" novalidate>
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="staff_id" id="staff_id" value="">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan Nama" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan Email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone_number" class="form-label">Nomor Telepon</label>
+                            <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Masukkan Nomor Telepon">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="government_id" class="form-label">Nomor KTP</label>
+                            <input type="text" name="government_id" id="government_id" class="form-control" placeholder="Masukkan Nomor KTP">
+                        </div>
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control" disabled>
+                                <button type="button" class="btn btn-outline-primary" id="togglePassword">Ubah Password</button>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="company_role" class="form-label">Jabatan</label>
+                            <input type="text" name="company_role" id="company_role" class="form-control" placeholder="Masukkan Jabatan">
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-end">
+                        <button type="button" id="btnModal" name="update" class="btn btn-success px-4 shadow-sm">
+                            Simpan Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 
 <?= $this->endSection('content'); ?>
@@ -218,7 +275,11 @@
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
+                if (element.parent('.input-group').length) {
+                    element.parent().after(error); // For password field inside input-group
+                } else {
+                    element.after(error); // Normal fields
+                }
             },
             highlight: function(element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
@@ -383,6 +444,7 @@
         });
     });
 </script>
+
 
 
 

@@ -4,10 +4,11 @@ namespace App\Controllers;
 
 use App\Models\ModelProduct;
 use App\Models\ModelInventory;
+use App\Models\ModelCompany;
 
 class product extends Home
 {
-    protected $db, $builder, $ModelProduct, $ModelInventory;
+    protected $db, $builder, $ModelProduct, $ModelInventory, $ModelCompany;
 
     public function __construct()
     {
@@ -15,14 +16,26 @@ class product extends Home
         $this->builder = $this->db->table('product');
         $this->ModelProduct = new ModelProduct();
         $this->ModelInventory = new ModelInventory();
+        $this->ModelCompany = new ModelCompany();
         $this->request = \Config\Services::request();
     }
 
+
+
     public function index()
     {
+
         $data['title'] = 'product';
-        $data['name'] = session()->get('name') ?? '';
+        if (session()->has('user_id')) {
+            $data['name'] = session()->get('name');
+        } elseif (session()->has('staff_id')) {
+            $data['name'] = session()->get('staff_name');
+        } else {
+            $data['name'] = '';
+        }
         $data['company'] = session()->get('company') ?? '';
+        $company = $this->ModelCompany->find(session()->get('company_id'));
+        $data['company'] = $company['company_name'];
         return view('product/index', $data);
     }
 

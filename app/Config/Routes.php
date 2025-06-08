@@ -9,6 +9,7 @@ use CodeIgniter\Router\RouteCollection;
 //  Home
 $routes->get('/', 'Home::index');
 
+
 //testing
 $routes->get('/test', 'Home::test');
 $routes->get('/testing', 'Home::testing');
@@ -41,12 +42,17 @@ $routes->post('/staffdtb', 'staff::staffDtb');
 $routes->post('/staff/add', 'staff::addStaff');
 $routes->post('/staff/edit', 'staff::editStaff');
 $routes->post('/staff/delete', 'staff::deleteStaff');
+$routes->get('/staff/login', 'staff::login');
+$routes->post('/staff/auth', 'staff::auth');
 
 //invoice
 $routes->get('/invoice', 'invoice::index');
+$routes->get('/invoiceList', 'invoice::invoiceList');
 $routes->post('/invoicedtb', 'invoice::invoiceDtb');
 $routes->post('/invoice/check-stock', 'invoice::checkStock');
 $routes->post('/invoice/submit', 'invoice::submitInvoice');
+$routes->get('invoice/details/(:segment)', 'invoice::getInvoiceDetails/$1');
+
 
 //product
 $routes->get('/product', 'product::index');

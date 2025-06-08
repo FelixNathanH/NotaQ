@@ -3,10 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\ModelUser;
+use App\Models\ModelCompany;
 
 class Home extends BaseController
 {
-    protected $db, $builder, $ModelUser;
+    protected $db, $builder, $ModelUser, $ModelCompany;
 
     public function __construct()
     {
@@ -14,21 +15,92 @@ class Home extends BaseController
         $this->builder = $this->db->table('menu');
         $this->builder = $this->db->table('user');
         $this->ModelUser = new ModelUser();
+        $this->ModelCompany = new ModelCompany();
         $this->request = \Config\Services::request();
     }
+    // public function index()
+    // {
+    //     // Debug: Dump session contents
+    //     // echo '<pre>';
+    //     // print_r(session()->get());
+    //     // echo '</pre>';
+    //     // exit;
+    //     if (session()->has('staff_id') && !session()->has('user_id')) {
+    //         return view('error-page/forbidden');
+    //     }
+    //     // Stop execution so you can inspect the output
+    //     $data['title'] = 'Home';
+    //     if (session()->has('user_id')) {
+    //         $data['name'] = session()->get('name');
+    //     } elseif (session()->has('staff_id')) {
+    //         $data['name'] = session()->get('staff_name');
+    //     } else {
+    //         $data['name'] = '';
+    //     }
+    //     $data['company'] = session()->get('company') ?? '';
+    //     $company = $this->ModelCompany->find(session()->get('company_id'));
+    //     $data['company'] = $company['company_name'];
+
+    //     return view('home/index', $data);
+    // }
+
     public function index()
     {
-        // Debug: Dump session contents
-        // echo '<pre>';
-        // print_r(session()->get());
-        // echo '</pre>';
-        // exit;
-        // Stop execution so you can inspect the output
+        if (session()->has('staff_id') && !session()->has('user_id')) {
+            return view('error-page/forbidden');
+        }
+
         $data['title'] = 'Home';
-        $data['name'] = session()->get('name') ?? '';
-        $data['company'] = session()->get('company') ?? '';
+
+        if (session()->has('user_id')) {
+            $data['name'] = session()->get('name');
+        } elseif (session()->has('staff_id')) {
+            $data['name'] = session()->get('staff_name');
+        } else {
+            $data['name'] = '';
+        }
+
+        $companyId = session()->get('company_id');
+        $company = $this->ModelCompany->find($companyId);
+        $data['company'] = $company['company_name'] ?? '';
+
+        // 📦 Load your models (if not already)
+        $invoiceModel = new \App\Models\ModelInvoice();
+        $debtModel = new \App\Models\ModelDebt();
+        $staffModel = new \App\Models\ModelStaff();
+
+        // 📊 Fetch metrics
+        // Ambil data invoice dari database
+        $data['totalInvoices'] = $invoiceModel->where('company_id', $companyId)->countAllResults();
+
+        // Ambil total utang dari database
+        $data['totalDebts'] = $debtModel
+            ->selectSum('total_amount')
+            ->where('company_id', $companyId)
+            ->where('status', 'unpaid')
+            ->get()
+            ->getRow()
+            ->total_amount ?? 0;
+
+        $data['totalDebtsFormatted'] = format_rupiah($data['totalDebts']);
+
+        // Ambil data staff dari database
+        $data['activeStaff']   = $staffModel->where('company_id', $companyId)->where('deleted_at', null)->countAllResults();
+
+        // Ambil data utang dari database
+        $data['paidDebts'] = $debtModel
+            ->where('company_id', $companyId)
+            ->where('status', 'paid')
+            ->countAllResults();
+
+        $data['unpaidDebts'] = $debtModel
+            ->where('company_id', $companyId)
+            ->where('status', 'unpaid')
+            ->countAllResults();
+
         return view('home/index', $data);
     }
+
 
     public function test()
     {

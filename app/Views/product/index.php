@@ -16,7 +16,7 @@
 <?= $this->section('content'); ?>
 
 
-<div class="row">
+<div class="row pt-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -49,7 +49,7 @@
 </div>
 
 <!-- Modal add dan edit Inventory (Modal dari Bootstrap)-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,7 +90,55 @@
             </div>
         </div>
     </div>
+</div> -->
+
+<!-- Modal add/edit Inventory -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow rounded-4 border-0">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title" id="mTitle"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body bg-light" id="modal-addK">
+                <form name="formInventory" id="quickForm">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="product_id" id="product_id" value="">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="product_name" class="form-label">Nama Produk</label>
+                            <input type="text" name="product_name" id="product_name" class="form-control" placeholder="Masukkan Nama Produk">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="product_description" class="form-label">Deskripsi Produk</label>
+                            <input type="text" name="product_description" id="product_description" class="form-control" placeholder="Masukkan Deskripsi Produk">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="product_stock" class="form-label">Jumlah Produk</label>
+                            <input type="number" name="product_stock" id="product_stock" class="form-control" min="0" placeholder="Masukkan Jumlah Produk">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="product_price" class="form-label">Harga Produk</label>
+                            <input type="text" name="product_price" id="product_price" class="form-control" placeholder="Masukkan Harga Produk">
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <button type="button" id="btnModal" name="update" class="btn btn-success px-4 shadow-sm">
+                            <!-- Text will be filled via JS -->
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 
 <?= $this->endSection('content'); ?>
@@ -188,7 +236,11 @@
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
+                if (element.parent('.input-group').length) {
+                    element.parent().after(error); // For password field inside input-group
+                } else {
+                    element.after(error); // Normal fields
+                }
             },
             highlight: function(element, errorClass, validClass) {
                 $(element).addClass('is-invalid');

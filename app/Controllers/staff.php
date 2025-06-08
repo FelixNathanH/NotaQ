@@ -3,26 +3,88 @@
 namespace App\Controllers;
 
 use App\Models\ModelStaff;
+use App\Models\ModelCompany;
 
 class staff extends Home
 {
-    protected $db, $builder, $ModelStaff;
+    protected $db, $builder, $ModelStaff, $ModelCompany;
 
     public function __construct()
     {
         $this->db      = \Config\Database::connect();
         $this->builder = $this->db->table('staff');
         $this->ModelStaff = new ModelStaff();
+        $this->ModelCompany = new ModelCompany();
         $this->request = \Config\Services::request();
     }
 
     public function index()
     {
+        if (session()->has('staff_id') && !session()->has('user_id')) {
+            return view('error-page/forbidden');
+        }
         $data['title'] = 'staff';
-        $data['name'] = session()->get('name') ?? '';
+        if (session()->has('user_id')) {
+            $data['name'] = session()->get('name');
+        } elseif (session()->has('staff_id')) {
+            $data['name'] = session()->get('staff_name');
+        } else {
+            $data['name'] = '';
+        }
         $data['company'] = session()->get('company') ?? '';
         return view('staff/index', $data);
     }
+
+    public function login()
+    {
+        $data['title'] = 'staff login';
+        return view('staff/login', $data);
+    }
+
+
+    public function auth()
+    {
+        $email = $this->request->getPost('email');
+        $password = (string) $this->request->getPost('password');
+        if (empty($email) || empty($password)) {
+            return $this->response->setJSON(['error' => 'Email and password are required']);
+        }
+        $staff = $this->ModelStaff->where('email', $email)->first();
+
+        if (!$staff) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Staff with that email does not exist.'
+            ]);
+        }
+        if ($staff['deleted_at'] != null) {
+            return $this->response->setJSON(['error' => true, 'message' => 'Akun ini telah dihapus. Silahkan hubungi owner']);
+        }
+
+        if (!password_verify($password, $staff['password'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Incorrect password.'
+            ]);
+        }
+
+        // Store staff data in session
+        session()->set([
+            'staff_id'     => $staff['staff_id'],
+            'company_id'   => $staff['company_id'],
+            'staff_name'   => $staff['name'],
+            'staff_email'  => $staff['email'],
+            'staff_role'   => $staff['company_role'],
+            'is_staff_logged_in' => true,
+        ]);
+
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Login successful!'
+        ]);
+    }
+
 
     public function staffdtb()
     {
@@ -84,11 +146,8 @@ class staff extends Home
         $phone = $this->request->getPost('phone_number');
         $govId = $this->request->getPost('government_id');
         $role = $this->request->getPost('company_role');
-        $password = $this->request->getPost('password');
-
-        // Hash password
+        $password = (string) $this->request->getPost('password');
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
         // Build data array
         $data = [
             'staff_id'      => $staffId,

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="<?= session()->get('language') ?? 'en' ?>">
+<?php $isOwner = session()->has('user_id'); ?>
 
 <head>
     <meta charset="utf-8">
@@ -10,6 +11,8 @@
     <link rel="stylesheet" href="<?= base_url('asset/css/main.css') ?>">
     <link rel="stylesheet" href="<?= base_url('asset/css/font-awesome-animation.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('asset/css/font-awesome.min.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 
     <!-- CSS W3S -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -94,14 +97,16 @@
                 </li>
                 <!-- Profile -->
                 <li class="nav-item dropdown">
-                    <?php if (!empty($name)) : ?>
+                    <?php if (!empty($name) && (session()->has('user_id') || session()->has('staff_id'))) : ?>
                         <a class="nav-link welcome-text" data-toggle="dropdown" href="#" id="welcome-text">
-                            <p>Welcome back, <?= $name; ?></p>
+                            <p id="welcome-text">Welcome back, <?= $name; ?></p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <a href="<?= base_url('/myprofile') ?>" class="dropdown-item dropdown-footer">Edit Profile</a>
-                            <!-- <a href="<?= base_url('/logout') ?>" class="dropdown-item dropdown-footer">Log-out</a> -->
-                        </div>
+                        <?php if ($isOwner): ?>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                <a href="<?= base_url('/myprofile') ?>" class="dropdown-item dropdown-footer">Edit Profile</a>
+                                <!-- <a href="<?= base_url('/logout') ?>" class="dropdown-item dropdown-footer">Log-out</a> -->
+                            </div>
+                        <?php endif; ?>
                     <?php else : ?>
                         <a href="<?= base_url('/login') ?>" class="nav-link">
                             <p>Log-in</p>
@@ -126,7 +131,7 @@
             <!-- Sidebar -->
             <div class="sidebar" id='sidebar'>
                 <!-- Sidebar user company  (Nama toko) -->
-                <?php if (session()->has('user_id')) : ?>
+                <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="info" style="width: 100%;">
                             <a class="d-block text-center fw-bold"><?= $company; ?></a>
@@ -144,7 +149,7 @@
                     <ul class="nav flex-column">
                         <nav class="mt-2">
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                <?php if (session()->has('user_id')) : ?>
+                                <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
                                     <div class="form-inline">
                                         <div class="input-group" data-widget="sidebar-search">
                                             <input id="search-input" class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" oninput="filterMenu()">
@@ -156,33 +161,51 @@
                                         </div>
                                     </div>
                                     <!-- Placeholders untuk menu -->
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('/staff') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                            <p id="menu-names">
-                                                Staff List
-                                            </p>
-                                        </a>
-                                    </li>
+                                    <?php if ($isOwner): ?>
+
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('/staff') ?>" class="nav-link">
+                                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                                <p id="menu-names">
+                                                    Staff List
+                                                </p>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
                                     <li class="nav-item">
                                         <a href="<?= base_url('/product') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                            <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
                                             <p id="menu-names">
                                                 Product List
                                             </p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('/invoice') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link">
+                                            <i class="fa fa-file-invoice" aria-hidden="true"></i>
                                             <p id="menu-names">
                                                 Invoice
+                                                <i class="right fas fa-angle-left"></i>
                                             </p>
                                         </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('/invoice') ?>" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Buat Invoice</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('/invoiceList') ?>" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Invoice List</p>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?= base_url('/debt') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                            <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
                                             <p id="menu-names">
                                                 Debt List
                                             </p>
@@ -201,7 +224,7 @@
                 </nav>
             </div>
             <!-- Bottom: Logout -->
-            <?php if (session()->has('user_id')) : ?>
+            <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
                 <div class="logout-container">
                     <div class="p-3">
                         <a href="<?= base_url('/logout') ?>" class="btn btn-danger btn-block">
@@ -214,7 +237,7 @@
         <!-- /.sidebar -->
 
         <!-- Content Wrapper. Contains page content -->
-        <?php if (session()->has('user_id')) : ?>
+        <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
             <div class="content-wrapper">
                 <!-- Main content -->
                 <section class="content">

@@ -6,12 +6,13 @@ use App\Models\ModelInvoice;
 use App\Models\ModelCart;
 use App\Models\ModelProduct;
 use App\Models\ModelDebt;
+use App\Models\ModelCompany;
 use App\Services\ReminderService;
 
 
 class debt extends Home
 {
-    protected $db, $builder, $ModelProduct, $ModelDebt, $ModelInvoice, $ModelCart;
+    protected $db, $builder, $ModelProduct, $ModelDebt, $ModelInvoice, $ModelCart, $ModelCompany;
 
     public function __construct()
     {
@@ -20,6 +21,7 @@ class debt extends Home
         $this->ModelProduct = new ModelProduct();
         $this->ModelDebt = new ModelDebt();
         $this->ModelInvoice = new ModelInvoice();
+        $this->ModelCompany = new ModelCompany();
         $this->ModelCart = new ModelCart();
         $this->request = \Config\Services::request();
     }
@@ -27,9 +29,19 @@ class debt extends Home
     public function index()
     {
         $data['title'] = 'debt';
-        $data['name'] = session()->get('name') ?? '';
+        if (session()->has('user_id')) {
+            $data['name'] = session()->get('name');
+        } elseif (session()->has('staff_id')) {
+            $data['name'] = session()->get('staff_name');
+        } else {
+            $data['name'] = '';
+        }
         $data['company'] = session()->get('company') ?? '';
+        $company = $this->ModelCompany->find(session()->get('company_id'));
+        $data['company'] = $company['company_name'];
+        // products
         $data['products'] = $this->ModelProduct->where('company_id', session()->get('company_id'))->findAll();
+
         return view('debt/index', $data);
     }
 
@@ -140,7 +152,7 @@ class debt extends Home
             $debt_id    = 'debt' . uniqid();
 
             $company_id = session()->get('company_id');
-            $created_by = session()->get('user_id');
+            $created_by = session()->get('user_id') ?? session()->get('staff_id');
 
             // Collect request
             $transaction_time = $this->request->getPost('transaction_time');

@@ -4,10 +4,13 @@ namespace App\Controllers;
 
 use App\Models\ModelInvoice;
 use App\Models\ModelProduct;
+use App\Models\ModelCompany;
+use App\Models\ModelDebt;
+
 
 class invoice extends Home
 {
-    protected $db, $builder, $ModelInvoice, $ModelProduct;
+    protected $db, $builder, $ModelInvoice, $ModelProduct, $ModelCompany, $ModelDebt;
 
     public function __construct()
     {
@@ -15,16 +18,66 @@ class invoice extends Home
         $this->builder = $this->db->table('invoice');
         $this->ModelInvoice = new ModelInvoice();
         $this->ModelProduct = new ModelProduct();
+        $this->ModelCompany = new ModelCompany();
+        $this->ModelDebt = new ModelDebt();
         $this->request = \Config\Services::request();
     }
 
     public function index()
     {
         $data['title'] = 'Invoice';
-        $data['name'] = session()->get('name') ?? '';
+        if (session()->has('user_id')) {
+            $data['name'] = session()->get('name');
+        } elseif (session()->has('staff_id')) {
+            $data['name'] = session()->get('staff_name');
+        } else {
+            $data['name'] = '';
+        }
         $data['company'] = session()->get('company') ?? '';
         $data['products'] = $this->ModelProduct->where('company_id', session()->get('company_id'))->findAll();
+        $company = $this->ModelCompany->find(session()->get('company_id'));
+        $data['company'] = $company['company_name'];
         return view('invoice/index', $data);
+    }
+
+    public function invoiceList()
+    {
+        $data['title'] = 'Invoice List';
+        if (session()->has('user_id')) {
+            $data['name'] = session()->get('name');
+        } elseif (session()->has('staff_id')) {
+            $data['name'] = session()->get('staff_name');
+        } else {
+            $data['name'] = '';
+        }
+        $data['company'] = session()->get('company') ?? '';
+        $company = $this->ModelCompany->find(session()->get('company_id'));
+        $data['company'] = $company['company_name'];
+        return view('invoice/list', $data);
+    }
+
+    public function invoiceDtb()
+    {
+        $companyId = session()->get('company_id');
+        $invoices = $this->ModelInvoice
+            ->select('invoice.*, debt.status')
+            ->join('debt', 'debt.invoice_id = invoice.invoice_id', 'left')
+            ->where('invoice.company_id', $companyId)
+            ->findAll();
+        $data = [];
+        foreach ($invoices as $row) {
+            $data[] = [
+                'invoice_id' => $row['invoice_id'],
+                'customer_name' => $row['customer_name'],
+                'created_at' => $row['created_at'],
+                'total_price' => $row['total_price'],
+                'status' => $row['status'] ?? 'Lunas',
+                'action' => '
+             <button class="btn btn-sm btn-warning see-details-btn" data-id="' . $row['invoice_id'] . '">See Details</button>
+            '
+            ];
+        }
+        return $this->response->setJSON(['data' => $data]);
     }
 
     public function checkStock()
@@ -52,7 +105,7 @@ class invoice extends Home
         try {
             $invoiceId = 'inv' . uniqid();
             $companyId = session()->get('company_id');
-            $createdBy = session()->get('user_id');
+            $createdBy = session()->get('user_id') ?? session()->get('staff_id');
 
             $customer_name    = $this->request->getPost('customer_name');
             $customer_contact = $this->request->getPost('customer_contact');
@@ -178,5 +231,40 @@ class invoice extends Home
                 'db_error' => $db->error()
             ]);
         }
+    }
+
+    public function getInvoiceDetails($invoiceId)
+    {
+        $invoiceModel = new \App\Models\ModelInvoice();
+        $cartModel    = new \App\Models\ModelCart();
+        $productModel = new \App\Models\ModelProduct();
+
+        // Get invoice info
+        $invoice = $invoiceModel->where('invoice_id', $invoiceId)->first();
+
+        if (!$invoice) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invoice tidak ditemukan']);
+        }
+
+        // Get items
+        $items = $cartModel
+            ->where('invoice_id', $invoiceId)
+            ->findAll();
+
+        foreach ($items as &$item) {
+            // Attach product info if not custom
+            if (!$item['is_custom_product'] && $item['product_id']) {
+                $product = $productModel->find($item['product_id']);
+                $item['product_name'] = $product['product_name'] ?? 'Unknown';
+            } else {
+                $item['product_name'] = $item['custom_product_name'] ?? 'Custom';
+            }
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'invoice' => $invoice,
+            'items' => $items
+        ]);
     }
 }

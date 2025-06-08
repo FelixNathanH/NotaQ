@@ -1,76 +1,62 @@
-<?php
+<!-- Invoice Count -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-info">
+        <div class="inner">
+            <h3><?= $totalInvoices ?></h3>
+            <p>Total Invoices</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="<?= base_url('/invoices') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
 
-namespace App\Database\Migrations;
+<!-- Total Debts -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-danger">
+        <div class="inner">
+            <h3><?= $totalDebts ?></h3>
+            <p>Total Debts</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+        </div>
+        <a href="<?= base_url('/debts') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
 
-use CodeIgniter\Database\Migration;
+<!-- Active Staff -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-warning">
+        <div class="inner">
+            <h3><?= $activeStaff ?></h3>
+            <p>Active Staff</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-person-add"></i>
+        </div>
+        <a href="<?= base_url('/staff') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
 
-class CreateDebtsTable extends Migration
-{
-    public function up()
-    {
-        $this->forge->addField([
-            'cart_id' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'invoice_id' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'company_id' => [
-                'type'       => 'VARCHAR',
-                'constraint'   => 255,
-            ],
-            'customer_name' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'customer_contact' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'customer_email' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-                'null'       => true,
-            ],
-            'total_amount' => [
-                'type' => 'BIGINT',
-            ],
-            'due_date' => [
-                'type' => 'DATE',
-            ],
-            'reminder_frequency' => [
-                'type'    => 'INT',
-                'comment' => 'In days, e.g. every 3 days',
-            ],
-            'reminder_method' => [
-                'type'    => 'ENUM("email", "whatsapp", "none")',
-                'default' => 'none',
-            ],
-            'status' => [
-                'type'    => 'ENUM("unpaid", "paid", "overdue")',
-                'default' => 'unpaid',
-            ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-        ]);
-        $this->forge->addKey('cart_id', true); // primary key
-        $this->forge->addForeignKey('invoice_id', 'invoice', 'invoice_id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('company_id', 'company', 'company_id', 'CASCADE', 'CASCADE');
+<!-- Add more as needed -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-success">
+        <div class="inner">
+            <h3><?= $company ?? '' ?></h3>
+            <p>Company Name</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+        </div>
+        <a href="#" class="small-box-footer disabled">Overview</a>
+    </div>
+</div>
 
-        $this->forge->createTable('debt');
-    }
-
-
-    public function down()
-    {
-        $this->forge->dropTable('debt');
-    }
-}
+<!-- debt chart -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <canvas id="debtChart"></canvas>
+    </div>
+</div>

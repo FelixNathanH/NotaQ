@@ -7,7 +7,7 @@
     <title><?= $title ?></title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="<?= base_url('asset/css/logReg.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('asset/css/logStaff.css') ?>">
     <link rel="stylesheet" href="<?= base_url('asset/css/font-awesome-animation.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('asset/css/font-awesome.min.css') ?>">
     <!-- Google Font: Source Sans Pro -->
@@ -32,46 +32,6 @@
             <div class="card-header text-center">
                 <a class="h1"><b>Nota</b>Queue</a>
             </div>
-            <form name="register" id="quickFormReg">
-                <?= csrf_field(); ?>
-                <span>Please input your credential to continue</span>
-                <!-- Username -->
-                <div class="form-group">
-                    <div class="inputGroup">
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Full Name">
-                    </div>
-                </div>
-                <!-- Email -->
-                <div class="form-group">
-                    <div class="inputGroup">
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Email">
-                    </div>
-                </div>
-                <!-- Company -->
-                <div class="form-group">
-                    <div class="inputGroup">
-                        <input type="text" name="company" id="company" class="form-control" placeholder="Company">
-                    </div>
-                </div>
-                <!-- Phone number -->
-                <div class="form-group">
-                    <div class="inputGroup">
-                        <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Phone number" inputmode="numeric">
-                    </div>
-                </div>
-                <!-- Password -->
-                <div class="form-group">
-                    <div class="inputGroup">
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                        <button type="button" id="togglePassword" class="btn btn-outline-secondary position-absolute">
-                            <span class="fas fa-eye"></span>
-                        </button>
-                    </div>
-                </div>
-                <!-- Google Recaptcha -->
-                <!-- <div class="g-recaptcha" data-sitekey="6LeyX-IpAAAAAIbQtozzPDj7JmSMz3s6zRzopA_J"></div> -->
-                <button class="button-sign-up" type="button" name="btnModalReg" id="btnModalReg">Sign Up</button>
-            </form>
         </div>
         <!-- Sign-in -->
         <div class="form-container sign-in-container" id="signInPanel">
@@ -81,7 +41,7 @@
             <div class="card-body">
                 <form name="login" id="quickForm">
                     <?= csrf_field(); ?>
-                    <span>Please Sign-In to start your session</span>
+                    <span>Tolong masukan email dan password untuk login</span>
                     <!-- Email -->
                     <div class="form-group">
                         <div class="inputGroup">
@@ -97,36 +57,23 @@
                     <!-- Google Recaptcha -->
                     <!-- <div class="g-recaptcha" data-sitekey="6LeyX-IpAAAAAIbQtozzPDj7JmSMz3s6zRzopA_J"></div> -->
                     <button class="button-sign-in" type="button" name="btnModal" id="btnModal">Sign In</button>
-                    <a class="forgot-password" href="<?= base_url('/forgetPassword') ?>">Forgot your password?</a>
-                    <a class="forgot-password" href="<?= base_url('/staff/login') ?>">Login staff</a>
+                    <a class="forgot-password" href="<?= base_url('/login') ?>">Return to owner login</a>
                 </form>
             </div>
         </div>
         <!-- Overlay Container -->
         <div class="overlay-container">
             <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1 id="overlay-left-header">Welcome Back!</h1>
-                    <p id="overlay-left-p">To keep connected with us please login with your personal info</p>
-                    <button class="ghost" id="signIn">Sign In</button>
-                </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Don't have an account?</h1>
-                    <p>Enter your credentials here to sign up</p>
-                    <button class="ghost" id="signUp">Sign Up</button>
+                    <h1>Staff Login</h1>
+                    <p>Ini merupakan page untuk login staff, tolong masukan email dan password</p>
+                    <i class="fa-solid fa-clipboard-user"></i>
+                    <!-- <p>Tolong masukan email dan password untuk login</p> -->
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Container -->
-    <div class="container2" id="container2" style="display: none;">
-        <div class="box">
-            <h1>Success!!</h1>
-            <p> Thank you! Your verification link will come shortly, please check your inbox.</p>
-        </div>
-    </div>
 
     <!-- Popup -->
     <div class="popup-overlay" id="popup" style="display: none;">
@@ -169,60 +116,11 @@
                 },
                 messages: {
                     email: {
-                        required: "'email' cannot be empty",
-                        email: "Please enter a valid email address"
+                        required: "'email' tidak boleh kosong",
+                        email: "Tolong masukan alamat email yang valid",
                     },
                     password: {
-                        required: "'password' cannot be empty",
-                    }
-                },
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                    $(element).css('font-size', '14px'); // Reset font size when valid
-                }
-            })
-            // Form Validation (Register)
-            $('#quickFormReg').validate({
-                rules: {
-                    name: {
-                        required: true,
-                    },
-                    email: {
-                        required: true,
-                        email: true,
-                    },
-                    password: {
-                        required: true,
-                    },
-                    company: {
-                        required: true,
-                    },
-                    phone_number: {
-                        required: true,
-                        digits: true,
-                    },
-                },
-                messages: {
-                    name: {
-                        required: "'Name' cannot be empty",
-                    },
-                    email: {
-                        required: "'email' cannot be empty",
-                        email: "Please enter a valid email address"
-                    },
-                    password: {
-                        required: "'password' cannot be empty",
-                    },
-                    company: {
-                        required: "'company' cannot be empty",
-                    },
-                    phone_number: {
-                        required: "'phone' cannot be empty",
-                        digits: "Please enter a valid phone number"
+                        required: "'password' tidak boleh kosong",
                     }
                 },
                 errorPlacement: function(error, element) {
@@ -247,7 +145,7 @@
                 $.ajax({
                     method: 'POST',
                     dataType: 'json', // Use dataType instead of type
-                    url: '<?= base_url("/loginAuth") ?>',
+                    url: '<?= base_url("/staff/auth") ?>',
                     data: formData,
                     success: function(response) {
                         console.log('AJAX request successful!');
@@ -256,7 +154,7 @@
                         // Check if authentication was successful
                         if (response.success) {
                             // Redirect to dashboard or another page
-                            window.location.href = '/';
+                            window.location.href = '/invoice';
                         } else {
                             // Display error message if authentication failed
                             Swal.fire({
@@ -265,87 +163,8 @@
                                 text: response.message
                             });
                             setTimeout(function() {
-                                window.location.href = '/login';
+                                window.location.href = '/staff/login';
                             }, 3000);
-                            grecaptcha.reset();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('AJAX request failed!');
-                        console.log('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'An error occurred while processing your request. Please try again later.',
-                        });
-                        grecaptcha.reset();
-                    }
-                });
-            } else {
-                console.log('Data is empty or has not been filled');
-                // Optionally, you can show the required message for empty fields here
-            }
-        });
-        // Button sign up/register
-        $('#btnModalReg').click(function() {
-            if ($('#quickFormReg').valid()) {
-                var formData = $('#quickFormReg').serialize();
-                console.log(formData);
-                // Show the loading screen inside a Swal
-                $('#popup').show();
-                $('#container').hide();
-                // AJAX request
-                $.ajax({
-                    method: 'POST',
-                    dataType: 'json', // Use dataType instead of type
-                    url: '<?= base_url("/registerAuth") ?>',
-                    data: formData,
-                    success: function(response) {
-                        console.log('AJAX request successful!');
-                        console.log('Response:', response);
-
-                        // Check if authentication was successful
-                        if (response.success) {
-                            $('#popup-title').fadeOut(300, function() {
-                                $(this).text('Success!').fadeIn(300);
-                            });
-                            $('.wave').css({
-                                'background': 'green', // Update background color
-                            });
-                            $('.box').animate({
-                                width: '400px',
-                            }, 1000);
-                            $('.wave').animate({
-                                width: '800px',
-                                height: '800px',
-                            }, 1000); // Slowly expand the wave
-                            $('#popup-message').fadeOut(300, function() {
-                                $(this).text('Thank you, a verification link has been sent to your email').fadeIn(300);
-                            });
-
-                        } else if (response.error) {
-                            $('#popup-title').fadeOut(300, function() {
-                                $(this).text('Error!').fadeIn(300);
-                            });
-                            $('.wave').css('background', 'red'); // Change wave color to error state
-                            $('.box').animate({
-                                width: '400px',
-                            }, 1000); // Slowly expand the box
-                            $('.wave').animate({
-                                width: '800px',
-                                height: '800px',
-                            }, 1000); // Slowly expand the wave
-
-                            $('#popup-message').fadeOut(300, function() {
-                                $(this).text('User already exist!, please contact your supervisor').fadeIn(300);
-                            });
-                        } else {
-                            // Display error message if authentication failed
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Your Credintials are Invalid, Please try again!!!',
-                                text: response.message,
-                            });
                             grecaptcha.reset();
                         }
                     },
