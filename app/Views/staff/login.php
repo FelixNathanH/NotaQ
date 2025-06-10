@@ -41,7 +41,7 @@
             <div class="card-body">
                 <form name="login" id="quickForm">
                     <?= csrf_field(); ?>
-                    <span>Tolong masukan email dan password untuk login</span>
+                    <span>Silahkan masukan email dan password untuk menggunakan platform</span>
                     <!-- Email -->
                     <div class="form-group">
                         <div class="inputGroup">
@@ -57,7 +57,7 @@
                     <!-- Google Recaptcha -->
                     <!-- <div class="g-recaptcha" data-sitekey="6LeyX-IpAAAAAIbQtozzPDj7JmSMz3s6zRzopA_J"></div> -->
                     <button class="button-sign-in" type="button" name="btnModal" id="btnModal">Sign In</button>
-                    <a class="forgot-password" href="<?= base_url('/login') ?>">Return to owner login</a>
+                    <a class="forgot-password" href="<?= base_url('/login') ?>">login untuk pemilik bisnis</a>
                 </form>
             </div>
         </div>

@@ -20,12 +20,12 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3><?= $totalInvoices ?></h3>
-                    <p>Total Invoices</p>
+                    <p>Jumlah Nota Tersimpan</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
                 </div>
-                <a href="<?= base_url('/invoiceList') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="<?= base_url('/invoiceList') ?>" class="small-box-footer">Ke fitur <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -34,12 +34,12 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3><?= $totalDebtsFormatted ?></h3>
-                    <p>Unpaid Debt Total</p>
+                    <p> Total Piutang</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="<?= base_url('/debt') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="<?= base_url('/debt') ?>" class="small-box-footer">Ke fitur <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -48,12 +48,12 @@
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3><?= $activeStaff ?></h3>
-                    <p>Active Staff</p>
+                    <p>Jumlah Pegawai Terdaftar</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
                 </div>
-                <a href="<?= base_url('/staff') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="<?= base_url('/staff') ?>" class="small-box-footer">Ke fitur <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -62,12 +62,12 @@
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3><?= $company ?? '' ?></h3>
-                    <p>Company Name</p>
+                    <p>Profil Usaha</p>
                 </div>
-                <div class="icon">
+                <div class="icon"> 
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="#" class="small-box-footer disabled">Overview</a>
+                <a href="<?= base_url('/myprofile') ?>" class="small-box-footer disabled">Edit <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -75,7 +75,7 @@
     <!-- debt chart -->
     <div class="card card-danger">
         <div class="card-header">
-            <h3 class="card-title">Pie Chart</h3>
+            <h3 class="card-title"> Diagram Persentase Piutang</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -128,7 +128,7 @@
     const debtChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Paid Debts', 'Unpaid Debts'],
+            labels: ['Piutang Lunas', 'Piutang Aktif'],
             datasets: [{
                 label: 'Debts Overview',
                 data: [<?= $paidDebts ?>, <?= $unpaidDebts ?>],

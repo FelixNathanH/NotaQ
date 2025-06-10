@@ -81,7 +81,7 @@
             <div class="card-body">
                 <form name="login" id="quickForm">
                     <?= csrf_field(); ?>
-                    <span>Please Sign-In to start your session</span>
+                    <span>Silahkan masukan email dan password untuk menggunakan platform</span>
                     <!-- Email -->
                     <div class="form-group">
                         <div class="inputGroup">
@@ -97,8 +97,8 @@
                     <!-- Google Recaptcha -->
                     <!-- <div class="g-recaptcha" data-sitekey="6LeyX-IpAAAAAIbQtozzPDj7JmSMz3s6zRzopA_J"></div> -->
                     <button class="button-sign-in" type="button" name="btnModal" id="btnModal">Sign In</button>
-                    <a class="forgot-password" href="<?= base_url('/forgetPassword') ?>">Forgot your password?</a>
-                    <a class="forgot-password" href="<?= base_url('/staff/login') ?>">Login staff</a>
+                    <a class="forgot-password" href="<?= base_url('/forgetPassword') ?>">Lupa password</a>
+                    <a class="forgot-password" href="<?= base_url('/staff/login') ?>">Login untuk staff</a>
                 </form>
             </div>
         </div>
@@ -111,8 +111,8 @@
                     <button class="ghost" id="signIn">Sign In</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Don't have an account?</h1>
-                    <p>Enter your credentials here to sign up</p>
+                    <h1>Tidak memiliki akun ?</h1>
+                    <p>Silahkan memasukan data diri setelah menekan sign up</p>
                     <button class="ghost" id="signUp">Sign Up</button>
                 </div>
             </div>

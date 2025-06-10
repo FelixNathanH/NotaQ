@@ -167,7 +167,7 @@
                                             <a href="<?= base_url('/staff') ?>" class="nav-link">
                                                 <i class="fa fa-user-circle" aria-hidden="true"></i>
                                                 <p id="menu-names">
-                                                    Staff List
+                                                    Manajemen Pegawai
                                                 </p>
                                             </a>
                                         </li>
@@ -176,7 +176,7 @@
                                         <a href="<?= base_url('/product') ?>" class="nav-link">
                                             <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Product List
+                                                Manajemen Stok
                                             </p>
                                         </a>
                                     </li>
@@ -184,7 +184,7 @@
                                         <a href="#" class="nav-link">
                                             <i class="fa fa-file-invoice" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Invoice
+                                                Manajemen Nota
                                                 <i class="right fas fa-angle-left"></i>
                                             </p>
                                         </a>
@@ -192,13 +192,13 @@
                                             <li class="nav-item">
                                                 <a href="<?= base_url('/invoice') ?>" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
-                                                    <p>Buat Invoice</p>
+                                                    <p>Buat Nota</p>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
                                                 <a href="<?= base_url('/invoiceList') ?>" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
-                                                    <p>Invoice List</p>
+                                                    <p>Daftar Nota</p>
                                                 </a>
                                             </li>
                                         </ul>
@@ -207,7 +207,7 @@
                                         <a href="<?= base_url('/debt') ?>" class="nav-link">
                                             <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Debt List
+                                                Manajemen Piutang
                                             </p>
                                         </a>
                                     </li>
