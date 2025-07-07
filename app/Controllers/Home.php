@@ -122,6 +122,8 @@ class Home extends BaseController
     {
         // Step 1: Get user ID from session
         $userId = session()->get('user_id');
+        $companyId = session()->get('company_id'); // atau dari user model jika tidak ada di session
+
 
         // Step 2: Validate incoming POST data
         $validation = \Config\Services::validation();
@@ -147,9 +149,13 @@ class Home extends BaseController
             'company'      => $this->request->getPost('company'),
             'phone_number' => $this->request->getPost('phone_number'),
         ];
+        $companyData = [
+            'company_name' => $data['company']
+        ];
 
-        // Step 4: Update user data
+        // Step 4: Update user data and company
         $userModel = new \App\Models\ModelUser();
+        $companyModel = new \App\Models\ModelCompany();
         $existingUser = $userModel
             ->where('email', $data['email'])
             ->where('user_id !=', $userId)
@@ -161,6 +167,7 @@ class Home extends BaseController
                 'message' => 'Email sudah digunakan oleh akun lain.'
             ]);
         }
+        $companyModel->update($companyId, $companyData);
         $userModel->update($userId, $data);
 
         // Step 5: Update session data
