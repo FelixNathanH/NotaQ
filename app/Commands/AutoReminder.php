@@ -25,7 +25,7 @@ class AutoReminder extends BaseCommand
             $dueDate = new \DateTime($debt['due_date']);
             $secondsOverdue = $now->getTimestamp() - $dueDate->getTimestamp();
 
-            // 🔧 Simulated trigger: if the debt is overdue by at least 10 seconds
+            //Simulated trigger: if the debt is overdue by at least 10 seconds
             if ($secondsOverdue >= 10) {
                 $email = \Config\Services::email();
 
