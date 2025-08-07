@@ -8,7 +8,7 @@ class ModelStaff extends Model
 {
     protected $table = 'staff';
     protected $allowedFields = ['staff_id', 'company_id', 'name', 'email', 'phone_number', 'government_id', 'password', 'company_role', 'created_at', 'updated_at'];
-    protected $primaryKey = 'staff_id'; // Assuming 'id' is your primary key.
+    protected $primaryKey = 'staff_id';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $createdField  = 'created_at';

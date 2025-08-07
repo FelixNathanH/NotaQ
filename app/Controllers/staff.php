@@ -213,7 +213,7 @@ class staff extends Home
             return $this->response->setJSON(['success' => false, 'message' => 'Missing staff ID']);
         }
 
-        $deleted = $this->ModelStaff->delete($staffId); // Soft delete, if enabled
+        $deleted = $this->ModelStaff->delete($staffId);
 
         return $this->response->setJSON([
             'success' => $deleted,

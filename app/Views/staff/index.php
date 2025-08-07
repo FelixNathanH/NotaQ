@@ -49,70 +49,13 @@
     </div>
 </div>
 
-<!-- Modal add dan edit Karyawan (Modal dari Bootstrap)-->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modal-addK">
-                <form name="formKaryawan" id="quickForm">
-                    <?= csrf_field(); ?>
-                    <input type="hidden" name="staff_id" id="staff_id" value="">
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">nama</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">email</label>
-                            <input type="email" name="email" id="email" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="telp" class="form-label">Nomor telp</label>
-                            <input type="text" name="phone_number" id="phone_number" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="KTP" class="form-label">Nomor KTP</label>
-                            <input type="text" name="government_id" id="government_id" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="input-group">
-                            <input type="password" id="password" name="password" class="form-control" disabled />
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">Ubah Password</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="Jabatan" class="form-label">Jabatan</label>
-                            <input type="text" name="company_role" id="company_role" class="form-control">
-                        </div>
-                    </div>
-                    <button type="button" id="btnModal" name="update" class="btn btn-primary"></button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg rounded-4">
             <div class="modal-header bg-primary bg-gradient text-white rounded-top-4">
                 <h5 class="modal-title d-flex align-items-center gap-2" id="mTitle">
-                    <i class="bi bi-person-fill-add"></i> <!-- Bootstrap Icon -->
+                    <i class="bi bi-person-fill-add"></i>
                     Tambah / Edit Karyawan
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -241,7 +184,7 @@
                 },
                 password: {
                     required: function() {
-                        // Only require password if we're adding
+
                         return $('#btnModal').attr('name') === 'add';
                     },
                     minlength: 8
@@ -276,9 +219,9 @@
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 if (element.parent('.input-group').length) {
-                    element.parent().after(error); // For password field inside input-group
+                    element.parent().after(error);
                 } else {
-                    element.after(error); // Normal fields
+                    element.after(error);
                 }
             },
             highlight: function(element, errorClass, validClass) {
@@ -366,12 +309,12 @@
                     $('#phone_number').val(staff.phone_number);
                     $('#government_id').val(staff.government_id);
                     $('#company_role').val(staff.company_role);
-                    $('#password').val('').prop('disabled', true); // disable during edit
+                    $('#password').val('').prop('disabled', true);
+                    t
                     $('#togglePassword').show();
                     $('#mTitle').text('Edit Staff');
                     $('#btnModal').text('Update Staff').attr('name', 'update');
                     $('#exampleModal').modal('show');
-                    // Delay to ensure fields are populated before saving
                     setTimeout(() => {
                         originalStaffForm = $('#quickForm').serialize();
                     }, 100);

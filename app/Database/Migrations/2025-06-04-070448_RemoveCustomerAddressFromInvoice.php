@@ -18,7 +18,7 @@ class RemoveCustomerAddressFromInvoice extends Migration
             'customer_address' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
-                'after'      => 'customer_email' // position after this column
+                'after'      => 'customer_email'
             ]
         ]);
     }

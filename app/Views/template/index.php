@@ -76,18 +76,6 @@
                         <a class="dropdown-item" href="#" id="darkMode">Dark Mode</a>
                     </div>
                 </li>
-                <!-- Language -->
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                        <i class="fas fa-globe"></i>
-                        <?= ($currentLanguage === 'en') ? 'EN' : 'ID' ?>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="<?= base_url('/change-language/en') ?>">English/En</a>
-                        <a class="dropdown-item" href="<?= base_url('/change-language/indo') ?>">Indonesian/Id</a>
-                        <a class="dropdown-item" href="<?= base_url('/addLanguage') ?>"> +Add language</a>
-                    </div>
-                </li> -->
                 <!-- Time -->
                 <li class="nav-item">
                     <a class="nav-link" href="#">
@@ -295,9 +283,9 @@
             const themeText = document.getElementById('themeText');
             const lightMode = document.getElementById('lightMode');
             const darkMode = document.getElementById('darkMode');
-            const navbar = document.querySelector('.navbar'); // Navbar
-            const sidebar = document.querySelector('.main-sidebar'); // Sidebar element
-            const sidemenu = document.querySelector('.sidemenu'); // Sidemenu element
+            const navbar = document.querySelector('.navbar');
+            const sidebar = document.querySelector('.main-sidebar');
+            const sidemenu = document.querySelector('.sidemenu');
 
             // Function to set the theme
             function setTheme(theme) {
@@ -326,7 +314,6 @@
                 }
             }
 
-            // Check for saved user preference and apply it
             const savedTheme = localStorage.getItem('theme') || 'light';
             setTheme(savedTheme);
 
@@ -363,11 +350,11 @@
             const menuItems = document.querySelectorAll('.menu-item');
 
             menuItems.forEach(item => {
-                const menuName = item.querySelector('p').textContent.toLowerCase(); // Changed to select <p>
+                const menuName = item.querySelector('p').textContent.toLowerCase();
                 if (menuName.includes(searchInput)) {
-                    item.style.display = 'block'; // Show item
+                    item.style.display = 'block';
                 } else {
-                    item.style.display = 'none'; // Hide item
+                    item.style.display = 'none';
                 }
             });
         }
@@ -384,7 +371,6 @@
                 clockElement.textContent = `${hours}:${minutes}:${seconds}`;
             }
 
-            // Update the clock immediately, then every second
             updateClock();
             setInterval(updateClock, 1000);
         });

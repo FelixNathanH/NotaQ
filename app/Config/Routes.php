@@ -30,8 +30,8 @@ $routes->post('/registerAuth', 'auth::registerAuth');
 $routes->get('/verify/(:any)', 'auth::verify/$1');
 
 //forget password routing
-$routes->get('/forgetPassword', 'auth::forget'); // to load the view page for the "Forget Password"
-$routes->post('/forgetAuth', 'auth::forgetAuth'); //access the data that is being send from the frontend
+$routes->get('/forgetPassword', 'auth::forget');
+$routes->post('/forgetAuth', 'auth::forgetAuth');
 $routes->get('/resetPassForm/(:any)', 'auth::showResetPasswordForm/$1');
 $routes->post('/resetPass', 'auth::resetPassword');
 

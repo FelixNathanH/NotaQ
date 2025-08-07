@@ -112,10 +112,9 @@
                         Swal.showLoading()
                     }
                 });
-                // AJAX request
                 $.ajax({
                     method: 'POST',
-                    dataType: 'JSON', // Use dataType instead of type
+                    dataType: 'JSON',
                     url: '<?= base_url("/forgetAuth") ?>',
                     data: formData,
                     success: function(response) {
@@ -149,7 +148,6 @@
                 });
             } else {
                 console.log('Data is empty or has not been filled');
-                // Optionally, you can show the required message for empty fields here
             }
         });
     </script>

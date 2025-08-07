@@ -126,27 +126,23 @@
             if ($('#quickForm').valid()) {
                 var formData = $('#quickForm').serialize();
                 console.log(formData);
-                // AJAX request
                 $.ajax({
                     method: 'POST',
-                    dataType: 'JSON', // Use dataType instead of type
+                    dataType: 'JSON',
                     url: '<?= base_url("/resetPass") ?>',
                     data: formData,
                     success: function(response) {
-                        // Check if authentication was successful
                         if (response.success) {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
                                 text: response.message,
-                                timer: 5000, // Display the alert for 5 seconds (5000 milliseconds)
-                                showConfirmButton: false // Hide the confirm button
+                                timer: 5000,
+                                showConfirmButton: false
                             }).then(() => {
-                                // This will run after the timer ends
                                 window.location.href = '/login';
                             });
                         } else {
-                            // Display error message if authentication failed
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
@@ -166,37 +162,32 @@
                 });
             } else {
                 console.log('Data is empty or has not been filled');
-                // Optionally, you can show the required message for empty fields here
             }
         });
         //See password function for Password Field
         $('#togglePassword').on('click', function() {
-            // Get the password input field
             var passwordField = $('#password');
             var passwordFieldType = passwordField.attr('type');
 
-            // Toggle the password field type
             if (passwordFieldType === 'password') {
                 passwordField.attr('type', 'text');
-                $(this).html('<span class="fas fa-eye-slash"></span>'); // Change icon to eye-slash
+                $(this).html('<span class="fas fa-eye-slash"></span>');
             } else {
                 passwordField.attr('type', 'password');
-                $(this).html('<span class="fas fa-eye"></span>'); // Change icon to eye
+                $(this).html('<span class="fas fa-eye"></span>');
             }
         });
         //See password function for Confirm password Field
         $('#toggleNewPassword').on('click', function() {
-            // Get the password input field
             var passwordField = $('#newPassword');
             var passwordFieldType = passwordField.attr('type');
 
-            // Toggle the password field type
             if (passwordFieldType === 'password') {
                 passwordField.attr('type', 'text');
-                $(this).html('<span class="fas fa-eye-slash"></span>'); // Change icon to eye-slash
+                $(this).html('<span class="fas fa-eye-slash"></span>');
             } else {
                 passwordField.attr('type', 'password');
-                $(this).html('<span class="fas fa-eye"></span>'); // Change icon to eye
+                $(this).html('<span class="fas fa-eye"></span>');
             }
         });
     </script>

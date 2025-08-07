@@ -48,50 +48,6 @@
     </div>
 </div>
 
-<!-- Modal add dan edit Inventory (Modal dari Bootstrap)-->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modal-addK">
-                <form name="formInventory" id="quickForm">
-                    <?= csrf_field(); ?>
-                    <input type="hidden" name="product_id" id="product_id" value="">
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">Nama Produk</label>
-                            <input type="text" name="product_name" id="product_name" class="form-control" placeholder="Masukkan Nama Produk">
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi Produk</label>
-                            <input type="text" name="product_description" id="product_description" class="form-control" placeholder="Masukkan Deskripsi Produk">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="KTP" class="form-label">Jumlah Produk</label>
-                            <input type="number" name="product_stock" id="product_stock" class="form-control" min="0" placeholder="Masukkan Jumlah Produk">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="product_price" class="form-label">Harga Produk</label>
-                            <input type="text" name="product_price" id="product_price" class="form-control" placeholder="Masukkan Harga Produk">
-                        </div>
-                    </div>
-                    <button type="button" id="btnModal" name="update" class="btn btn-primary"></button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <!-- Modal add/edit Inventory -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -237,9 +193,9 @@
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 if (element.parent('.input-group').length) {
-                    element.parent().after(error); // For password field inside input-group
+                    element.parent().after(error);
                 } else {
-                    element.after(error); // Normal fields
+                    element.after(error);
                 }
             },
             highlight: function(element, errorClass, validClass) {
@@ -323,7 +279,6 @@
                     $('#product_id').val(product.product_id);
                     $('#product_name').val(product.product_name);
                     $('#product_description').val(product.product_description);
-                    // Clean float to integer, then format properly
                     let cleanPrice = parseInt(product.product_price);
                     $('#product_price').val(formatRupiah(cleanPrice.toString()));
                     $('#product_stock').val(product.product_stock);
@@ -331,11 +286,10 @@
                     $('#btnModal').text('Update Produk').attr('name', 'update');
                     $('#exampleModal').modal('show');
 
-                    // Capture original form state after inputs are set
                     setTimeout(() => {
-                        $('#product_price').val(cleanPrice); // unformatted before serialize
+                        $('#product_price').val(cleanPrice);
                         originalProductForm = $('#quickForm').serialize();
-                        $('#product_price').val(formatRupiah(cleanPrice.toString())); // reapply formatting for user
+                        $('#product_price').val(formatRupiah(cleanPrice.toString()));
                     }, 100);
                 } else {
                     Swal.fire('Error', response.message, 'error');

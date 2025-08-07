@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Dynamic rows go here -->
+                    <!-- Row untuk produk akan ditambahkan di sini -->
                 </tbody>
             </table>
         </div>
@@ -188,7 +188,6 @@
 
 
 <?= $this->endSection('content'); ?>
-<!-- Merupakan extensi dari scripts yang ada pada view template -->
 <?= $this->section('scripts'); ?>
 <!-- jquery-validation -->
 <script src="<?= base_url('asset/AdminLTE/plugins/jquery-validation/jquery.validate.min.js') ?>"></script>
@@ -501,7 +500,7 @@
         const rawPayment = $('#payment_amount').val().replace(/[^\d]/g, '');
         formData.append('payment_amount', parseInt(rawPayment));
         formData.append('total_price', parseInt($('#total_price').val().replace(/[^\d]/g, '')));
-        formData.append('items', JSON.stringify(products)); // KEY LINE
+        formData.append('items', JSON.stringify(products));
 
         let total = parseInt($('#total_price').val().replace(/[^\d]/g, '')) || 0;
         let paid = parseInt($('#payment_amount').val().replace(/[^\d]/g, '')) || 0;
@@ -529,7 +528,7 @@
                     $('#debt_customer_email').text(customerEmail);
                     $('#debt_total_price').text(formatRupiah(totalPrice.toString()));
                     $('#debt_payment_amount').text(formatRupiah(paymentAmount.toString()));
-                    $('#debt_items').html(buildDebtItemList(products)); // products assumed to be your global
+                    $('#debt_items').html(buildDebtItemList(products));
                     $('#debt_amount_due').text(formatRupiah(amountDue.toString()));
                 }
             });
@@ -646,7 +645,7 @@
             return Swal.fire('Oops!', 'Silakan tentukan batas waktu pembayaran.', 'warning');
         }
 
-        // Recollect all necessary data
+
         const formData = new FormData();
         formData.append('transaction_time', $('#transaction_date').val());
         formData.append('customer_name', $('#customer_name').val());
@@ -663,7 +662,7 @@
         formData.append('amount_due', amountDue);
         formData.append('due_date', batasWaktu);
 
-        const products = collectProducts(); // reuse the product collection logic
+        const products = collectProducts();
         formData.append('items', JSON.stringify(products));
 
         // Submit debt via AJAX

@@ -8,7 +8,7 @@ class ModelUser extends Model
 {
     protected $table = 'user';
     protected $allowedFields = ['user_id', 'name', 'email', 'company', 'phone_number', 'password', 'token', 'is_verified', 'created_at', 'updated_at'];
-    protected $primaryKey = 'user_id'; // Assuming 'id' is your primary key.
+    protected $primaryKey = 'user_id';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $createdField  = 'created_at';

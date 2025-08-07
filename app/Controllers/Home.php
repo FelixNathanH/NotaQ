@@ -18,31 +18,6 @@ class Home extends BaseController
         $this->ModelCompany = new ModelCompany();
         $this->request = \Config\Services::request();
     }
-    // public function index()
-    // {
-    //     // Debug: Dump session contents
-    //     // echo '<pre>';
-    //     // print_r(session()->get());
-    //     // echo '</pre>';
-    //     // exit;
-    //     if (session()->has('staff_id') && !session()->has('user_id')) {
-    //         return view('error-page/forbidden');
-    //     }
-    //     // Stop execution so you can inspect the output
-    //     $data['title'] = 'Home';
-    //     if (session()->has('user_id')) {
-    //         $data['name'] = session()->get('name');
-    //     } elseif (session()->has('staff_id')) {
-    //         $data['name'] = session()->get('staff_name');
-    //     } else {
-    //         $data['name'] = '';
-    //     }
-    //     $data['company'] = session()->get('company') ?? '';
-    //     $company = $this->ModelCompany->find(session()->get('company_id'));
-    //     $data['company'] = $company['company_name'];
-
-    //     return view('home/index', $data);
-    // }
 
     public function index()
     {
@@ -64,12 +39,10 @@ class Home extends BaseController
         $company = $this->ModelCompany->find($companyId);
         $data['company'] = $company['company_name'] ?? '';
 
-        // 📦 Load your models (if not already)
         $invoiceModel = new \App\Models\ModelInvoice();
         $debtModel = new \App\Models\ModelDebt();
         $staffModel = new \App\Models\ModelStaff();
 
-        // 📊 Fetch metrics
         // Ambil data invoice dari database
         $data['totalInvoices'] = $invoiceModel->where('company_id', $companyId)->countAllResults();
 
@@ -107,7 +80,6 @@ class Home extends BaseController
         return view('test/index');
     }
 
-    // myProfile
     public function profile()
     {
         $data['title'] = 'profile';
@@ -120,12 +92,12 @@ class Home extends BaseController
 
     public function updateProfile()
     {
-        // Step 1: Get user ID from session
+        //Get user ID from session
         $userId = session()->get('user_id');
-        $companyId = session()->get('company_id'); // atau dari user model jika tidak ada di session
+        $companyId = session()->get('company_id');
 
 
-        // Step 2: Validate incoming POST data
+        //Validate incoming POST data
         $validation = \Config\Services::validation();
         $validation->setRules([
             'name' => 'required',
@@ -135,14 +107,13 @@ class Home extends BaseController
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
-            // If validation fails, return JSON error messages
             return $this->response->setJSON([
                 'status' => 'error',
                 'errors' => $validation->getErrors()
             ]);
         }
 
-        // Step 3: Prepare clean data
+        //Prepare clean data
         $data = [
             'name'         => $this->request->getPost('name'),
             'email'        => $this->request->getPost('email'),
@@ -153,7 +124,7 @@ class Home extends BaseController
             'company_name' => $data['company']
         ];
 
-        // Step 4: Update user data and company
+        //Update user data and company
         $userModel = new \App\Models\ModelUser();
         $companyModel = new \App\Models\ModelCompany();
         $existingUser = $userModel
@@ -170,13 +141,13 @@ class Home extends BaseController
         $companyModel->update($companyId, $companyData);
         $userModel->update($userId, $data);
 
-        // Step 5: Update session data
+        //Update session data
         session()->set('name', $data['name']);
         session()->set('email', $data['email']);
         session()->set('company', $data['company']);
         session()->set('phone_number', $data['phone_number']);
 
-        // Step 6: Return success response
+        //Return success response
         return $this->response->setJSON([
             'status' => 'success',
             'message' => 'Profil berhasil diperbarui.'
@@ -187,7 +158,6 @@ class Home extends BaseController
     {
         $userId = session()->get('user_id');
         $userModel = new \App\Models\ModelUser();
-        // First, update is_verified = 0
         $userModel->update($userId, ['is_verified' => 0]);
         if ($userModel->delete($userId)) {
             // Destroy session

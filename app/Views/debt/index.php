@@ -26,9 +26,6 @@
             <div class="card-body">
                 <!-- Tombol Add Users -->
                 <div class="btn-addKarywan">
-                    <!-- <a button type="button" id="btnAdd" class="btn btn-success swalDefaultSuccess" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Tambah Staff
-                    </a> -->
                     <button id="trigger-reminder" class="btn btn-success">Kirim Semua Reminder</button>
                 </div>
                 <table id="example" class="table table-bordered table-hover">
@@ -189,7 +186,7 @@
                     text: 'Mohon tunggu sebentar.',
                     allowOutsideClick: false,
                     didOpen: () => {
-                        Swal.showLoading(); // menampilkan loading spinner
+                        Swal.showLoading();
                     }
                 });
                 $.ajax({
@@ -216,7 +213,7 @@
                             cancelButtonText: 'Tutup'
                         }).then((retry) => {
                             if (retry.isConfirmed) {
-                                $('.btn-reminder[data-id="' + debtId + '"]').click(); // trigger ulang
+                                $('.btn-reminder[data-id="' + debtId + '"]').click();
                             }
                         });
                     }
@@ -225,6 +222,7 @@
         });
     });
 </script>
+
 <!-- Script untuk kirim reminder otomatis -->
 <script>
     $('#trigger-reminder').click(function() {
@@ -273,8 +271,6 @@
     // Handle edit button click
     $('#example').on('click', '.edit-btn', function() {
         const debtId = $(this).data('id');
-
-        // Fetch current frequency from backend
         $.post("<?= site_url('debt/getReminderFrequency') ?>", {
             debt_id: debtId
         }, function(response) {
@@ -295,7 +291,7 @@
             success: function(response) {
                 $('#editReminderModal').modal('hide');
                 Swal.fire('Berhasil!', response.message, 'success');
-                $('#example').DataTable().ajax.reload(); // reload DataTable
+                $('#example').DataTable().ajax.reload();
             },
             error: function() {
                 Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan.', 'error');
@@ -333,7 +329,7 @@
     $('#partialPayForm').submit(function(e) {
         e.preventDefault();
 
-        // Normalize amount before sending (remove dots, convert to plain number)
+        // Menormalisasi total amount
         let rawAmount = $('#payment_amount').val();
         let cleanedAmount = rawAmount.replace(/\./g, '').replace(/[^0-9]/g, '');
 
@@ -347,7 +343,6 @@
             success: function(response) {
                 $('#partialPayModal').modal('hide');
 
-                // ✅ Show different Swal alert depending on whether debt is fully paid
                 Swal.fire({
                     title: response.is_fully_paid ? 'Lunas!' : 'Berhasil!',
                     text: response.message,

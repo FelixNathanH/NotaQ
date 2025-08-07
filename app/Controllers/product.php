@@ -166,7 +166,7 @@ class product extends Home
             return $this->response->setJSON(['success' => false, 'message' => 'Missing product ID']);
         }
 
-        $deleted = $this->ModelProduct->delete($productId); // Soft delete, if enabled
+        $deleted = $this->ModelProduct->delete($productId);
 
         return $this->response->setJSON([
             'success' => $deleted,

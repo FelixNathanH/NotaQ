@@ -177,7 +177,6 @@
                     $('#modalTotal').text('Rp ' + parseInt(invoice.total_price).toLocaleString('id-ID'));
                     $('#modalPaymentMethod').text(invoice.payment_method);
                     $('#modalCreatedAt').text(invoice.created_at);
-                    // Add more fields as needed...
 
                     // Clear and re-fill item list
                     const tbody = $('#invoiceItemsTable tbody');

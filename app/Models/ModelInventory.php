@@ -11,10 +11,10 @@ class ModelInventory extends Model
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at'; // If you want soft deletes
+    protected $deletedField  = 'deleted_at';
     protected $useSoftDeletes = true;
     public function add_inventory($data)
     {
-        return $this->insert($data); // no need to pass $db
+        return $this->insert($data);
     }
 }
