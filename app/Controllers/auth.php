@@ -62,7 +62,7 @@ class auth extends Home
             'email'       => $user['email'],
             'name'        => $user['name'],
             'company'     => $user['company'],
-            'company_id'  => $user['company_id'], // ✅ this is needed for staff
+            'company_id'  => $user['company_id'],
         ]);
         // If success return JSON response back to login page
         return $this->response->setJSON(['success' => 'Login successful']);
@@ -104,7 +104,7 @@ class auth extends Home
             'user_id' => $userId,
             'name' => $name,
             'email' => $email,
-            'company' => $companyName, // optional if you plan to normalize later
+            'company' => $companyName,
             'phone_number' => $phone_number,
             'password' => $hashedPassword,
             'token' => $token,
@@ -116,7 +116,7 @@ class auth extends Home
         // Company data
         $companyData = [
             'company_id' => $companyId,
-            'user_id' => $userId, // Owner
+            'user_id' => $userId,
             'company_name' => $companyName,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -155,7 +155,6 @@ class auth extends Home
         $this->email->setFrom($emailConfig->fromEmail, $emailConfig->fromName);
         $this->email->setTo($email);
         $this->email->setSubject('Account Verification');
-        // $this->email->setMessage('<p>Click the link below to verify your email:</p> <a href="' . site_url('/verify/' . $token) . '">Verify Email</a>');
         $this->email->setMessage($message);
         if (!$this->email->send()) {
             return $this->response->setJSON(['error' => true, 'message' => 'There is an error!! Verification has not been sent']);
@@ -210,22 +209,17 @@ class auth extends Home
     //logic forget password
     public function forgetAuth()
     {
-        //Getting the inputted email from the form in (forget-password/index view)
         $email = $this->request->getPost('email');
-        //Check to the database if the user exist within the database
         $user = $this->ModelUser->emailValid($email);
-        //This will show an alert if a the entered email is not present in the database
         if (!$user) {
             return $this->response->setJSON(['error' => true, 'message' => 'Email not found']);
         } else {
-            //This will generate a random and unique token
             $token = $token = bin2hex(random_bytes(32));
             $data = [
                 'email' => $email,
                 'token' => $token,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
-            // Prepare email content
             $resetLink = site_url('/resetPassForm/' . $token);
 
             $message = "
@@ -240,7 +234,6 @@ class auth extends Home
             $this->email->setFrom($emailConfig->fromEmail, $emailConfig->fromName);
             $this->email->setTo($email);
             $this->email->setSubject('Password Reset request');
-            // $this->email->setMessage('<p>Click this link to reset your password:</p> <a href="' . site_url('/resetPassForm/' . $token) . '">Password Reset</a>');
             $this->email->setMessage($message);
             if (!$this->email->send()) {
                 return $this->response->setJSON(['error' => true, 'message' => 'There is an error!! Verification has not been sent']);
@@ -260,17 +253,13 @@ class auth extends Home
             return redirect()->to('auth/forget')->with('error', 'Invalid token.');
         }
 
-        //Make a variable that stores the token and datetime
         $tokenCreatedAt = new \DateTime($resetRequest['created_at']);
         $currentDateTime = new \DateTime();
-        //Make a variable that stores the token expiration time
         $tokenExpirationTime = $tokenCreatedAt->modify('+1 hour');
-        //Ater that we make an IF condition where if the current date time is greater than the token's it validates 
         if ($tokenExpirationTime < $currentDateTime) {
             // Token is expired
             return redirect()->to('auth/forget')->with('error', 'Expired token.');
         }
-        // If the token is valid, show the password reset form
         return view('forget-password/recoverPass', ['token' => $token]);
     }
 

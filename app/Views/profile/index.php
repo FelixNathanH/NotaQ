@@ -114,7 +114,7 @@
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
-                $(element).css('font-size', '14px'); // Reset font size when valid
+                $(element).css('font-size', '14px');
             }
         })
         // Button Update
@@ -124,7 +124,6 @@
             if ($('#quickForm').valid()) {
                 let currentForm = $('#quickForm').serialize();
 
-                // Check if the form has changed
                 if (currentForm === originalForm) {
                     Swal.fire({
                         icon: 'info',
@@ -134,7 +133,6 @@
                     return;
                 }
 
-                // Proceed with AJAX request
                 $.ajax({
                     url: "<?= site_url('updateProfile') ?>",
                     type: "POST",
@@ -161,14 +159,13 @@
                             }).then(() => {
                                 location.reload();
                             });
-                            // Update the original form snapshot
+
                             originalForm = currentForm;
                         } else if (response.status === 'error') {
                             let errorMessages = '';
                             if (typeof response.errors === 'object') {
                                 errorMessages = Object.values(response.errors).join('\n');
                             } else if (typeof response.message === 'string') {
-                                // If it's a custom error like email already in use
                                 errorMessages = response.message;
                             } else {
                                 errorMessages = 'Terjadi kesalahan yang tidak diketahui.';
@@ -205,7 +202,6 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Send AJAX to delete
                     $.ajax({
                         url: "<?= site_url('deleteAccount') ?>",
                         type: "POST",
@@ -221,7 +217,6 @@
                                     timer: 2000,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    // Redirect after success
                                     window.location.href = "<?= site_url('/login') ?>";
                                 });
                             } else {

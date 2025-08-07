@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="<?= session()->get('language') ?? 'en' ?>">
+<?php $isOwner = session()->has('user_id'); ?>
 
 <head>
     <meta charset="utf-8">
@@ -10,6 +11,8 @@
     <link rel="stylesheet" href="<?= base_url('asset/css/main.css') ?>">
     <link rel="stylesheet" href="<?= base_url('asset/css/font-awesome-animation.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('asset/css/font-awesome.min.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 
     <!-- CSS W3S -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -73,18 +76,6 @@
                         <a class="dropdown-item" href="#" id="darkMode">Dark Mode</a>
                     </div>
                 </li>
-                <!-- Language -->
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                        <i class="fas fa-globe"></i>
-                        <?= ($currentLanguage === 'en') ? 'EN' : 'ID' ?>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="<?= base_url('/change-language/en') ?>">English/En</a>
-                        <a class="dropdown-item" href="<?= base_url('/change-language/indo') ?>">Indonesian/Id</a>
-                        <a class="dropdown-item" href="<?= base_url('/addLanguage') ?>"> +Add language</a>
-                    </div>
-                </li> -->
                 <!-- Time -->
                 <li class="nav-item">
                     <a class="nav-link" href="#">
@@ -94,14 +85,16 @@
                 </li>
                 <!-- Profile -->
                 <li class="nav-item dropdown">
-                    <?php if (!empty($name)) : ?>
+                    <?php if (!empty($name) && (session()->has('user_id') || session()->has('staff_id'))) : ?>
                         <a class="nav-link welcome-text" data-toggle="dropdown" href="#" id="welcome-text">
-                            <p>Welcome back, <?= $name; ?></p>
+                            <p id="welcome-text">Welcome back, <?= $name; ?></p>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <a href="<?= base_url('/myprofile') ?>" class="dropdown-item dropdown-footer">Edit Profile</a>
-                            <!-- <a href="<?= base_url('/logout') ?>" class="dropdown-item dropdown-footer">Log-out</a> -->
-                        </div>
+                        <?php if ($isOwner): ?>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                <a href="<?= base_url('/myprofile') ?>" class="dropdown-item dropdown-footer">Edit Profile</a>
+                                <!-- <a href="<?= base_url('/logout') ?>" class="dropdown-item dropdown-footer">Log-out</a> -->
+                            </div>
+                        <?php endif; ?>
                     <?php else : ?>
                         <a href="<?= base_url('/login') ?>" class="nav-link">
                             <p>Log-in</p>
@@ -126,7 +119,7 @@
             <!-- Sidebar -->
             <div class="sidebar" id='sidebar'>
                 <!-- Sidebar user company  (Nama toko) -->
-                <?php if (session()->has('user_id')) : ?>
+                <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="info" style="width: 100%;">
                             <a class="d-block text-center fw-bold"><?= $company; ?></a>
@@ -144,7 +137,7 @@
                     <ul class="nav flex-column">
                         <nav class="mt-2">
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                <?php if (session()->has('user_id')) : ?>
+                                <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
                                     <div class="form-inline">
                                         <div class="input-group" data-widget="sidebar-search">
                                             <input id="search-input" class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" oninput="filterMenu()">
@@ -156,27 +149,53 @@
                                         </div>
                                     </div>
                                     <!-- Placeholders untuk menu -->
+                                    <?php if ($isOwner): ?>
+
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('/staff') ?>" class="nav-link">
+                                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                                <p id="menu-names">
+                                                    Manajemen Pegawai
+                                                </p>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
                                     <li class="nav-item">
-                                        <a href="<?= base_url('/staff') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                        <a href="<?= base_url('/product') ?>" class="nav-link">
+                                            <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Staff List
+                                                Manajemen Stok
                                             </p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('/staff') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link">
+                                            <i class="fa fa-file-invoice" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Staff List
+                                                Manajemen Nota
+                                                <i class="right fas fa-angle-left"></i>
                                             </p>
                                         </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('/invoice') ?>" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Buat Nota</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url('/invoiceList') ?>" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Daftar Nota</p>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= base_url('/staff') ?>" class="nav-link">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                        <a href="<?= base_url('/debt') ?>" class="nav-link">
+                                            <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
                                             <p id="menu-names">
-                                                Staff List
+                                                Manajemen Piutang
                                             </p>
                                         </a>
                                     </li>
@@ -193,7 +212,7 @@
                 </nav>
             </div>
             <!-- Bottom: Logout -->
-            <?php if (session()->has('user_id')) : ?>
+            <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
                 <div class="logout-container">
                     <div class="p-3">
                         <a href="<?= base_url('/logout') ?>" class="btn btn-danger btn-block">
@@ -206,7 +225,7 @@
         <!-- /.sidebar -->
 
         <!-- Content Wrapper. Contains page content -->
-        <?php if (session()->has('user_id')) : ?>
+        <?php if (session()->has('user_id') || session()->has('staff_id')) : ?>
             <div class="content-wrapper">
                 <!-- Main content -->
                 <section class="content">
@@ -264,9 +283,9 @@
             const themeText = document.getElementById('themeText');
             const lightMode = document.getElementById('lightMode');
             const darkMode = document.getElementById('darkMode');
-            const navbar = document.querySelector('.navbar'); // Navbar
-            const sidebar = document.querySelector('.main-sidebar'); // Sidebar element
-            const sidemenu = document.querySelector('.sidemenu'); // Sidemenu element
+            const navbar = document.querySelector('.navbar');
+            const sidebar = document.querySelector('.main-sidebar');
+            const sidemenu = document.querySelector('.sidemenu');
 
             // Function to set the theme
             function setTheme(theme) {
@@ -295,7 +314,6 @@
                 }
             }
 
-            // Check for saved user preference and apply it
             const savedTheme = localStorage.getItem('theme') || 'light';
             setTheme(savedTheme);
 
@@ -332,11 +350,11 @@
             const menuItems = document.querySelectorAll('.menu-item');
 
             menuItems.forEach(item => {
-                const menuName = item.querySelector('p').textContent.toLowerCase(); // Changed to select <p>
+                const menuName = item.querySelector('p').textContent.toLowerCase();
                 if (menuName.includes(searchInput)) {
-                    item.style.display = 'block'; // Show item
+                    item.style.display = 'block';
                 } else {
-                    item.style.display = 'none'; // Hide item
+                    item.style.display = 'none';
                 }
             });
         }
@@ -353,7 +371,6 @@
                 clockElement.textContent = `${hours}:${minutes}:${seconds}`;
             }
 
-            // Update the clock immediately, then every second
             updateClock();
             setInterval(updateClock, 1000);
         });

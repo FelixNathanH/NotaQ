@@ -30,12 +30,12 @@
                     }
                     ?>
                     <?php if ($hasPermission) : ?>
-                        <li class="nav-item <?= $visibilityClass ?> menu-item"> <!-- Added class 'menu-item' -->
+                        <li class="nav-item <?= $visibilityClass ?> menu-item">
                             <a href="<?= base_url($menu->file_name) ?>" class="nav-link <?= $isActive ?>" id="nav-link">
                                 <i class="material-symbols-outlined">
                                     <?= $menu->icon ?>
                                 </i>
-                                <p id="menu-names"><?= $menu->menu_name ?></p> <!-- Menu name is inside a <p> -->
+                                <p id="menu-names"><?= $menu->menu_name ?></p>
                             </a>
                         </li>
                     <?php endif; ?>

@@ -15,8 +15,8 @@
 <!-- Main Content -->
 <?= $this->section('content'); ?>
 
-
-<div class="row">
+<!-- DataTable -->
+<div class="row pt-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -49,64 +49,63 @@
     </div>
 </div>
 
-<!-- Modal add dan edit Karyawan (Modal dari Bootstrap)-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header bg-primary bg-gradient text-white rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="mTitle">
+                    <i class="bi bi-person-fill-add"></i>
+                    Tambah / Edit Karyawan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="modal-addK">
-                <form name="formKaryawan" id="quickForm">
+            <div class="modal-body py-4 px-5" id="modal-addK">
+                <form name="formKaryawan" id="quickForm" class="needs-validation" novalidate>
                     <?= csrf_field(); ?>
                     <input type="hidden" name="staff_id" id="staff_id" value="">
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">nama</label>
-                            <input type="text" name="name" id="name" class="form-control">
 
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan Nama" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan Email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone_number" class="form-label">Nomor Telepon</label>
+                            <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Masukkan Nomor Telepon">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="government_id" class="form-label">Nomor KTP</label>
+                            <input type="text" name="government_id" id="government_id" class="form-control" placeholder="Masukkan Nomor KTP">
+                        </div>
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control" disabled>
+                                <button type="button" class="btn btn-outline-primary" id="togglePassword">Ubah Password</button>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="company_role" class="form-label">Jabatan</label>
+                            <input type="text" name="company_role" id="company_role" class="form-control" placeholder="Masukkan Jabatan">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">email</label>
-                            <input type="email" name="email" id="email" class="form-control">
-                        </div>
+
+                    <div class="mt-4 d-flex justify-content-end">
+                        <button type="button" id="btnModal" name="update" class="btn btn-success px-4 shadow-sm">
+                            Simpan Data
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="telp" class="form-label">Nomor telp</label>
-                            <input type="text" name="phone_number" id="phone_number" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="KTP" class="form-label">no KTP</label>
-                            <input type="text" name="government_id" id="government_id" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="mb-3">
-                            <input type="password" name="password" id="password" class="form-control">
-                            <button type="button" class="btn btn-outline-secondary" id="togglePassword" style="display: none;">
-                                <span class="fas fa-eye"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="Jabatan" class="form-label">no KTP</label>
-                            <input type="text" name="company_role" id="company_role" class="form-control">
-                        </div>
-                    </div>
-                    <button type="button" id="btnModal" name="update" class="btn btn-primary"></button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <?= $this->endSection('content'); ?>
@@ -162,8 +161,11 @@
         });
     });
 </script>
+
 <!-- Jquery -->
 <script>
+    let originalStaffForm = "";
+
     $(document).ready(function() {
         $('#quickForm').validate({
             rules: {
@@ -181,15 +183,18 @@
                     required: true,
                 },
                 password: {
-                    required: true,
-                    minlength: 8,
+                    required: function() {
+
+                        return $('#btnModal').attr('name') === 'add';
+                    },
+                    minlength: 8
                 },
                 company_role: {
                     required: true,
                 }
             },
             messages: {
-                nama: {
+                name: {
                     required: "nama tidak boleh kosong",
                 },
                 email: {
@@ -213,7 +218,11 @@
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
+                if (element.parent('.input-group').length) {
+                    element.parent().after(error);
+                } else {
+                    element.after(error);
+                }
             },
             highlight: function(element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
@@ -222,7 +231,164 @@
                 $(element).removeClass('is-invalid');
             }
         });
+        $('#exampleModal').on('hidden.bs.modal', function() {
+            $('#quickForm').trigger('reset');
+            $('#quickForm :input').removeClass('is-invalid');
+            $('#quickForm').removeClass('error invalid-feedback');
+            $('#btnModal').attr('name', 'add').text('Add Staff');
+            $('#quickForm')[0].reset();
+        });
+        $('#btnAdd').click(function() {
+            $('#quickForm')[0].reset();
+            $('#staff_id').val('');
+            $('#mTitle').text('Tambah Staff');
+            $('#btnModal').text('Add Staff').attr('name', 'add');
+            $('#password').prop('disabled', false).val('');
+            $('#togglePassword').hide();
+            $('#exampleModal').modal('show');
+        })
+        $('#btnModal').on('click', function() {
+            if ($('#quickForm').valid()) {
+                const action = $(this).attr('name');
+
+                let url = '';
+                if (action === 'update') {
+                    url = "<?= site_url('staff/edit') ?>";
+                } else {
+                    url = "<?= site_url('staff/add') ?>";
+                }
+                const currentForm = $('#quickForm').serialize();
+
+                if (action === 'update' && currentForm === originalStaffForm) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tidak ada perubahan',
+                        text: 'Data staff tidak berubah dari sebelumnya.'
+                    });
+                    return;
+                }
+
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    data: currentForm,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#exampleModal').modal('hide');
+                            $('#example').DataTable().ajax.reload(null, false);
+                            Swal.fire('Success', response.message, 'success');
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+
+
     });
 </script>
+
+<!-- Script untuk Edit -->
+<script>
+    $(document).on('click', '.edit-btn', function() {
+        const staffId = $(this).data('id');
+
+        $.ajax({
+            url: "<?= site_url('staff/get') ?>",
+            method: "POST",
+            data: {
+                staff_id: staffId
+            },
+            success: function(response) {
+                if (response.success) {
+                    const staff = response.data;
+                    $('#staff_id').val(staff.staff_id);
+                    $('#name').val(staff.name);
+                    $('#email').val(staff.email);
+                    $('#phone_number').val(staff.phone_number);
+                    $('#government_id').val(staff.government_id);
+                    $('#company_role').val(staff.company_role);
+                    $('#password').val('').prop('disabled', true);
+                    t
+                    $('#togglePassword').show();
+                    $('#mTitle').text('Edit Staff');
+                    $('#btnModal').text('Update Staff').attr('name', 'update');
+                    $('#exampleModal').modal('show');
+                    setTimeout(() => {
+                        originalStaffForm = $('#quickForm').serialize();
+                    }, 100);
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            }
+        });
+    });
+</script>
+
+<!-- Optional: Re-enable password when typing -->
+<script>
+    $(document).ready(function() {
+        let passwordEnabled = false;
+
+        $('#togglePassword').on('click', function() {
+            passwordEnabled = !passwordEnabled;
+
+            if (passwordEnabled) {
+                $('#password').prop('disabled', false).focus();
+                $(this).text('Batalkan');
+            } else {
+                $('#password').prop('disabled', true).val('');
+                $(this).text('Ubah Password');
+            }
+        });
+
+        // Reset password field on modal close
+        $('#exampleModal').on('hidden.bs.modal', function() {
+            passwordEnabled = false;
+            $('#password').prop('disabled', true).val('');
+            $('#togglePassword').text('Ubah Password');
+        });
+    });
+</script>
+
+
+<!-- Script untuk Delete -->
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let staffId = $(this).data('id');
+        swal.fire({
+            title: 'Yakin ingin menghapus akun?',
+            text: "Tindakan ini tidak bisa dibatalkan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus akun',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= site_url('staff/delete') ?>",
+                    method: "POST",
+                    data: {
+                        staff_id: staffId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#example').DataTable().ajax.reload(null, false);
+                            Swal.fire('Success', response.message, 'success');
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
 
 <?= $this->endSection('scripts'); ?>
